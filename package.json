@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DeskproApps/sdk-core.git"
+    "url": "git+https://github.com/DeskproApps/deskproapps-sdk-core.git"
   },
   "keywords": [
     "deskpro",
