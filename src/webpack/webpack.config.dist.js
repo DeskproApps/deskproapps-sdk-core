@@ -10,6 +10,9 @@ const PROJECT_ROOT_PATH = path.resolve(__dirname, '../../');
 const PRODUCTION = !process.env.NODE_ENV || process.env.NODE_ENV === 'production';
 const SLIM_PACKAGE = process.env.DPA_PACKAGE_MODE === 'slim';
 
+const PACKAGE_NAMES='deskpro+apps core';
+const artifactName = (baseName) => PACKAGE_NAMES.replace(/\+/, '').split(' ').concat([baseName]).join('-');
+
 const configParts = [];
 configParts.push({
     devtool: 'source-map',
@@ -49,8 +52,8 @@ if (SLIM_PACKAGE) {
         },
         output: {
             pathinfo: !PRODUCTION,
-            chunkFilename: 'deskproapps-core-[name].[hash].js',
-            filename: 'deskproapps-core-[name].[hash].js',
+            chunkFilename: artifactName('[name].[hash].js'),
+            filename: artifactName('[name].[hash].js'),
             path: path.resolve(PROJECT_ROOT_PATH, 'dist')
         },
         plugins: [
@@ -63,10 +66,10 @@ if (SLIM_PACKAGE) {
             // vendor libs + extracted manifest
             new webpack.optimize.CommonsChunkPlugin({ name: ['vendor', 'manifest'], minChunks: Infinity }),
             // export map of chunks that will be loaded by the extracted manifest
-            new ChunkManifestPlugin({ filename: 'deskproapps-core-manifest.json', manifestVariable: 'DeskproAppsCoreManifest' }),
+            new ChunkManifestPlugin({ filename: artifactName('manifest.json'), manifestVariable: 'DeskproAppsCoreManifest' }),
 
             // mapping of all source file names to their corresponding output file
-            new ManifestPlugin({ fileName: 'deskproapps-core-asset-manifest.json' }),
+            new ManifestPlugin({ fileName: artifactName('asset-manifest.json') }),
         ],
     });
 } else {

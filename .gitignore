@@ -30,14 +30,12 @@ node_modules
 # OSX
 .DS_Store
 
-# App build folder
+# build folder
 target/*
 !target/.gitkeep
 
-# distribution folder
+# package folders
 dist
-
-# library folde
 lib
 
 # IDE files
