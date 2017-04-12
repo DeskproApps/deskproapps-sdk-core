@@ -29,24 +29,7 @@ configParts.push({
             path.resolve(PROJECT_ROOT_PATH, 'node_modules/post-robot/dist/post-robot.js')
         ]
     },
-    plugins: [
-        new webpack.DefinePlugin({ PRODUCTION: PRODUCTION }),
-        // for stable builds, in production we replace the default module index with the module's content hashe
-        (PRODUCTION ? new webpack.HashedModuleIdsPlugin() : new webpack.NamedModulesPlugin()),
-
-        // replace a standard webpack chunk hashing with custom (md5) one
-        new WebpackChunkHash(),
-        // vendor libs + extracted manifest
-        new webpack.optimize.CommonsChunkPlugin({
-            name: ['vendor', 'manifest'],
-            minChunks: Infinity
-        }),
-        // export map of chunks that will be loaded by the extracted manifest
-        new ChunkManifestPlugin({ filename: 'chunk-manifest.json', manifestVariable: 'webpackManifest' }),
-
-        // mapping of all source file names to their corresponding output file
-        new ManifestPlugin({ fileName: 'asset-manifest.json' }),
-    ],
+    plugins: [],
     resolve: {
         alias: {
             'xcomponent/src': path.resolve(PROJECT_ROOT_PATH, 'node_modules/xcomponent/dist/xcomponent.js'),
