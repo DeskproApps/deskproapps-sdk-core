@@ -1,6 +1,7 @@
 import * as SdkEvents from './SdkEvents';
 import * as PostMessageAPI from '../PostMessageAPI';
 
+
 class DpApp {
   /**
    * @param {ListenerRegistry} listenerRegistry

@@ -37,6 +37,9 @@ target/*
 # distribution folder
 dist
 
+# library folde
+lib
+
 # IDE files
 .idea
 *.iml

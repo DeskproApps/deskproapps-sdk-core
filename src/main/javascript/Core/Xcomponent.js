@@ -1,4 +1,4 @@
-import xcomponent from 'xcomponent/src';
+import { create } from 'xcomponent/src';
 
 const xcomponentConfig = {
   dimensions: {
@@ -24,4 +24,4 @@ const xcomponentConfig = {
 };
 
 // the tag needs to match the parent configuration otherwise communication will not be established
-export const xcomponentInstance = xcomponent.create(xcomponentConfig);
+export const xcomponentInstance = create(xcomponentConfig);
