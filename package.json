@@ -21,13 +21,13 @@
   "author": "Deskpro",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/DeskproApps/sdk-core/issues"
+    "url": "https://github.com/DeskproApps/deskproapps-sdk-core/issues"
   },
-  "homepage": "https://github.com/DeskproApps/sdk-core#readme",
+  "homepage": "https://github.com/DeskproApps/deskproapps-sdk-core#readme",
   "files": [
-    "LICENSE",
     "dist/",
-    "lib/"
+    "lib/",
+    "src"
   ],
   "devDependencies": {
     "dpat": "file:../dpat"
