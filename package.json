@@ -4,8 +4,8 @@
   "description": "core component of deskpro apps sdk",
   "main": "lib/main/javascript/index.js",
   "scripts": {
-    "make-lib": "rm -rf lib/* && node_modules/.bin/babel src/main/javascript -d lib/main/javascript",
-    "make-dist": "WEBPACK='node_modules/.bin/webpack --config src/webpack/webpack.config.dist.js'; rm -rf dist/* && DPA_PACKAGE_MODE=slim ${WEBPACK} && ${WEBPACK}",
+    "make-lib": "BABEL='node_modules/.bin/babel'; rm -rf lib/* && ${BABEL} src/main/javascript -d lib/main/javascript && ${BABEL} src/xcomponent -d lib/xcomponent && ${BABEL} src/post-robot -d lib/post-robot",
+    "make-dist": "WEBPACK='node_modules/.bin/webpack --config src/webpack/webpack.config-dist.js'; rm -rf dist/* && DPA_PACKAGE_MODE=slim ${WEBPACK} && ${WEBPACK}",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -30,9 +30,10 @@
     "lib/"
   ],
   "devDependencies": {
-    "dpat": "file:../dpat",
+    "dpat": "file:../dpat"
+  },
+  "dependencies": {
     "post-robot": "4.0.0",
-    "raw-loader": "0.5.1",
     "xcomponent": "1.0.125"
   }
 }

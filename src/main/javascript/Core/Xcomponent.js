@@ -1,4 +1,4 @@
-import { create } from 'xcomponent/src';
+import { create } from '../../../xcomponent';
 
 const xcomponentConfig = {
   dimensions: {

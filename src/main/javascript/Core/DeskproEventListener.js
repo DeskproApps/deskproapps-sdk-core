@@ -1,4 +1,4 @@
-import { on as postRobotOn } from 'post-robot/src';
+import { on as postRobotOn } from '../../../post-robot';
 
 class DeskproEventListener {
   on = (eventName) => {
