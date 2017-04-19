@@ -1,8 +1,10 @@
 {
   "presets": ["es2015", "stage-0"],
   "plugins": [
-    ["transform-rename-import", { "original": "xcomponent/src", "replacement": "xcomponent/dist/xcomponent" }],
-    ["transform-rename-import", { "original": "post-robot/src", "replacement": "post-robot/dist/post-robot" }],
+    ["import-rename", {
+      "^xcomponent/src$": "xcomponent/dist/xcomponent",
+      "^post-robot/src$": "post-robot/dist/post-robot"
+    }],
     "transform-runtime",
     "transform-decorators-legacy"
   ]

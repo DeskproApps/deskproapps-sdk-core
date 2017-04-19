@@ -6,12 +6,10 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 const ChunkManifestPlugin = require('chunk-manifest-webpack-plugin');
 const WebpackChunkHash = require('webpack-chunk-hash');
 
+const BuildUtils = require('./BuildUtils');
 const PROJECT_ROOT_PATH = path.resolve(__dirname, '../../');
 const PRODUCTION = !process.env.NODE_ENV || process.env.NODE_ENV === 'production';
 const SLIM_PACKAGE = process.env.DPA_PACKAGE_MODE === 'slim';
-
-const PACKAGE_NAMES='deskpro+apps core';
-const artifactName = (baseName) => PACKAGE_NAMES.replace(/\+/, '').split(' ').concat([baseName]).join('-');
 
 const configParts = [];
 configParts.push({
@@ -28,19 +26,19 @@ configParts.push({
             { test: /\.(html?|css)$/, loader: 'raw-loader' }
         ],
         noParse: [
-            path.resolve(PROJECT_ROOT_PATH, 'node_modules/xcomponent/dist/xcomponent.js'),
-            path.resolve(PROJECT_ROOT_PATH, 'node_modules/post-robot/dist/post-robot.js')
+            path.resolve(PROJECT_ROOT_PATH, 'node_modules/xcomponent/dist'),
+            path.resolve(PROJECT_ROOT_PATH, 'node_modules/post-robot/dist')
         ]
     },
     plugins: [],
     resolve: {
-        alias: {
-            'xcomponent/src': path.resolve(PROJECT_ROOT_PATH, 'node_modules/xcomponent/dist/xcomponent.js'),
-            'post-robot/src': path.resolve(PROJECT_ROOT_PATH, 'node_modules/post-robot/dist/post-robot.js'),
-        },
+      alias: {
+        'xcomponent/src': path.resolve(PROJECT_ROOT_PATH, 'node_modules/xcomponent/dist/xcomponent'),
+        'post-robot/src': path.resolve(PROJECT_ROOT_PATH, 'node_modules/post-robot/dist/post-robot'),
+      },
         extensions: ['*', '.js', '.jsx', '.scss', '.css']
     },
-    // stats: 'minimal',
+    stats: 'verbose',
     bail: true
 });
 
@@ -52,8 +50,8 @@ if (SLIM_PACKAGE) {
         },
         output: {
             pathinfo: !PRODUCTION,
-            chunkFilename: artifactName('[name].[hash].js'),
-            filename: artifactName('[name].[hash].js'),
+            chunkFilename: BuildUtils.artifactName('[name].js'),
+            filename: BuildUtils.artifactName('[name].js'),
             path: path.resolve(PROJECT_ROOT_PATH, 'dist')
         },
         plugins: [
@@ -66,10 +64,10 @@ if (SLIM_PACKAGE) {
             // vendor libs + extracted manifest
             new webpack.optimize.CommonsChunkPlugin({ name: ['vendor', 'manifest'], minChunks: Infinity }),
             // export map of chunks that will be loaded by the extracted manifest
-            new ChunkManifestPlugin({ filename: artifactName('manifest.json'), manifestVariable: 'DeskproAppsCoreManifest' }),
+            new ChunkManifestPlugin({ filename: BuildUtils.artifactName('manifest.json'), manifestVariable: 'DeskproAppsCoreManifest' }),
 
             // mapping of all source file names to their corresponding output file
-            new ManifestPlugin({ fileName: artifactName('asset-manifest.json') }),
+            new ManifestPlugin({ fileName: BuildUtils.artifactName('asset-manifest.json') }),
         ],
     });
 } else {
@@ -78,17 +76,17 @@ if (SLIM_PACKAGE) {
         output: {
             libraryTarget: 'umd',
             umdNamedDefine: true,
-            library: 'DeskproAppsCore',
+            library: 'DeskproAppsSDKCore',
 
             pathinfo: !PRODUCTION,
-            chunkFilename: 'deskproapps-core-[hash].js',
-            filename: 'deskproapps-core-[hash].js',
+            chunkFilename: BuildUtils.artifactName('.js'),
+            filename: BuildUtils.artifactName('.js'),
             path: path.resolve(PROJECT_ROOT_PATH, 'dist')
         },
         plugins: [
             new webpack.DefinePlugin({ PRODUCTION: PRODUCTION }),
             // for stable builds, in production we replace the default module index with the module's content hashe
-            (PRODUCTION ? new webpack.HashedModuleIdsPlugin() : new webpack.NamedModulesPlugin()),
+            (PRODUCTION ? new webpack.HashedModuleIdsPlugin() : new webpack.NamedModulesPlugin())
         ],
     });
 }
