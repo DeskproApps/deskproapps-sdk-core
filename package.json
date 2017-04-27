@@ -1,6 +1,6 @@
 {
-  "name": "deskproapps-sdk-core",
-  "version": "0.1.0",
+  "name": "@deskproapps/deskproapps-sdk-core",
+  "version": "0.0.0",
   "description": "core component of deskpro apps sdk",
   "main": "lib/main/javascript/index.js",
   "scripts": {
@@ -14,12 +14,11 @@
   },
   "keywords": [
     "deskpro",
-    "apps",
-    "deskpro",
-    "sdk"
+    "deskpro apps",
+    "deskpro sdk"
   ],
-  "author": "Deskpro",
-  "license": "MIT",
+  "author": "DeskPRO Ltd.",
+  "license": "BSD-3-Clause",
   "bugs": {
     "url": "https://github.com/DeskproApps/deskproapps-sdk-core/issues"
   },
@@ -30,7 +29,7 @@
     "src"
   ],
   "devDependencies": {
-    "dpat": "file:../dpat"
+    "@deskproapps/dpat": "0.2.1"
   },
   "dependencies": {
     "post-robot": "4.0.0",
