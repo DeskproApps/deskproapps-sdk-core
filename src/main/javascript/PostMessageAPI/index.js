@@ -1,4 +1,4 @@
-import ContextAPIClient from './ContextAPIClient';
-import StateAPIClient from './StateAPIClient';
+export ContextAPIClient from './ContextAPIClient';
+export StateAPIClient from './StateAPIClient';
+export UserAPIClient from './UserAPIClient';
 
-export { ContextAPIClient, StateAPIClient };

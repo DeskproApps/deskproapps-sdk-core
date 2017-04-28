@@ -40,6 +40,14 @@ class DpApp {
   };
 
   /**
+   * @return {UserAPIClient}
+   */
+  user = () => {
+    const { asyncDispatch } = this;
+    return new PostMessageAPI.UserAPIClient(asyncDispatch);
+  };
+
+  /**
    * @param {String} eventName
    * @returns {function(*): *}
    */
