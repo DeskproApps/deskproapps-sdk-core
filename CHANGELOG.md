@@ -1,4 +1,4 @@
-## Upcoming
+## v0.2.1 - 2017-05-02
 
 * [FIX] remove hardcoded child window url
 
