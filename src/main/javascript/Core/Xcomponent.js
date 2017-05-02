@@ -20,7 +20,7 @@ const xcomponentConfig = {
   scrolling: false,
   autoResize: true,
   tag: 'ticket-sidebar',
-  url: 'http://127.0.0.1:31080/html/ticket-sidebar.html',
+  url: 'http://localhost', // dummy entry to bypass validation
 };
 
 // the tag needs to match the parent configuration otherwise communication will not be established

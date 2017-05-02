@@ -1,3 +1,7 @@
+## Upcoming
+
+* [FIX] remove hardcoded child window url
+
 ## v0.2.0 - 2017-04-28 
 
 * [FEATURE] Retrieve the authenticated DeskPro user via the widget api 
