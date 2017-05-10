@@ -3,7 +3,7 @@ import * as SdkEvents from '../Core/SdkEvents';
 class StateAPIClient {
 
   /**
-   * @param {Function} eventDispatcher
+   * @param {EventEmitter} eventDispatcher
    */
   constructor(eventDispatcher) {
     this.eventDispatcher = eventDispatcher;
@@ -19,9 +19,7 @@ class StateAPIClient {
       scope: 'shared.app'
     };
     const { eventDispatcher } = this;
-    const executor = (resolve, reject) => {
-      eventDispatcher(resolve, SdkEvents.EVENT_STATE_GET, state);
-    };
+    const executor = (resolve, reject) => eventDispatcher.emit(SdkEvents.EVENT_STATE_GET, resolve, reject, state);
     return new Promise(executor);
   };
 
@@ -37,9 +35,7 @@ class StateAPIClient {
       scope: 'shared.app'
     };
     const { eventDispatcher } = this;
-    const executor = (resolve, reject) => {
-      eventDispatcher(resolve, SdkEvents.EVENT_STATE_CREATE, state);
-    };
+    const executor = (resolve, reject) => eventDispatcher.emit(SdkEvents.EVENT_STATE_CREATE, resolve, reject, state);
     return new Promise(executor);
   };
 
@@ -55,9 +51,7 @@ class StateAPIClient {
       scope: 'shared.app'
     };
     const { eventDispatcher } = this;
-    const executor = (resolve, reject) => {
-      eventDispatcher(resolve, SdkEvents.EVENT_STATE_UPDATE, state);
-    };
+    const executor = (resolve, reject) => eventDispatcher.emit(SdkEvents.EVENT_STATE_UPDATE, resolve, reject, state);
     return new Promise(executor);
   };
 
@@ -73,9 +67,7 @@ class StateAPIClient {
       scope: 'shared.app'
     };
     const { eventDispatcher } = this;
-    const executor = (resolve, reject) => {
-      eventDispatcher(resolve, SdkEvents.EVENT_STATE_SAVE, state);
-    };
+    const executor = (resolve, reject) => eventDispatcher.emit(SdkEvents.EVENT_STATE_SAVE, resolve, reject, state);
     return new Promise(executor);
   };
 
@@ -90,9 +82,7 @@ class StateAPIClient {
     };
 
     const { eventDispatcher } = this;
-    const executor = (resolve, reject) => {
-      eventDispatcher(resolve, SdkEvents.EVENT_STATE_DELETE, state);
-    };
+    const executor = (resolve, reject) => eventDispatcher.emit(SdkEvents.EVENT_STATE_DELETE, resolve, reject, state);
     return new Promise(executor);
   };
 
@@ -106,9 +96,7 @@ class StateAPIClient {
       scope: 'private.app'
     };
     const { eventDispatcher } = this;
-    const executor = (resolve, reject) => {
-      eventDispatcher(resolve, SdkEvents.EVENT_STATE_GET, state);
-    };
+    const executor = (resolve, reject) => eventDispatcher.emit(SdkEvents.EVENT_STATE_GET, resolve, reject, state);
     return new Promise(executor);
   };
 
@@ -124,9 +112,7 @@ class StateAPIClient {
       scope: 'private.app'
     };
     const { eventDispatcher } = this;
-    const executor = (resolve, reject) => {
-      eventDispatcher(resolve, SdkEvents.EVENT_STATE_SAVE, state);
-    };
+    const executor = (resolve, reject) => eventDispatcher.emit(SdkEvents.EVENT_STATE_SAVE, resolve, reject, state);
     return new Promise(executor);
   };
 
@@ -141,9 +127,7 @@ class StateAPIClient {
     };
 
     const { eventDispatcher } = this;
-    const executor = (resolve, reject) => {
-      eventDispatcher(resolve, SdkEvents.EVENT_STATE_DELETE, state);
-    };
+    const executor = (resolve, reject) => eventDispatcher.emit(SdkEvents.EVENT_STATE_DELETE, resolve, reject, state);
     return new Promise(executor);
   };
 }

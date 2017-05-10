@@ -2,7 +2,7 @@ import * as SdkEvents from '../Core/SdkEvents';
 
 class ContextAPIClient {
   /**
-   * @param {Function} eventDispatcher
+   * @param {EventEmitter} eventDispatcher
    */
   constructor(eventDispatcher) {
     this.eventDispatcher = eventDispatcher;
@@ -10,9 +10,7 @@ class ContextAPIClient {
 
   asyncGet = () => {
     const { eventDispatcher } = this;
-    const executor = (resolve, reject) => {
-      eventDispatcher(resolve, SdkEvents.EVENT_CONTEXTINIT);
-    };
+    const executor = (resolve, reject) => eventDispatcher.emit(SdkEvents.EVENT_CONTEXTINIT, resolve, reject);
     return new Promise(executor);
   };
 }

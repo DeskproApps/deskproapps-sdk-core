@@ -3,46 +3,47 @@ import Runtime from './Runtime';
 import { windowProxy } from './Window';
 import { xcomponentInstance } from './Xcomponent';
 
-import SdkEventDispatcher from './SdkEventDispatcher';
-import ListenerRegistry from './ListenerRegistry';
-import DeskproEventListener from './DeskproEventListener';
-import DeskproEventDispatcher from './DeskproEventDispatcher';
+import { RequestEventDispatcher, ResponseEventDispatcher } from './EventDispatcher';
 
 import * as SdkEvents from './SdkEvents';
+import * as SdkEventHandlers from './SdkEventHandlers';
+
+import * as AppEvents from './AppEvents';
+import * as EventListener from './EventListener';
+import { on as postRobotOn } from '../../../post-robot';
+
 import DpApp from './DpApp';
 
 /**
- * bind deskpro event listener to sdk event dispatcher
- *
- * @param {DeskproEventListener} deskproEventListener
- * @param {SdkEventDispatcher} sdkEventDispatcher
- * @param {ListenerRegistry} listenerRegistry
+ * @param {EventEmitter}  dispatcher
  */
-const bindToEvents = (deskproEventListener, sdkEventDispatcher, listenerRegistry) => {
-    for (const eventName of SdkEvents.eventNames) {
-        deskproEventListener.on(eventName)(msg => sdkEventDispatcher.dispatch(eventName, listenerRegistry, msg))
-    }
+const registerSdkEvents = (dispatcher) =>
+{
+  for (const eventName of SdkEvents.eventNames) {
+    const listener = EventListener.factory(eventName, SdkEventHandlers.requestHandler(eventName), SdkEventHandlers.responseHandler(eventName));
+    dispatcher.addListener(eventName, listener);
+
+    postRobotOn(eventName, event => { ResponseEventDispatcher.emit(eventName, event.data)  });
+  }
 };
 
 /**
  * @return {Promise.<DpApp>|*}
  */
 const connect = () => {
-    const sdkEventListenerRegistry = new ListenerRegistry();
-    const deskproEventDispatcher = new DeskproEventDispatcher(windowProxy);
-    const dpapp = new DpApp(sdkEventListenerRegistry, deskproEventDispatcher);
+  registerSdkEvents(RequestEventDispatcher);
 
-    const sdkEventDispatcher = new SdkEventDispatcher();
-    const deskproEventListener = new DeskproEventListener();
-    bindToEvents(deskproEventListener, sdkEventDispatcher, sdkEventListenerRegistry);
+  const dpapp = new DpApp(RequestEventDispatcher);
+  const executor = (resolve, reject) => RequestEventDispatcher.once(AppEvents.EVENT_MOUNT, () => resolve(dpapp));
+  const connectPromise = new Promise(executor);
 
-    if (xcomponentInstance.isChild()) {
-        xcomponentInstance.child().init().then(() => sdkEventDispatcher.dispatch('mount', sdkEventListenerRegistry)).catch();
-    } else if (Runtime.isBrowser()) {
-        windowProxy.onLoad(() => sdkEventDispatcher.dispatch('mount', sdkEventListenerRegistry));
-    }
+  if (xcomponentInstance.isChild()) {
+      xcomponentInstance.child().init().then(() => RequestEventDispatcher.emit(AppEvents.EVENT_MOUNT)).catch();
+  } else if (Runtime.isBrowser()) {
+      windowProxy.onLoad(() => RequestEventDispatcher.emit(AppEvents.EVENT_MOUNT));
+  }
 
-    return dpapp.onMount().then(() => dpapp);
+  return connectPromise;
 };
 
 export default connect;

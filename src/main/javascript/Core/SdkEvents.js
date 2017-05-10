@@ -1,5 +1,3 @@
-export const EVENT_MOUNT = 'mount';
-
 export const EVENT_CONTEXTINIT = 'context-init';
 
 export const EVENT_STATE_FIND = 'find-state';
@@ -17,8 +15,6 @@ export const EVENT_STATE_UPDATE = 'update-state';
 export const EVENT_USER_GET = 'get-user';
 
 export const eventNames = [
-  EVENT_MOUNT,
-
   EVENT_CONTEXTINIT,
 
   EVENT_STATE_CREATE,

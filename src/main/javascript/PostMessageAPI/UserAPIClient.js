@@ -2,7 +2,7 @@ import * as SdkEvents from '../Core/SdkEvents';
 
 class UserAPIClient {
   /**
-   * @param {Function} eventDispatcher
+   * @param {EventEmitter} eventDispatcher
    */
   constructor(eventDispatcher) {
     this.eventDispatcher = eventDispatcher;
@@ -10,9 +10,7 @@ class UserAPIClient {
 
   asyncGet = () => {
     const { eventDispatcher } = this;
-    const executor = (resolve, reject) => {
-      eventDispatcher(resolve, SdkEvents.EVENT_USER_GET);
-    };
+    const executor = (resolve, reject) => eventDispatcher.emit(SdkEvents.EVENT_USER_GET, resolve, reject);
     return new Promise(executor);
   };
 }
