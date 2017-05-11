@@ -2,6 +2,7 @@
 
 * [FEATURE] use eventemitter for async communications 
 * [CHANGE] improve API for the app class 
+* [CHANGE] introduce new way of creating apps, by replacing the `connect` function with more robust `createApp` 
 
 ## v0.2.1 - 2017-05-02
 
