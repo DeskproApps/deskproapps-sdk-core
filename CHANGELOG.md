@@ -1,6 +1,7 @@
 ## Upcoming
 
-* [MAINTENANCE] use eventemitter for async communications
+* [FEATURE] use eventemitter for async communications 
+* [CHANGE] improve API for the app class 
 
 ## v0.2.1 - 2017-05-02
 

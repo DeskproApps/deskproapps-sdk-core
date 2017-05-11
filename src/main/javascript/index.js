@@ -1,4 +1,5 @@
 
-export ChildApp from './Core/ChildApp';
 export connect from './Core/connect';
-export DpApp from './Core/DpApp';
+export App from './Core/App';
+export * as AppEvents from './Core/AppEvents';
+export * as UIEvents from './Core/UIEvents';

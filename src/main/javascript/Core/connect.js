@@ -1,4 +1,4 @@
-import Runtime from './Runtime';
+import { isBrowser } from './utils';
 
 import { windowProxy } from './Window';
 import { xcomponentInstance } from './Xcomponent';
@@ -12,7 +12,7 @@ import * as AppEvents from './AppEvents';
 import * as EventListener from './EventListener';
 import { on as postRobotOn } from '../../../post-robot';
 
-import DpApp from './DpApp';
+import App from './App';
 
 /**
  * @param {EventEmitter}  dispatcher
@@ -28,18 +28,18 @@ const registerSdkEvents = (dispatcher) =>
 };
 
 /**
- * @return {Promise.<DpApp>|*}
+ * @return {Promise.<App>|*}
  */
 const connect = () => {
   registerSdkEvents(RequestEventDispatcher);
 
-  const dpapp = new DpApp(RequestEventDispatcher);
-  const executor = (resolve, reject) => RequestEventDispatcher.once(AppEvents.EVENT_MOUNT, () => resolve(dpapp));
+  const app = new App(RequestEventDispatcher);
+  const executor = (resolve, reject) => RequestEventDispatcher.once(AppEvents.EVENT_MOUNT, () => resolve(app));
   const connectPromise = new Promise(executor);
 
   if (xcomponentInstance.isChild()) {
       xcomponentInstance.child().init().then(() => RequestEventDispatcher.emit(AppEvents.EVENT_MOUNT)).catch();
-  } else if (Runtime.isBrowser()) {
+  } else if (isBrowser()) {
       windowProxy.onLoad(() => RequestEventDispatcher.emit(AppEvents.EVENT_MOUNT));
   }
 

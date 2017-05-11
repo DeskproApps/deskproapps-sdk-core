@@ -11,7 +11,6 @@ const sendRequest = (eventName, message) => {
   props.onDpMessage(eventName, message);
 };
 
-// one off response listener
 const registerResponseListener = (eventName, message, responseListener) => ResponseEventDispatcher.once(eventName, responseListener);
 
 export const factory = (eventName, requestHandler, responseHandler) => {
