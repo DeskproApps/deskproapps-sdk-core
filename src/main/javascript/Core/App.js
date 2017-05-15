@@ -20,13 +20,25 @@ class App
 {
   /**
    * @param {EventEmitter} eventDispatcher
+   * @param {String} appId
+   * @param {String} appTitle
+   * @param {String} appPackageName
+   * @param {String} instanceId
    */
-  constructor(eventDispatcher) {
+  constructor({ eventDispatcher, appId, appTitle, appPackageName, instanceId }) {
     this.props = {
       eventDispatcher,
+      appId,
+      appTitle,
+      instanceId,
+      packageName: appPackageName,
       state: new PostMessageAPI.StateAPIClient(eventDispatcher),
       ui: new UI(eventDispatcher),
       visibility: 'expanded', // hidden, collapsed, expanded
+    };
+
+    this.stateProps = {
+      appTitle: null
     };
   }
 
@@ -39,6 +51,15 @@ class App
    * @return {EventEmitter}
    */
   get eventDispatcher() { return this.props.eventDispatcher; }
+
+  get appId() { return this.props.appId; }
+
+  get appTitle() { return this.props.appTitle; }
+
+  get packageName() { return this.props.appPackageName; }
+
+  get instanceId() { return this.props.instanceId; }
+
 
   /**
    * @return {string}

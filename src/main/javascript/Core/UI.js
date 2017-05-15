@@ -42,7 +42,7 @@ class UI
       this.props.menu = 'visible';
       eventDispatcher.emit(UIEvents.EVENT_MENU_STATE_TRANSITION, 'visible', menu);
     }
-  }
+  };
 
   hideMenu = () => {
     const { eventDispatcher, menu } = this.props;
