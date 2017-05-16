@@ -15,6 +15,10 @@ export const EVENT_EXPAND = 'app.expand';
 export const EVENT_REFRESH = 'app.refresh';
 export const EVENT_UNLOAD = 'app.unload';
 
+export const EVENT_TITLE_CHANGED = 'app.title_changed';
+export const EVENT_ICON_CHANGED = 'app.icon_changed';
+export const EVENT_BADGECOUNT_CHANGED = 'app.badgecount_changed';
+
 export const eventNames = [
   EVENT_MOUNT,
 

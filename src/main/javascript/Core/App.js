@@ -33,12 +33,14 @@ class App
       instanceId,
       packageName: appPackageName,
       state: new PostMessageAPI.StateAPIClient(eventDispatcher),
+      context: new PostMessageAPI.ContextAPIClient(eventDispatcher),
       ui: new UI(eventDispatcher),
       visibility: 'expanded', // hidden, collapsed, expanded
     };
 
     this.stateProps = {
-      appTitle: null
+      appTitle: appTitle,
+      badgeCount: 0
     };
   }
 
@@ -56,10 +58,34 @@ class App
 
   get appTitle() { return this.props.appTitle; }
 
+  set appTitle(newTitle) {
+    const oldTitle = this.stateProps.appTitle;
+
+    if (newTitle !== oldTitle) {
+      this.stateProps.appTitle = newTitle;
+
+      const { eventDispatcher } = this.props;
+      eventDispatcher.emit(AppEvents.EVENT_TITLE_CHANGED, newTitle, oldTitle);
+    }
+  }
+
+  resetTitle = () => {
+    this.appTitle = this.props.appTitle;
+  };
+
   get packageName() { return this.props.appPackageName; }
 
   get instanceId() { return this.props.instanceId; }
 
+  get badgeCount() { return this.stateProps.badgeCount; }
+
+  set badgeCount(newCount) {
+    const oldCount = this.stateProps.badgeCount;
+    this.stateProps.badgeCount = newCount;
+
+    const { eventDispatcher } = this.props;
+    eventDispatcher.emit(AppEvents.EVENT_BADGECOUNT_CHANGED, newCount, oldCount);
+  }
 
   /**
    * @return {string}
@@ -171,17 +197,14 @@ class App
   };
 
   /**
-   * @return {StateAPIClient}
+   * @return {PostMessageAPI.StateAPIClient}
    */
-  state = () => this.props.state;
+  get state() { return this.props.state; };
 
   /**
-   * @return {ContextAPIClient}
+   * @return {PostMessageAPI.ContextAPIClient}
    */
-  context = () => {
-    const { eventDispatcher } = this;
-    return new PostMessageAPI.ContextAPIClient(eventDispatcher);
-  };
+  get context() { return this.props.context; };
 
   /**
    * @return {UserAPIClient}
