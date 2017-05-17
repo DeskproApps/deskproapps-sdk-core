@@ -1,5 +1,8 @@
-class Event
+import * as MessageBroker from './MessageBroker';
+
+export default class Event
 {
+
   constructor({ name }) {
     this.props = { name, enabled: true }
   }
@@ -13,4 +16,6 @@ class Event
   }
 }
 
-export default Event;
+export const createRequestEventListener = (eventName, createRequestHandler, createResponseHandler) => {
+  return MessageBroker.createEventListener(eventName, createRequestHandler(eventName), createResponseHandler(eventName));
+};

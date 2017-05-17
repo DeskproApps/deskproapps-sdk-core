@@ -4,6 +4,7 @@ import Event from './Event';
 
 import { createContext } from '../Context';
 import { createUI } from '../UI';
+import { createAppStateFacade, createContextStateFacade } from '../State/StateApiFacade';
 
 const emitIfNotCanceled = (eventDispatcher, eventName, beforeEventName) =>
 {
@@ -20,18 +21,21 @@ const emitIfNotCanceled = (eventDispatcher, eventName, beforeEventName) =>
 class App
 {
   /**
-   * @param {EventEmitter} eventDispatcher
+   * @param {EventDispatcher} eventDispatcher
    * @param {InstanceProps} instanceProps
    * @param {ContextProps} contextProps
    */
   constructor({ eventDispatcher, instanceProps, contextProps }) {
 
+    const context = createContext(eventDispatcher, contextProps);
+
     this.props = {
       eventDispatcher,
       instanceProps,
       contextProps,
-      state: new PostMessageAPI.StateAPIClient(eventDispatcher),
-      context: createContext(eventDispatcher, contextProps),
+      appState: createAppStateFacade(eventDispatcher),
+      tabState: createContextStateFacade(eventDispatcher, context),
+      context,
       ui: createUI(eventDispatcher),
       visibility: 'expanded', // hidden, collapsed, expanded
     };
@@ -40,6 +44,7 @@ class App
       appTitle: instanceProps.appTitle,
       badgeCount: 0
     };
+
   }
 
   /**
@@ -194,9 +199,14 @@ class App
   };
 
   /**
-   * @return {PostMessageAPI.StateAPIClient}
+   * @return {StateApiFacade}
    */
-  get state() { return this.props.state; };
+  get appState() { return this.props.appState; };
+
+  /**
+   * @return {StateApiFacade}
+   */
+  get tabState() { return this.props.tabState; };
 
   /**
    * @return {Context}

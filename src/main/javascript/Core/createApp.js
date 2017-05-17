@@ -4,25 +4,33 @@ import { windowProxy } from './Window';
 
 import { RequestEventDispatcher, ResponseEventDispatcher } from './EventDispatcher';
 
-import * as SdkEvents from './SdkEvents';
-import * as SdkEventHandlers from './SdkEventHandlers';
+import * as SdkEventHandlers from '../PostMessageAPI/EventHandlers';
+import * as StateEventHandlers from '../State/StateEventHandlers';
 
-import * as AppEvents from './AppEvents';
-import * as EventListener from './EventListener';
 import { on as postRobotOn } from '../../../post-robot';
 
 import App from './App';
+import * as AppEvents from './AppEvents';
+
 import { create } from '../../../xcomponent';
 
 import { InstanceProps, ContextProps } from './Props';
 
-// register sdk event listeners
-for (const eventName of SdkEvents.eventNames) {
-  const listener = EventListener.factory(eventName, SdkEventHandlers.requestHandler(eventName), SdkEventHandlers.responseHandler(eventName));
-  RequestEventDispatcher.addListener(eventName, listener);
+console.log('mortii matii');
+let requestListeners;
+// register sdk api request and response listeners
+requestListeners = SdkEventHandlers.registerRequestListeners(RequestEventDispatcher);
+requestListeners.forEach(
+  (value, eventName) => postRobotOn(eventName, event => { ResponseEventDispatcher.emit(eventName, event.data)  })
+);
 
-  postRobotOn(eventName, event => { ResponseEventDispatcher.emit(eventName, event.data)  });
-}
+// register state api request and response listeners
+requestListeners = StateEventHandlers.registerRequestListeners(RequestEventDispatcher);
+requestListeners.forEach(
+  (value, eventName) => postRobotOn(eventName, event => { ResponseEventDispatcher.emit(eventName, event.data)  })
+);
+
+
 
 /**
  * @param dpParams

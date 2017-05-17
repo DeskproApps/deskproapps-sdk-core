@@ -13,7 +13,7 @@ const sendRequest = (eventName, message) => {
 
 const registerResponseListener = (eventName, message, responseListener) => ResponseEventDispatcher.once(eventName, responseListener);
 
-export const factory = (eventName, requestHandler, responseHandler) => {
+export const createEventListener = (eventName, requestHandler, responseHandler) => {
   return function (resolve, reject, initialRequest) {
       const responseListener = createResponseListener(responseHandler, resolve, reject);
 

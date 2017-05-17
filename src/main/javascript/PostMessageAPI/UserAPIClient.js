@@ -1,18 +1,14 @@
-import * as SdkEvents from '../Core/SdkEvents';
+import * as SdkEvents from './Events';
 
 class UserAPIClient {
   /**
-   * @param {EventEmitter} eventDispatcher
+   * @param {EventDispatcher} eventDispatcher
    */
   constructor(eventDispatcher) {
     this.eventDispatcher = eventDispatcher;
   }
 
-  asyncGet = () => {
-    const { eventDispatcher } = this;
-    const executor = (resolve, reject) => eventDispatcher.emit(SdkEvents.EVENT_USER_GET, resolve, reject);
-    return new Promise(executor);
-  };
+  asyncGet = () => this.eventDispatcher.emitAsync(SdkEvents.EVENT_USER_GET);
 }
 
 export default UserAPIClient;
