@@ -158,7 +158,6 @@ class App
         this.props.visibility = 'expanded'
       }
     }
-
   };
 
   hide = () => {

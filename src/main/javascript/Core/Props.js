@@ -13,6 +13,8 @@ export class InstanceProps
 
   get instanceId() { return this.props.instanceId; }
 
+  toJS = () => Object.assign({}, this.props);
+
 }
 
 export class ContextProps
@@ -29,5 +31,7 @@ export class ContextProps
   get locationId() { return this.props.locationId; }
 
   get tabId() { return this.props.tabId; }
+
+  toJS = () => Object.assign({}, this.props);
 }
 

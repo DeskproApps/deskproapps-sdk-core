@@ -15,7 +15,7 @@ export const createContext = (eventDispatcher, contextProps) => {
     throw new Error(`unknown context type ${contextProps.type}. Valid context types are: ${types.join(', ')}`);
   }
 
-  const props = { eventDispatcher, ...contextProps };
+  const props = { eventDispatcher, ...contextProps.toJS() };
   return new TicketContext(props);
 };
 
