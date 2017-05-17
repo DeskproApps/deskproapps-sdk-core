@@ -32,7 +32,6 @@ class App
       contextProps,
       state: new PostMessageAPI.StateAPIClient(eventDispatcher),
       context: createContext(eventDispatcher, contextProps),
-      contextApi: new PostMessageAPI.ContextAPIClient(eventDispatcher),
       ui: createUI(eventDispatcher),
       visibility: 'expanded', // hidden, collapsed, expanded
     };
@@ -203,11 +202,6 @@ class App
    * @return {Context}
    */
   get context() { return this.props.context; };
-
-  /**
-   * @return {PostMessageAPI.ContextAPIClient}
-   */
-  get contextApi() { return this.props.contextApi; };
 
   /**
    * @return {UserAPIClient}
