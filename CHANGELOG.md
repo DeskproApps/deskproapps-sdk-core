@@ -3,6 +3,7 @@
 * [FEATURE] use eventemitter for async communications 
 * [CHANGE] improve API for the app class 
 * [CHANGE] introduce new way of creating apps, by replacing the `connect` function with more robust `createApp` 
+* [CHANGE] introduce new Context API to allow interaction with the parent deskpro window 
 
 ## v0.2.1 - 2017-05-02
 

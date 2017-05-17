@@ -14,6 +14,8 @@ import { on as postRobotOn } from '../../../post-robot';
 import App from './App';
 import { create } from '../../../xcomponent';
 
+import { InstanceProps, ContextProps } from './Props';
+
 // register sdk event listeners
 for (const eventName of SdkEvents.eventNames) {
   const listener = EventListener.factory(eventName, SdkEventHandlers.requestHandler(eventName), SdkEventHandlers.responseHandler(eventName));
@@ -22,11 +24,6 @@ for (const eventName of SdkEvents.eventNames) {
   postRobotOn(eventName, event => { ResponseEventDispatcher.emit(eventName, event.data)  });
 }
 
-const getPropsFromXchild = xchild => {
-  const { appId, appTitle, appPackageName, instanceId } = xchild.props;
-  return { appId, appTitle, appPackageName, instanceId };
-};
-
 /**
  * @param dpParams
  * @return {{dimensions: {width: string, height: string}, props: {widgetId: {type: string, required: boolean}, appId: {type: string, required: boolean}, appTitle: {type: string, required: boolean}, appPackageName: {type: string, required: boolean}, instanceId: {type: string, required: boolean}, onDpMessage: {type: string, required: boolean}}, scrolling: boolean, autoResize: boolean, tag: *, url: string}}
@@ -34,15 +31,28 @@ const getPropsFromXchild = xchild => {
 const getXcomponentOptions = (dpParams) => {
 
   return {
-    dimensions: {
-      width: '100%',
-      height: '100%'
-    },
+    autoResize: true,
+    scrolling: false,
+    tag: dpParams['dp.xconf.tag'], //needs to match xcomponent config on the parent
+    url: 'http://localhost', // dummy entry to bypass validation
+
+    dimensions: { width: '100%', height: '100%' },
+
     props: {
+
+      // WIDGET PROPERTIES
+
       widgetId: {
         type: 'string',
         required: true
       },
+
+      onDpMessage: {
+        type: 'function',
+        required: true
+      },
+
+      // INSTANCE PROPERTIES
 
       appId: {
         type: 'string',
@@ -64,17 +74,45 @@ const getXcomponentOptions = (dpParams) => {
         required: true
       },
 
-      onDpMessage: {
-        type: 'function',
+      // CONTEXT PROPERTIES
+
+      contextType: {
+        type: 'string',
+        required: true
+      },
+
+      contextEntityId: {
+        type: 'string',
+        required: true
+      },
+
+      contextLocationId: {
+        type: 'string',
+        required: true
+      },
+
+      contextTabId: {
+        type: 'string',
         required: true
       }
-    },
-    scrolling: false,
-    autoResize: true,
-    tag: dpParams['dp.xconf.tag'], //needs to match xcomponent config on the parent
-    url: 'http://localhost', // dummy entry to bypass validation
+    }
   };
+};
 
+/**
+ * @param xchild
+ * @return {InstanceProps}
+ */
+const extractInstancePropsFromXChild = xchild => new InstanceProps(xchild.props);
+
+/**
+ * @param xchild
+ * @return {ContextProps}
+ */
+const extractContextPropsFromXChild = xchild => {
+  const { props } = xchild;
+  const { contextType: type, contextEntityId: entityId, contextLocationId: locationId, contextTabId: tabId } = props;
+  return new ContextProps({ type, entityId, locationId, tabId });
 };
 
 /**
@@ -87,8 +125,11 @@ const createApp = (cb) => {
   if (xcomponent.isChild()) {
       xcomponent.child().init().then(xchild => {
 
-        const injectedProps = getPropsFromXchild(xchild);
-        const props = { eventDispatcher: RequestEventDispatcher, ...injectedProps };
+        const props = {
+          eventDispatcher: RequestEventDispatcher,
+          instanceProps: extractInstancePropsFromXChild(xchild),
+          contextProps: extractContextPropsFromXChild(xchild),
+        };
 
         const app = new App(props);
         windowProxy.onLoad(() => cb(app));

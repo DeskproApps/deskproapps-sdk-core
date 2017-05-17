@@ -1,8 +1,9 @@
 import * as PostMessageAPI from '../PostMessageAPI';
 import * as AppEvents from './AppEvents';
 import Event from './Event';
-import UI from './UI';
 
+import { createContext } from '../Context';
+import { createUI } from '../UI';
 
 const emitIfNotCanceled = (eventDispatcher, eventName, beforeEventName) =>
 {
@@ -20,26 +21,24 @@ class App
 {
   /**
    * @param {EventEmitter} eventDispatcher
-   * @param {String} appId
-   * @param {String} appTitle
-   * @param {String} appPackageName
-   * @param {String} instanceId
+   * @param {InstanceProps} instanceProps
+   * @param {ContextProps} contextProps
    */
-  constructor({ eventDispatcher, appId, appTitle, appPackageName, instanceId }) {
+  constructor({ eventDispatcher, instanceProps, contextProps }) {
+
     this.props = {
       eventDispatcher,
-      appId,
-      appTitle,
-      instanceId,
-      packageName: appPackageName,
+      instanceProps,
+      contextProps,
       state: new PostMessageAPI.StateAPIClient(eventDispatcher),
-      context: new PostMessageAPI.ContextAPIClient(eventDispatcher),
-      ui: new UI(eventDispatcher),
+      context: createContext(eventDispatcher, contextProps),
+      contextApi: new PostMessageAPI.ContextAPIClient(eventDispatcher),
+      ui: createUI(eventDispatcher),
       visibility: 'expanded', // hidden, collapsed, expanded
     };
 
     this.stateProps = {
-      appTitle: appTitle,
+      appTitle: instanceProps.appTitle,
       badgeCount: 0
     };
   }
@@ -54,9 +53,9 @@ class App
    */
   get eventDispatcher() { return this.props.eventDispatcher; }
 
-  get appId() { return this.props.appId; }
+  get appId() { return this.props.instanceProps.appId; }
 
-  get appTitle() { return this.props.appTitle; }
+  get appTitle() { return this.props.instanceProps.appTitle; }
 
   set appTitle(newTitle) {
     const oldTitle = this.stateProps.appTitle;
@@ -70,12 +69,12 @@ class App
   }
 
   resetTitle = () => {
-    this.appTitle = this.props.appTitle;
+    this.appTitle = this.props.instanceProps.appTitle;
   };
 
-  get packageName() { return this.props.appPackageName; }
+  get packageName() { return this.props.instanceProps.appPackageName; }
 
-  get instanceId() { return this.props.instanceId; }
+  get instanceId() { return this.props.instanceProps.instanceId; }
 
   get badgeCount() { return this.stateProps.badgeCount; }
 
@@ -202,9 +201,14 @@ class App
   get state() { return this.props.state; };
 
   /**
-   * @return {PostMessageAPI.ContextAPIClient}
+   * @return {Context}
    */
   get context() { return this.props.context; };
+
+  /**
+   * @return {PostMessageAPI.ContextAPIClient}
+   */
+  get contextApi() { return this.props.contextApi; };
 
   /**
    * @return {UserAPIClient}
