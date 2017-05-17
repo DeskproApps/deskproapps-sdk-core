@@ -1,8 +1,17 @@
-import { TicketContext } from './TicketContext';
-
+import { TicketContext, tryAndCreate as TicketContextFactory } from './TicketContext';
+import { PersonContext, tryAndCreate as PersonContextFactory } from './PersonContext';
+import { OrganizationContext, tryAndCreate as OrganizationContextFactory } from './OrganizationContext';
 
 export const types = [
-  TicketContext.TYPE
+  TicketContext.TYPE,
+  PersonContext.TYPE,
+  OrganizationContext.TYPE
+];
+
+export const factories = [
+  TicketContextFactory,
+  PersonContextFactory,
+  OrganizationContextFactory
 ];
 
 /**
@@ -10,12 +19,15 @@ export const types = [
  * @param {ContextProps} contextProps
  * @return {Context}
  */
-export const createContext = (eventDispatcher, contextProps) => {
-  if (types.indexOf(contextProps.type) === -1) {
-    throw new Error(`unknown context type ${contextProps.type}. Valid context types are: ${types.join(', ')}`);
+export const createContext = (eventDispatcher, contextProps) =>
+{
+  const props = { eventDispatcher, ...contextProps.toJS() };
+  let context = null;
+  for (const factory of factories) {
+    context = factory(props);
+    if (context) { return context; }
   }
 
-  const props = { eventDispatcher, ...contextProps.toJS() };
-  return new TicketContext(props);
+  throw new Error(`unknown context type ${contextProps.type}. Valid context types are: ${types.join(', ')}`);
 };
 

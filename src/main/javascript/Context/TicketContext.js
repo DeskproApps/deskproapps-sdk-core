@@ -74,3 +74,5 @@ export class TicketContext extends Context
     const event = new Event({ name: TicketEvents.EVENT_BEFORE_MESSAGE_ADDED });
   };
 }
+
+export const tryAndCreate = props => props.type === TicketContext.TYPE ? new TicketContext(props) : null;
