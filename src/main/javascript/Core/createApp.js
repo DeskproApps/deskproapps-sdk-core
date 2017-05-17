@@ -16,7 +16,6 @@ import { create } from '../../../xcomponent';
 
 import { InstanceProps, ContextProps } from './Props';
 
-console.log('mortii matii');
 let requestListeners;
 // register sdk api request and response listeners
 requestListeners = SdkEventHandlers.registerRequestListeners(RequestEventDispatcher);
