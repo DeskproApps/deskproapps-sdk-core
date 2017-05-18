@@ -3,7 +3,15 @@ import { createRequestEventListener } from '../Core/Event';
 
 const defaultRequestHandler = (resolve, reject, request) => resolve(request);
 
-const defaultResponseHandler = (resolve, reject, response) => resolve(response);
+/**
+ * @param {function} resolve
+ * @param {function} reject
+ * @param {WidgetMessage} message
+ */
+const defaultResponseHandler = (resolve, reject, message) => {
+  const { status, body:state, id } = message;
+  status == 'success' ? resolve(state ? JSON.parse(state.value) : state) : reject(state);
+};
 
 export const createRequestHandler = eventName =>
 {

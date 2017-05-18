@@ -3,7 +3,7 @@ import * as ContextEvents from './ContextEvents';
 export class Context
 {
   /**
-   * @param {EventEmitter} eventDispatcher
+   * @param {EventDispatcher} eventDispatcher
    * @param {String} type
    * @param {String} entityId
    * @param {String} locationId
@@ -29,28 +29,19 @@ export class Context
 
   get tabId() { return this.props.tabId; }
 
-  isTabActive = () => false;
+  /**
+   * @async
+   */
+  isTabActive = () => this.props.eventDispatcher.emitAsync(ContextEvents.EVENT_TAB_STATUS, this.props.tabId).then(status => status.active);
 
   /**
    * @async
    */
-  activateTab = () => false;
+  activateTab = () => this.props.eventDispatcher.emitAsync(ContextEvents.EVENT_TAB_ACTIVATE, this.props.tabId);
 
   /**
    * @async
    */
-  closeTab = () => {
-    const { eventDispatcher } = this.props;
-
-    const event = new Event({ name: ContextEvents.EVENT_TAB_CLOSED });
-    eventDispatcher.emit(ContextEvents.EVENT_BEFORE_TAB_CLOSED, event);
-
-    if (event.enabled) {
-      eventDispatcher.emit(ContextEvents.EVENT_TAB_CLOSED);
-    }
-
-    return event.enabled;
-
-  };
+  closeTab = () => this.props.eventDispatcher.emitAsync(ContextEvents.EVENT_TAB_CLOSE, this.props.tabId);
 
 }

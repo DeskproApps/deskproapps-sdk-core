@@ -1,9 +1,10 @@
 import { ResponseEventDispatcher } from './EventDispatcher';
 import { MessageFactory } from './MessageFactory';
 import { windowProxy } from './Window';
+import { WidgetMessage } from './WidgetMessage';
 
 const handleRequest = (requestHandler, initialRequest) => new Promise((resolveStart, rejectStart) => requestHandler(resolveStart, rejectStart, initialRequest));
-const createResponseListener = (responseHandler, resolve, reject) => response => responseHandler(resolve, reject, response);
+const createResponseListener = (responseHandler, resolve, reject) => response => responseHandler(resolve, reject, new WidgetMessage(response));
 const createRequestMessage = (eventName, request) => MessageFactory.createRequest(windowProxy.xchild, request);
 
 const sendRequest = (eventName, message) => {
