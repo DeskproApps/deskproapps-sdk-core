@@ -4,31 +4,20 @@ import { windowProxy } from './Window';
 
 import { RequestEventDispatcher, ResponseEventDispatcher } from './EventDispatcher';
 
-import * as SdkEventHandlers from '../PostMessageAPI/EventHandlers';
-import * as StateEventHandlers from '../State/StateEventHandlers';
+import { registerListeners as registerSDKListeners } from '../PostMessageAPI';
+import { registerListeners as registerStateListeners, StateApiFacade } from '../State';
+import { registerListeners as registerWebAPIListeners } from '../WebAPI';
 
-import { on as postRobotOn } from '../../../post-robot';
 
 import App from './App';
 import * as AppEvents from './AppEvents';
 
 import { create } from '../../../xcomponent';
-
 import { InstanceProps, ContextProps } from './Props';
 
-let requestListeners;
-// register sdk api request and response listeners
-requestListeners = SdkEventHandlers.registerRequestListeners(RequestEventDispatcher);
-requestListeners.forEach(
-  (value, eventName) => postRobotOn(eventName, event => { ResponseEventDispatcher.emit(eventName, event.data)  })
-);
-
-// register state api request and response listeners
-requestListeners = StateEventHandlers.registerRequestListeners(RequestEventDispatcher);
-requestListeners.forEach(
-  (value, eventName) => postRobotOn(eventName, event => { ResponseEventDispatcher.emit(eventName, event.data)  })
-);
-
+registerSDKListeners(RequestEventDispatcher, ResponseEventDispatcher); // register sdk request and response listeners
+registerStateListeners(RequestEventDispatcher, ResponseEventDispatcher); // register state api request and response listeners
+registerWebAPIListeners(RequestEventDispatcher, ResponseEventDispatcher); // register web api request and response listeners
 
 
 /**

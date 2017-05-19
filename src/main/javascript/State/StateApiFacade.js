@@ -1,23 +1,7 @@
-import * as StateEvents from './StateEvents';
+import * as Events from './Events';
 import * as StateBuilder from './StateBuilder';
 
-/**
- * @param {EventDispatcher} eventDispatcher
- * @return {StateApiFacade}
- */
-export const createAppStateFacade = (eventDispatcher) => new StateApiFacade(eventDispatcher, 'app');
-
-/**
- * @param {EventDispatcher} eventDispatcher
- * @param {Context} context
- * @return {StateApiFacade}
- */
-export const createContextStateFacade = (eventDispatcher, context) => {
-  const scopeTarget = StateBuilder.buildScopeTargetForContext(context);
-  return new StateApiFacade(eventDispatcher, scopeTarget);
-};
-
-export class StateApiFacade
+class StateApiFacade
 {
   constructor(eventDispatcher, scopeTarget) {
     this.props = { eventDispatcher, scopeTarget };
@@ -34,7 +18,7 @@ export class StateApiFacade
 
     const state = { name, scope: StateBuilder.buildSharedScope(this.props) };
     return this.props.eventDispatcher
-      .emitAsync(StateEvents.EVENT_STATE_GET, state, defaultIfUnset)
+      .emitAsync(Events.EVENT_STATE_GET, state, defaultIfUnset)
       .then(state => state ? state : defaultIfUnset)
     ;
   };
@@ -50,7 +34,7 @@ export class StateApiFacade
 
     const state = { name, scope: StateBuilder.buildPrivateScope(this.props) };
     return this.props.eventDispatcher
-      .emitAsync(StateEvents.EVENT_STATE_GET, state, defaultIfUnset)
+      .emitAsync(Events.EVENT_STATE_GET, state, defaultIfUnset)
       .then(state => state ? state : defaultIfUnset)
     ;
   };
@@ -65,7 +49,7 @@ export class StateApiFacade
     if (!name) { throw new Error('name argument is required'); }
 
     const state = { name, value: JSON.stringify(value), scope: StateBuilder.buildSharedScope(this.props) };
-    return this.props.eventDispatcher.emitAsync(StateEvents.EVENT_STATE_SET, state);
+    return this.props.eventDispatcher.emitAsync(Events.EVENT_STATE_SET, state);
   };
 
   /**
@@ -78,7 +62,7 @@ export class StateApiFacade
     if (!name) { throw new Error('name argument is required'); }
 
     const state = { name, value: JSON.stringify(value), scope: StateBuilder.buildPrivateScope(this.props) };
-    return this.props.eventDispatcher.emitAsync(StateEvents.EVENT_STATE_SET, state);
+    return this.props.eventDispatcher.emitAsync(Events.EVENT_STATE_SET, state);
   };
 
   /**
@@ -90,7 +74,7 @@ export class StateApiFacade
     if (!name) { throw new Error('name argument is required'); }
 
     const state = { name, scope: StateBuilder.buildSharedScope(this.props) };
-    return this.props.eventDispatcher.emitAsync(StateEvents.EVENT_STATE_DELETE, state);
+    return this.props.eventDispatcher.emitAsync(Events.EVENT_STATE_DELETE, state);
   };
 
   /**
@@ -102,7 +86,7 @@ export class StateApiFacade
     if (!name) { throw new Error('name argument is required'); }
 
     const state = { name, scope: StateBuilder.buildPrivateScope(this.props) };
-    return this.props.eventDispatcher.emitAsync(StateEvents.EVENT_STATE_DELETE, state);
+    return this.props.eventDispatcher.emitAsync(Events.EVENT_STATE_DELETE, state);
   };
 
   /**
@@ -128,5 +112,22 @@ export class StateApiFacade
     const defaultIfUnset = {};
     return this.props.asyncGetPrivate(name, defaultIfUnset).then(foundState => foundState !== defaultIfUnset);
   };
-
 }
+
+export { StateApiFacade };
+
+/**
+ * @param {EventDispatcher} eventDispatcher
+ * @return {StateApiFacade}
+ */
+export const forApp = eventDispatcher => new StateApiFacade(eventDispatcher, 'app');
+
+/**
+ * @param {EventDispatcher} eventDispatcher
+ * @param {Context} context
+ * @return {StateApiFacade}
+ */
+export const fromContext = (eventDispatcher, context) => {
+  const scopeTarget = StateBuilder.buildScopeTargetForContext(context);
+  return new StateApiFacade(eventDispatcher, scopeTarget);
+};

@@ -1,11 +1,14 @@
 
 export createApp from './Core/createApp';
 export App from './Core/App';
-export * as AppEvents from './Core/AppEvents';
 
-export * as UIEvents from './UI/UIEvents';
-export * as StateEvents from './State/StateEvents';
+import * as AppEvents from './Core/AppEvents';
+export { AppEvents };
 
-export * as ContextEvents from './Core/ContextEvents';
-export * as TicketEvents from './Context/TicketEvents';
+export { UIEvents } from './UI';
+export { StateEvents } from './State';
+
+import * as ContextEvents from './Core/ContextEvents';
+export {ContextEvents}
+export { TicketEvents } from './Context';
 

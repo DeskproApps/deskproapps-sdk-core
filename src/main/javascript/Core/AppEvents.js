@@ -19,7 +19,7 @@ export const EVENT_TITLE_CHANGED = 'app.title_changed';
 export const EVENT_ICON_CHANGED = 'app.icon_changed';
 export const EVENT_BADGECOUNT_CHANGED = 'app.badgecount_changed';
 
-export const eventNames = [
+export const events = {
   EVENT_MOUNT,
 
   EVENT_SHOW,
@@ -35,6 +35,8 @@ export const eventNames = [
 
   EVENT_REFRESH,
   EVENT_UNLOAD
-];
+};
+
+export const eventNames = Object.keys(events).map(key => events[key]);
 
 export const isEventName = name => eventNames.indexOf(name) !== -1;

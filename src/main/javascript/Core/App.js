@@ -3,8 +3,9 @@ import * as AppEvents from './AppEvents';
 import Event from './Event';
 
 import { createContext } from '../Context';
-import { createUI } from '../UI';
-import { createAppStateFacade, createContextStateFacade } from '../State/StateApiFacade';
+import { create as createUI } from '../UI';
+import { createAppStateClient, createContextStateClient, StateApiFacade } from '../State';
+import { createDeskproApiClient } from '../WebAPI';
 
 const emitIfNotCanceled = (eventDispatcher, eventName, beforeEventName) =>
 {
@@ -28,13 +29,13 @@ class App
   constructor({ eventDispatcher, instanceProps, contextProps }) {
 
     const context = createContext(eventDispatcher, contextProps);
-
     this.props = {
       eventDispatcher,
       instanceProps,
       contextProps,
-      appState: createAppStateFacade(eventDispatcher),
-      tabState: createContextStateFacade(eventDispatcher, context),
+      restApi: createDeskproApiClient(eventDispatcher),
+      appState: createAppStateClient(eventDispatcher),
+      tabState: createContextStateClient(eventDispatcher, context),
       context,
       ui: createUI(eventDispatcher),
       visibility: 'expanded', // hidden, collapsed, expanded
@@ -47,15 +48,51 @@ class App
 
   }
 
+  // UI API
+
   /**
    * @return {UI}
    */
   get ui() { return this.props.ui; }
 
+  // EVENT EMITTER API
+
   /**
    * @return {EventEmitter}
    */
   get eventDispatcher() { return this.props.eventDispatcher; }
+
+  /**
+   * @param {String} eventName
+   * @param {function} listener
+   */
+  on = (eventName, listener) => {
+    this.eventDispatcher.on(eventName, listener);
+  };
+
+  /**
+   * @param {String} eventName
+   * @param {function} listener
+   */
+  off = (eventName, listener) => {
+    this.eventDispatcher.removeListener(eventName, listener);
+  };
+
+  /**
+   * @param {String} eventName
+   * @param {function} listener
+   */
+  once = (eventName, listener) => {
+    this.eventDispatcher.once(eventName, listener);
+  };
+
+  emit = (eventName, ...args) => {
+    const { eventDispatcher } = this.props;
+    const dispatcherArgs = [eventName].concat(args);
+    eventDispatcher.emit.apply(eventDispatcher, dispatcherArgs);
+  };
+
+  // APPLICATION API
 
   get appId() { return this.props.instanceProps.appId; }
 
@@ -123,36 +160,6 @@ class App
     return this.props.visibility ===  'collapsed';
   }
 
-  /**
-   * @param {String} eventName
-   * @param {function} listener
-   */
-  on = (eventName, listener) => {
-    this.eventDispatcher.on(eventName, listener);
-  };
-
-  /**
-   * @param {String} eventName
-   * @param {function} listener
-   */
-  off = (eventName, listener) => {
-    this.eventDispatcher.removeListener(eventName, listener);
-  };
-
-  /**
-   * @param {String} eventName
-   * @param {function} listener
-   */
-  once = (eventName, listener) => {
-    this.eventDispatcher.once(eventName, listener);
-  };
-
-  emit = (eventName, ...args) => {
-    const { eventDispatcher } = this.props;
-    const dispatcherArgs = [eventName].concat(args);
-    eventDispatcher.emit.apply(eventDispatcher, dispatcherArgs);
-  };
-
   show = () => {
     const { eventDispatcher, visibility } = this.props;
 
@@ -197,6 +204,13 @@ class App
     const { eventDispatcher } = this.props;
     eventDispatcher.emit(AppEvents.EVENT_UNLOAD);
   };
+
+  // CLIENTS
+
+  /**
+   * @return {StateApiFacade}
+   */
+  get restApi() { return this.props.restApi; };
 
   /**
    * @return {StateApiFacade}

@@ -2,6 +2,9 @@ import { TicketContext, tryAndCreate as TicketContextFactory } from './TicketCon
 import { PersonContext, tryAndCreate as PersonContextFactory } from './PersonContext';
 import { OrganizationContext, tryAndCreate as OrganizationContextFactory } from './OrganizationContext';
 
+import * as TicketEvents from './TicketEvents';
+export { TicketEvents };
+
 export const types = [
   TicketContext.TYPE,
   PersonContext.TYPE,

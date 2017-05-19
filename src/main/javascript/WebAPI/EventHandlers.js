@@ -1,4 +1,6 @@
-import * as Events from './StateEvents';
+import { on as postRobotOn } from '../../../post-robot';
+
+import * as Events from './Events';
 import { createRequestEventListener } from '../Core/Event';
 
 const defaultRequestHandler = (resolve, reject, request) => resolve(request);
@@ -9,8 +11,8 @@ const defaultRequestHandler = (resolve, reject, request) => resolve(request);
  * @param {WidgetMessage} message
  */
 const defaultResponseHandler = (resolve, reject, message) => {
-  const { status, body:state, id } = message;
-  status == 'success' ? resolve(state ? JSON.parse(state.value) : state) : reject(state);
+  const { status, body, id } = message;
+  status == 'success' ? resolve(body) : reject(body);
 };
 
 export const createRequestHandler = eventName =>
@@ -29,6 +31,26 @@ export const createResponseHandler = eventName =>
   }
 
   throw new Error(`unknown event name: ${eventName}`);
+};
+
+/**
+ * @param {EventDispatcher} requestEventDispatcher
+ * @param {EventDispatcher} responseEventDispatcher
+ * @return {Map<String, Function>}
+ */
+export const registerListeners = (requestEventDispatcher, responseEventDispatcher) => {
+  const listenersMap = createRequestListeners();
+
+  const each = (listener, eventName) => {
+    // register request listener
+    requestEventDispatcher.addListener(eventName, listener);
+
+    // broadcast response messages to response listeners
+    postRobotOn(eventName, event => { responseEventDispatcher.emit(eventName, event.data) });
+  };
+
+  listenersMap.forEach(each);
+  return listenersMap;
 };
 
 /**

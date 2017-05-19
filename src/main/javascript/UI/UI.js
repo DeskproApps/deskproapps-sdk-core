@@ -1,4 +1,4 @@
-import * as UIEvents from './UIEvents';
+import * as Events from './Events';
 
 class UI
 {
@@ -22,7 +22,7 @@ class UI
 
     if (state !== 'loading') {
       this.props.state = 'loading';
-      eventDispatcher.emit(UIEvents.EVENT_STATE_TRANSITION, 'loading', state);
+      eventDispatcher.emit(Events.EVENT_STATE_TRANSITION, 'loading', state);
     }
   };
 
@@ -31,7 +31,7 @@ class UI
 
     if (state === 'loading') {
       this.props.state = 'ready';
-      eventDispatcher.emit(UIEvents.EVENT_STATE_TRANSITION, 'ready', state);
+      eventDispatcher.emit(Events.EVENT_STATE_TRANSITION, 'ready', state);
     }
   };
 
@@ -40,7 +40,7 @@ class UI
 
     if (menu !== 'visible') {
       this.props.menu = 'visible';
-      eventDispatcher.emit(UIEvents.EVENT_MENU_STATE_TRANSITION, 'visible', menu);
+      eventDispatcher.emit(Events.EVENT_MENU_STATE_TRANSITION, 'visible', menu);
     }
   };
 
@@ -49,13 +49,13 @@ class UI
 
     if (menu !== 'hidden') {
       this.props.menu = 'hidden';
-      eventDispatcher.emit(UIEvents.EVENT_MENU_STATE_TRANSITION, 'hidden', menu);
+      eventDispatcher.emit(Events.EVENT_MENU_STATE_TRANSITION, 'hidden', menu);
     }
   };
 
   showSettings = () => {
     const { eventDispatcher } = this.props;
-    eventDispatcher.emit(UIEvents.EVENT_SHOW_SETTINGS);
+    eventDispatcher.emit(Events.EVENT_SHOW_SETTINGS);
   };
 
 }
