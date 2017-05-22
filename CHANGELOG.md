@@ -1,4 +1,4 @@
-## Upcoming
+## v1.0.0-alpha - 2017-05-22
 
 * [FEATURE] use eventemitter for async communications 
 * [FEATURE] Deskpro REST Api access  
