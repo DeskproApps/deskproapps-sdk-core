@@ -113,6 +113,8 @@ class App
     this.appTitle = this.props.instanceProps.appTitle;
   };
 
+  get settings() { return []; }
+
   get packageName() { return this.props.instanceProps.appPackageName; }
 
   get instanceId() { return this.props.instanceProps.instanceId; }
