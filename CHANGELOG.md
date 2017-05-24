@@ -1,4 +1,4 @@
-## Upcoming
+## v1.0.0-alpha.1 - 2017-05-24
 
 * [FEATURE] expose application settings via `settings` property on the application object 
 
