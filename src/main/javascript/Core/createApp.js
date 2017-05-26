@@ -27,7 +27,6 @@ registerWebAPIListeners(RequestEventDispatcher, ResponseEventDispatcher); // reg
 const getXcomponentOptions = (dpParams) => {
 
   return {
-    autoResize: true,
     scrolling: false,
     tag: dpParams['dp.xconf.tag'], //needs to match xcomponent config on the parent
     url: 'http://localhost', // dummy entry to bypass validation
