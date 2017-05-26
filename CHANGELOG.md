@@ -1,4 +1,4 @@
-## Upcoming
+## v1.0.0-alpha.2 - 2017-05-26
 
 * [FEATURE] improve auto-resizing
 
