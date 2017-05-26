@@ -1,5 +1,9 @@
+import getSize from 'get-size';
+import elementResizeDetectorMaker from 'element-resize-detector';
+
 import * as PostMessageAPI from '../PostMessageAPI';
 import * as AppEvents from './AppEvents';
+import * as StateEvents from '../State/Events';
 import Event from './Event';
 
 import { createContext } from '../Context';
@@ -46,6 +50,10 @@ class App
       badgeCount: 0
     };
 
+    const erd = elementResizeDetectorMaker({
+      strategy: "scroll"
+    });
+    erd.listenTo(document.body, () => this.resetSize());
   }
 
   // UI API
@@ -200,6 +208,12 @@ class App
   refresh = () => {
     const { eventDispatcher } = this.props;
     eventDispatcher.emit(AppEvents.EVENT_REFRESH);
+  };
+
+  resetSize = () => {
+    const { eventDispatcher } = this.props;
+    const bodySize = getSize(document.body);
+    eventDispatcher.emitAsync(StateEvents.EVENT_RESET_SIZE, { size: bodySize });
   };
 
   unload = () => {
