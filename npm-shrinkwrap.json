@@ -47,6 +47,11 @@
       "from": "babylon@>=6.0.18 <7.0.0",
       "resolved": "https://registry.npmjs.org/babylon/-/babylon-6.17.1.tgz"
     },
+    "batch-processor": {
+      "version": "1.0.0",
+      "from": "batch-processor@>=1.0.0 <2.0.0",
+      "resolved": "https://registry.npmjs.org/batch-processor/-/batch-processor-1.0.0.tgz"
+    },
     "beaver-logger": {
       "version": "2.0.8",
       "from": "beaver-logger@>=2.0.0 <3.0.0",
@@ -67,6 +72,11 @@
       "from": "debug@>=2.2.0 <3.0.0",
       "resolved": "https://registry.npmjs.org/debug/-/debug-2.6.8.tgz"
     },
+    "element-resize-detector": {
+      "version": "1.1.12",
+      "from": "element-resize-detector@>=1.1.12 <2.0.0",
+      "resolved": "https://registry.npmjs.org/element-resize-detector/-/element-resize-detector-1.1.12.tgz"
+    },
     "es6-promise": {
       "version": "3.3.1",
       "from": "es6-promise@>=3.1.2 <4.0.0",
@@ -86,6 +96,11 @@
       "version": "2.0.2",
       "from": "esutils@>=2.0.2 <3.0.0",
       "resolved": "https://registry.npmjs.org/esutils/-/esutils-2.0.2.tgz"
+    },
+    "get-size": {
+      "version": "2.0.2",
+      "from": "get-size@>=2.0.2 <3.0.0",
+      "resolved": "https://registry.npmjs.org/get-size/-/get-size-2.0.2.tgz"
     },
     "globals": {
       "version": "9.17.0",
