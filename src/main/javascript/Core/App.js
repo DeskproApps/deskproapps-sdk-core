@@ -1,7 +1,6 @@
 import getSize from 'get-size';
 import elementResizeDetectorMaker from 'element-resize-detector';
 
-import * as PostMessageAPI from '../PostMessageAPI';
 import * as AppEvents from './AppEvents';
 import * as StateEvents from '../State/Events';
 import Event from './Event';
@@ -242,14 +241,6 @@ class App
    * @return {Context}
    */
   get context() { return this.props.context; };
-
-  /**
-   * @return {UserAPIClient}
-   */
-  user = () => {
-    const { eventDispatcher } = this;
-    return new PostMessageAPI.UserAPIClient(eventDispatcher);
-  };
 
   log = (...args) => {
     console.log.apply(console, args);

@@ -44,4 +44,17 @@ export class Context
    */
   closeTab = () => this.props.eventDispatcher.emitAsync(ContextEvents.EVENT_TAB_CLOSE, this.props.tabId);
 
+  /**
+   * @async
+   */
+  getTabData = () => this.props.eventDispatcher.emitAsync(ContextEvents.EVENT_TAB_DATA, this.props.tabId);
+
+  /**
+   * @async
+   */
+  getMe = () => this.props.eventDispatcher.emitAsync(ContextEvents.EVENT_ME_GET);
+
+
+
+
 }

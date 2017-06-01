@@ -4,10 +4,9 @@ import { windowProxy } from './Window';
 
 import { RequestEventDispatcher, ResponseEventDispatcher } from './EventDispatcher';
 
-import { registerListeners as registerSDKListeners } from '../PostMessageAPI';
 import { registerListeners as registerStateListeners, StateApiFacade } from '../State';
 import { registerListeners as registerWebAPIListeners } from '../WebAPI';
-
+import { registerListeners as registerContextListeners } from './ContextEventHandlers';
 
 import App from './App';
 import * as AppEvents from './AppEvents';
@@ -15,10 +14,9 @@ import * as AppEvents from './AppEvents';
 import { create } from '../../../xcomponent';
 import { InstanceProps, ContextProps } from './Props';
 
-registerSDKListeners(RequestEventDispatcher, ResponseEventDispatcher); // register sdk request and response listeners
 registerStateListeners(RequestEventDispatcher, ResponseEventDispatcher); // register state api request and response listeners
 registerWebAPIListeners(RequestEventDispatcher, ResponseEventDispatcher); // register web api request and response listeners
-
+registerContextListeners(RequestEventDispatcher, ResponseEventDispatcher);
 
 /**
  * @param dpParams
