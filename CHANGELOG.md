@@ -1,4 +1,4 @@
-## Upcoming
+## v1.0.0-alpha.3 - 2017-06-01
 
 * [FEATURE] add Context API method to retrieve current user and tab data
 * [MAINTENANCE] remove deprecated PostMessage API
