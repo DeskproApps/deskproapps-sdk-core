@@ -7,16 +7,20 @@ import { RequestEventDispatcher, ResponseEventDispatcher } from './EventDispatch
 import { registerListeners as registerStateListeners, StateApiFacade } from '../State';
 import { registerListeners as registerWebAPIListeners } from '../WebAPI';
 import { registerListeners as registerContextListeners } from './ContextEventHandlers';
+import { registerListeners as registerAppEventListeners } from './AppEventHandlers';
 
 import App from './App';
-import * as AppEvents from './AppEvents';
 
 import { create } from '../../../xcomponent';
 import { InstanceProps, ContextProps } from './Props';
 
-registerStateListeners(RequestEventDispatcher, ResponseEventDispatcher); // register state api request and response listeners
-registerWebAPIListeners(RequestEventDispatcher, ResponseEventDispatcher); // register web api request and response listeners
-registerContextListeners(RequestEventDispatcher, ResponseEventDispatcher);
+//register event listeners
+[
+  registerStateListeners,
+  registerWebAPIListeners,
+  registerContextListeners,
+  registerAppEventListeners
+].forEach(registrar => registrar(RequestEventDispatcher, ResponseEventDispatcher));
 
 /**
  * @param dpParams
@@ -122,13 +126,16 @@ const createApp = (cb) => {
           eventDispatcher: RequestEventDispatcher,
           instanceProps: extractInstancePropsFromXChild(xchild),
           contextProps: extractContextPropsFromXChild(xchild),
+          windowProxy
         };
 
         const app = new App(props);
-        windowProxy.onLoad(() => cb(app));
+        // register the app with the resize listener
+        windowProxy.addEventListener('bodyResize', () => app.resetSize());
+        windowProxy.addEventListener('load', () => cb(app));
       }).catch();
   } else if (isBrowser()) {
-      windowProxy.onLoad(() => cb(app));
+      windowProxy.addEventListener('load', () => cb(app));
   }
 };
 

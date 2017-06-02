@@ -1,3 +1,8 @@
+## Upcoming
+
+* [FIX] prevent resize events from entering an endless resize loop
+* [MAINTENANCE] minor refactoring
+
 ## v1.0.0-alpha.3 - 2017-06-01
 
 * [FEATURE] add Context API method to retrieve current user and tab data

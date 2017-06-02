@@ -1,8 +1,4 @@
-import getSize from 'get-size';
-import elementResizeDetectorMaker from 'element-resize-detector';
-
 import * as AppEvents from './AppEvents';
-import * as StateEvents from '../State/Events';
 import Event from './Event';
 
 import { createContext } from '../Context';
@@ -28,9 +24,10 @@ class App
    * @param {EventDispatcher} eventDispatcher
    * @param {InstanceProps} instanceProps
    * @param {ContextProps} contextProps
+   * @param {WindowProxy} windowProxy
    */
-  constructor({ eventDispatcher, instanceProps, contextProps }) {
-
+  constructor({ eventDispatcher, instanceProps, contextProps, windowProxy })
+  {
     const context = createContext(eventDispatcher, contextProps);
     this.props = {
       eventDispatcher,
@@ -41,18 +38,15 @@ class App
       tabState: createContextStateClient(eventDispatcher, context),
       context,
       ui: createUI(eventDispatcher),
+      windowProxy,
       visibility: 'expanded', // hidden, collapsed, expanded
     };
 
     this.stateProps = {
+      isResizing: false,
       appTitle: instanceProps.appTitle,
       badgeCount: 0
     };
-
-    const erd = elementResizeDetectorMaker({
-      strategy: "scroll"
-    });
-    erd.listenTo(document.body, () => this.resetSize());
   }
 
   // UI API
@@ -210,9 +204,18 @@ class App
   };
 
   resetSize = () => {
-    const { eventDispatcher } = this.props;
-    const bodySize = getSize(document.body);
-    eventDispatcher.emitAsync(StateEvents.EVENT_RESET_SIZE, { size: bodySize });
+    if (this.stateProps.isResizing) { // wait until previous resize finishes to prevent a resize loop
+      return false;
+    }
+
+    this.stateProps.isResizing = true;
+    const { eventDispatcher, windowProxy } = this.props;
+
+    eventDispatcher
+      .emitAsync(AppEvents.EVENT_RESET_SIZE, { size: windowProxy.bodySize })
+      .then(({ height }) => {
+        this.stateProps.isResizing = false;
+      });
   };
 
   unload = () => {

@@ -19,6 +19,8 @@ export const EVENT_TITLE_CHANGED = 'app.title_changed';
 export const EVENT_ICON_CHANGED = 'app.icon_changed';
 export const EVENT_BADGECOUNT_CHANGED = 'app.badgecount_changed';
 
+export const EVENT_RESET_SIZE = 'app.reset_size';
+
 export const events = {
   EVENT_MOUNT,
 
@@ -34,7 +36,9 @@ export const events = {
   EVENT_BEFORE_EXPAND,
 
   EVENT_REFRESH,
-  EVENT_UNLOAD
+  EVENT_UNLOAD,
+
+  EVENT_RESET_SIZE
 };
 
 export const eventNames = Object.keys(events).map(key => events[key]);

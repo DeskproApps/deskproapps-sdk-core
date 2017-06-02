@@ -6,9 +6,6 @@ export const EVENT_STATE_SET = 'state.set';
 
 export const EVENT_STATE_DELETE = 'state.delete';
 
-//todo this event doesnt really belong here
-export const EVENT_RESET_SIZE = 'app.reset_size';
-
 export const events = {
 
   EVENT_STATE_DELETE,
@@ -17,9 +14,7 @@ export const events = {
 
   EVENT_STATE_GET,
 
-  EVENT_STATE_SET,
-
-  EVENT_RESET_SIZE
+  EVENT_STATE_SET
 };
 
 export const eventNames = Object.keys(events).map(key => events[key]);

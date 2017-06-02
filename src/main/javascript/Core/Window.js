@@ -1,3 +1,6 @@
+import getSize from 'get-size';
+import elementResizeDetectorMaker from 'element-resize-detector';
+
 const parseDpParamsFromLocation = location => {
 
   const dpParams = {};
@@ -17,18 +20,45 @@ const parseDpParamsFromLocation = location => {
 class WindowProxy {
 
   constructor() {
+
+    const windowListeners = { load: [], bodyResize: [] };
+
     this.state = {
-      dpParams: parseDpParamsFromLocation(window.location)
+      dpParams: parseDpParamsFromLocation(window.location),
+      windowListeners,
+    };
+
+    this.addEventListener('load', () => {
+      this.erd = elementResizeDetectorMaker({
+        strategy: "scroll"
+      });
+      this.erd.listenTo(window.document.body, () => windowListeners.bodyResize.forEach(cb => cb()))
+    });
+
+    window.onload = () => {
+      windowListeners.load.forEach(cb => cb());
+      windowListeners.load = [];
     };
   }
 
-  onLoad = (cb) => {
-    if (window.document.readyState === 'complete') {
+  get bodySize() { return getSize(window.document.body); }
+
+  /**
+   * @param {String} eventName
+   * @param {Function} cb
+   */
+  addEventListener = (eventName, cb) =>
+  {
+    // fire the callback immediately
+    if (eventName === 'load' && window.document.readyState === 'complete') {
       cb();
       return;
     }
 
-    window.onload = () => cb();
+    if (['load', 'bodyResize'].indexOf(eventName) === -1) {
+      throw new Error(`unknown event name: ${eventName}`);
+    }
+    this.state.windowListeners[eventName].push(cb);
   };
 
   get xchild() {
