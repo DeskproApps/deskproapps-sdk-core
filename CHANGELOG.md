@@ -1,3 +1,8 @@
+## UPCOMING
+
+* [FEATURE] add fire-and-forget events
+* [FEATURE] add possibility to send notifications for display in the main deskpro window
+
 ## vv1.0.0-alpha.4 - 2017-06-02
 
 * [FIX] prevent resize events from entering an endless resize loop

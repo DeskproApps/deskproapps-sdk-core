@@ -223,6 +223,11 @@ class App
     eventDispatcher.emit(AppEvents.EVENT_UNLOAD);
   };
 
+  showNotification = (notification) => {
+    const { eventDispatcher } = this.props;
+    eventDispatcher.emitAsync(AppEvents.EVENT_SHOW_NOTIFICATION, notification);
+  };
+
   // CLIENTS
 
   /**

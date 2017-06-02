@@ -14,7 +14,8 @@ class Factory
    * @param {*} payload
    * @return {*}
    */
-  createRequest = (xchild, payload) => {
+  createRequestResponse = (xchild, payload) =>
+  {
     const { widgetId } = xchild.props;
     if (!payload) {
       return { widgetId, args: [] };
@@ -24,7 +25,20 @@ class Factory
       return { widgetId, args: payload, messageId: this.nextMessageId };
     }
 
-    return { widgetId, args: [payload], messageId: this.nextMessageId };
+    return { widgetId, args: [payload], messageId: this.nextMessageId, commType: 'request-response' };
+  };
+
+  /**
+   * @param {ChildComponent} xchild
+   * @param {*} payload
+   * @return {*}
+   */
+  createFireAndForget = (xchild, payload) =>
+  {
+    const message = this.createRequestResponse(xchild, payload);
+    const { commType, ...others } = message;
+
+    return { ... others, commType: 'fire-and-forget'};
   }
 }
 

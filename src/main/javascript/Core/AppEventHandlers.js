@@ -1,7 +1,7 @@
 import { on as postRobotOn } from '../../../post-robot';
 
 import * as Events from './AppEvents';
-import { createRequestEventListener } from './Event';
+import { createRequestResponseEventListener as requestResponse, createFireAndForgetEventListener as fireAndForget } from './Event';
 
 const defaultRequestHandler = (resolve, reject, request) => resolve(request);
 
@@ -67,11 +67,18 @@ export const registerRequestListeners = eventDispatcher => {
 /**
  * @return {Map<String, Function>}
  */
-export const createRequestListeners = () => {
-  const eventName = Events.EVENT_RESET_SIZE;
-  const eventListener = createRequestEventListener(eventName, createRequestHandler, createResponseHandler)
+export const createRequestListeners = () =>
+{
+  const reducer = (listenersMap, eventName, isRequestReponse) => {
+    const listener = isRequestReponse ? requestResponse(eventName, createRequestHandler, createResponseHandler) : fireAndForget(eventName, createRequestHandler);
+    return listenersMap.set(eventName, listener);
+  };
 
   const listeners = new Map();
-  listeners.set(eventName, eventListener);
+  //request-response events
+  [Events.EVENT_RESET_SIZE].reduce((listenersMap, eventName) => reducer(listenersMap, eventName, true), listeners);
+  //fire-and-forget events
+  [Events.EVENT_SHOW_NOTIFICATION].reduce((listenersMap, eventName) => reducer(listenersMap, eventName, false), listeners);
+
   return listeners;
 };

@@ -1,7 +1,7 @@
 import { on as postRobotOn } from '../../../post-robot';
 
 import * as Events from './Events';
-import { createRequestEventListener } from '../Core/Event';
+import { createRequestResponseEventListener } from '../Core/Event';
 
 const defaultRequestHandler = (resolve, reject, request) => resolve(request);
 
@@ -69,7 +69,7 @@ export const registerRequestListeners = eventDispatcher => {
  */
 export const createRequestListeners = () => {
   const reducer = (listenersMap, eventName) => {
-    const listener = createRequestEventListener(eventName, createRequestHandler, createResponseHandler);
+    const listener = createRequestResponseEventListener(eventName, createRequestHandler, createResponseHandler);
     return listenersMap.set(eventName, listener);
   };
   return Events.eventNames.reduce(reducer, new Map());

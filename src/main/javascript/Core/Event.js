@@ -16,6 +16,5 @@ export default class Event
   }
 }
 
-export const createRequestEventListener = (eventName, createRequestHandler, createResponseHandler) => {
-  return MessageBroker.createEventListener(eventName, createRequestHandler(eventName), createResponseHandler(eventName));
-};
+export const createRequestResponseEventListener = (eventName, createRequestHandler, createResponseHandler) => MessageBroker.createRequestResponseEventListener(eventName, createRequestHandler(eventName), createResponseHandler(eventName));
+export const createFireAndForgetEventListener = (eventName, createRequestHandler) => MessageBroker.createFireAndForgetEventListener(eventName, createRequestHandler(eventName));
