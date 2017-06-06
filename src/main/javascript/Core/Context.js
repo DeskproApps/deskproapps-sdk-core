@@ -49,10 +49,7 @@ export class Context
   /**
    * @async
    */
-  getTabData = () => {
-    console.log('get tab data', this.props.outgoingDispatcher);
-    return this.props.outgoingDispatcher.emitAsync(ContextEvents.EVENT_TAB_DATA, this.props.tabId);
-  };
+  getTabData = () => this.props.outgoingDispatcher.emitAsync(ContextEvents.EVENT_TAB_DATA, this.props.tabId);
 
   /**
    * @async

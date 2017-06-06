@@ -212,7 +212,6 @@ class App
   };
 
   resetSize = () => {
-    console.log('resizing');
     if (this.stateProps.isResizing) { // wait until previous resize finishes to prevent a resize loop
       return false;
     }
@@ -224,8 +223,6 @@ class App
       .emitAsync(AppEvents.EVENT_RESET_SIZE, { size: windowProxy.bodySize })
       .then(({ height }) => {
         this.stateProps.isResizing = false;
-
-        console.log('handled resetSize event');
       });
   };
 
