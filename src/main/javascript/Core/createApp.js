@@ -2,12 +2,13 @@ import { isBrowser } from './utils';
 
 import { windowProxy } from './Window';
 
-import { RequestEventDispatcher, ResponseEventDispatcher } from './EventDispatcher';
+import { InternalEventDispatcher, IncomingEventDispatcher, OutgoingEventDispatcher } from './EventDispatcher';
 
-import { registerListeners as registerStateListeners, StateApiFacade } from '../State';
-import { registerListeners as registerWebAPIListeners } from '../WebAPI';
-import { registerListeners as registerContextListeners } from './ContextEventHandlers';
-import { registerListeners as registerAppEventListeners } from './AppEventHandlers';
+import { registerEventHandlers as registerStateEventHandlers, StateApiFacade } from '../State';
+
+import { registerEventHandlers as registerAppEventHandlers } from './AppEventHandlers';
+import { registerEventHandlers as registerContextEventHandlers } from './ContextEventHandlers';
+import { registerEventHandlers as registerWebAPIEventHandlers } from '../WebAPI';
 
 import App from './App';
 
@@ -16,11 +17,11 @@ import { InstanceProps, ContextProps } from './Props';
 
 //register event listeners
 [
-  registerStateListeners,
-  registerWebAPIListeners,
-  registerContextListeners,
-  registerAppEventListeners
-].forEach(registrar => registrar(RequestEventDispatcher, ResponseEventDispatcher));
+  registerStateEventHandlers,
+  registerAppEventHandlers,
+  registerContextEventHandlers,
+  registerWebAPIEventHandlers
+].forEach(registrar => registrar(IncomingEventDispatcher, OutgoingEventDispatcher));
 
 /**
  * @param dpParams
@@ -123,7 +124,9 @@ const createApp = (cb) => {
       xcomponent.child().init().then(xchild => {
 
         const props = {
-          eventDispatcher: RequestEventDispatcher,
+          incomingDispatcher: IncomingEventDispatcher,
+          outgoingDispatcher: OutgoingEventDispatcher,
+          internalDispatcher: InternalEventDispatcher,
           instanceProps: extractInstancePropsFromXChild(xchild),
           contextProps: extractContextPropsFromXChild(xchild),
           windowProxy

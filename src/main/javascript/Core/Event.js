@@ -1,4 +1,20 @@
-import * as MessageBroker from './MessageBroker';
+export const CHANNEL_INTERNAL = 'event.channel_internal';
+export const CHANNEL_INCOMING = 'event.channel_incoming';
+export const CHANNEL_OUTGOING = 'event.channel_outgoing';
+export const channels = {
+  CHANNEL_INCOMING,
+  CHANNEL_INTERNAL,
+  CHANNEL_OUTGOING
+};
+
+export const INVOCATION_FIREANDFORGET = 'event.invocation_fireandforget';
+export const INVOCATION_REQUESTRESPONSE = 'event.invocation_requestresponse';
+
+export const invocations = {
+  INVOCATION_FIREANDFORGET,
+  INVOCATION_REQUESTRESPONSE
+};
+
 
 export default class Event
 {
@@ -15,6 +31,3 @@ export default class Event
     return this.props.enabled;
   }
 }
-
-export const createRequestResponseEventListener = (eventName, createRequestHandler, createResponseHandler) => MessageBroker.createRequestResponseEventListener(eventName, createRequestHandler(eventName), createResponseHandler(eventName));
-export const createFireAndForgetEventListener = (eventName, createRequestHandler) => MessageBroker.createFireAndForgetEventListener(eventName, createRequestHandler(eventName));

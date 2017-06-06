@@ -1,3 +1,5 @@
+import { CHANNEL_INTERNAL, CHANNEL_INCOMING, CHANNEL_OUTGOING, INVOCATION_FIREANDFORGET, INVOCATION_REQUESTRESPONSE } from './Event'
+
 export const EVENT_MOUNT = 'app.mount';
 
 export const EVENT_SHOW = 'app.show';
@@ -22,8 +24,7 @@ export const EVENT_BADGECOUNT_CHANGED = 'app.badgecount_changed';
 export const EVENT_RESET_SIZE = 'app.reset_size';
 export const EVENT_SHOW_NOTIFICATION = 'app.show_notification';
 
-
-export const events = {
+const events = {
   EVENT_MOUNT,
 
   EVENT_SHOW,
@@ -40,9 +41,11 @@ export const events = {
   EVENT_REFRESH,
   EVENT_UNLOAD,
 
-  EVENT_RESET_SIZE,
-  EVENT_SHOW_NOTIFICATION
+  EVENT_RESET_SIZE: { channelType: CHANNEL_OUTGOING, invocationType: INVOCATION_REQUESTRESPONSE },
+  EVENT_SHOW_NOTIFICATION: { channelType: CHANNEL_OUTGOING, invocationType: INVOCATION_FIREANDFORGET },
+  EVENT_SHOW_NOTIFICATION: { channelType: CHANNEL_OUTGOING, invocationType: INVOCATION_FIREANDFORGET },
 };
+export const props = events;
 
 export const eventNames = Object.keys(events).map(key => events[key]);
 
