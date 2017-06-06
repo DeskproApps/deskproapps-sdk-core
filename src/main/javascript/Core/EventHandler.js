@@ -4,30 +4,47 @@ import { WidgetRequest, WidgetResponse, parseIncomingMessage, createOutgoingResp
 import { on as postRobotOn } from '../../../post-robot';
 import { INVOCATION_REQUESTRESPONSE, INVOCATION_FIREANDFORGET } from './Event'
 
-// incoming events
-
-const registerIncomingEventHandler = (eventName, eventProps, eventHandler) => {
+/**
+ * @param {String} eventName
+ * @param {Object} eventProps
+ * @param rawMessage
+ */
+const dispatchIncomingEvent = (eventName, eventProps, rawMessage) => {
+  // this should not be here good here
   const { onDpMessage: postRobotSend } = windowProxy.xchild.props;
 
+  const message = parseIncomingMessage(rawMessage);
+  if (message instanceof WidgetRequest && eventProps.invocationType === INVOCATION_REQUESTRESPONSE) {
+    MessageBus.once(message.id, response => {
+      postRobotSend(eventName, response);
+    });
+    MessageBus.emit(eventName, message);
+  }
+
+  if (message instanceof WidgetRequest && eventProps.invocationType === INVOCATION_FIREANDFORGET) {
+    MessageBus.emit(eventName, message);
+  }
+
+  if (message instanceof WidgetResponse && eventProps.invocationType === INVOCATION_REQUESTRESPONSE) {
+    MessageBus.emit(message.id, message);
+  }
+};
+
+/**
+ * TODO: this should handle requests and response, not only requests
+ * @param request
+ */
+const createDispatchOutgoingResponseEvent = request => (error, data) => {
+  const responsePayload = error ? error: data;
+  const createErrorResponse = !!error;
+  const response = createOutgoingResponseMessage(request, responsePayload, createErrorResponse);
+
+  MessageBus.emit(request.id, response.toJS());
+};
+
+const registerIncomingEventHandler = (eventName, eventProps, eventHandler) => {
   MessageBus.on(eventName, eventHandler);
-
-  postRobotOn(eventName, event => {
-    const message = parseIncomingMessage(event.data);
-
-    if (message instanceof WidgetRequest && eventProps.invocationType === INVOCATION_REQUESTRESPONSE) {
-      MessageBus.once(message.id, response => postRobotSend(eventName, response));
-      MessageBus.emit(eventName, message);
-    }
-
-    if (message instanceof WidgetRequest && eventProps.invocationType === INVOCATION_FIREANDFORGET) {
-      MessageBus.emit(eventName, message);
-    }
-
-    if (message instanceof WidgetResponse && eventProps.invocationType === INVOCATION_REQUESTRESPONSE) {
-      MessageBus.emit(message.id, message);
-    }
-
-  });
+  postRobotOn(eventName, event => dispatchIncomingEvent(eventName, eventProps, event.data));
 };
 
 export const handleIncomingEvent = (eventName, eventProps) =>
@@ -35,21 +52,13 @@ export const handleIncomingEvent = (eventName, eventProps) =>
   let eventHandler;
 
   if (eventProps.invocationType === INVOCATION_REQUESTRESPONSE) {
-    eventHandler = (eventName, eventProps, request) =>
+    eventHandler = request =>
     {
-      const cb = (error, data) =>
-      {
-        const responsePayload = error ? error: data;
-        const createErrorResponse = !!error;
-        const response = createOutgoingResponseMessage(request, responsePayload, createErrorResponse);
-
-        MessageBus.emit(request.id, response);
-      };
-
+      const cb = createDispatchOutgoingResponseEvent(request);
       IncomingEventDispatcher.emit(eventName, cb, request.body);
     }
   } else if (eventProps.invocationType === INVOCATION_FIREANDFORGET) {
-    eventHandler = (eventName, eventProps, request) => IncomingEventDispatcher.emit(eventName, request.body);
+    eventHandler = request => IncomingEventDispatcher.emit(eventName, request.body);
   }
 
   if (eventHandler) {
@@ -61,17 +70,8 @@ export const handleIncomingEvent = (eventName, eventProps) =>
 // outgoing events
 
 const registerOutgoingEventHandler = (eventName, eventProps, eventHandler) => {
-
   OutgoingEventDispatcher.on(eventName, eventHandler);
-
-  postRobotOn(eventName, event => {
-    const message = parseIncomingMessage(event.data);
-
-    // is this the response for the right event ?
-    if (message instanceof WidgetResponse && eventProps.invocationType === INVOCATION_REQUESTRESPONSE) {
-      MessageBus.emit(message.id, message);
-    }
-  });
+  postRobotOn(eventName, event => dispatchIncomingEvent(eventName, eventProps, event.data));
 };
 
 export const handleOutgoingEvent = (eventName, eventProps) =>

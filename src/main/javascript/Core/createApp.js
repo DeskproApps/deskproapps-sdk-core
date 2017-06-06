@@ -9,6 +9,7 @@ import { registerEventHandlers as registerStateEventHandlers, StateApiFacade } f
 import { registerEventHandlers as registerAppEventHandlers } from './AppEventHandlers';
 import { registerEventHandlers as registerContextEventHandlers } from './ContextEventHandlers';
 import { registerEventHandlers as registerWebAPIEventHandlers } from '../WebAPI';
+import { registerEventHandlers as registerTicketEventHandlers } from '../Context/TicketEventHandlers';
 
 import App from './App';
 
@@ -20,7 +21,9 @@ import { InstanceProps, ContextProps } from './Props';
   registerStateEventHandlers,
   registerAppEventHandlers,
   registerContextEventHandlers,
-  registerWebAPIEventHandlers
+  registerWebAPIEventHandlers,
+
+  registerTicketEventHandlers
 ].forEach(registrar => registrar(IncomingEventDispatcher, OutgoingEventDispatcher));
 
 /**

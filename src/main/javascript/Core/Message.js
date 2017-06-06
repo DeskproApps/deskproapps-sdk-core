@@ -17,18 +17,19 @@ export const createOutgoingRequestMessage = (widgetId, payload) =>
 
 /**
  * @param {WidgetRequest} request
- * @param {*} payload
+ * @param {*} body
  * @param {boolean} isError
  * @return {WidgetResponse}
  */
-export const createOutgoingResponseMessage = (request, payload, isError) =>
+export const createOutgoingResponseMessage = (request, body, isError) =>
 {
   const id = ++nextMessageId;
   const { widgetId } = request;
   const correlationId = ++nextCorrelationId;
   const status = isError ? 'error' : 'success';
 
-  return new WidgetResponse({ id: id.toString(), widgetId: request.widgetId, correlationId: correlationId.toString(), body: payload, status });
+  const parsedBody = body === null ? body : JSON.stringify(body);
+  return new WidgetResponse({ id: id.toString(), widgetId, correlationId: correlationId.toString(), body: parsedBody, status });
 };
 
 export const parseIncomingMessage = raw => {
@@ -48,7 +49,9 @@ export const parseIncomingMessage = raw => {
 export const parseIncomingRequestMessage = raw =>
 {
   const { id, widgetId, correlationId, body } = raw;
-  return new WidgetRequest({ id, widgetId, correlationId, body });
+
+  const parsedBody = typeof body === 'string' ? JSON.parse(body) : body;
+  return new WidgetRequest({ id, widgetId, correlationId, body: parsedBody });
 };
 
 /**
@@ -58,7 +61,7 @@ export const parseIncomingRequestMessage = raw =>
 export const parseIncomingResponseMessage = raw =>
 {
   const { id, widgetId, correlationId, body, status } = raw;
-  return new WidgetResponse({ id, widgetId, correlationId, body, status });
+  return new WidgetResponse({ id, widgetId, correlationId, body: body === null ?  null : JSON.parse(body), status });
 };
 
 
