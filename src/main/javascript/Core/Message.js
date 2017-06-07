@@ -24,12 +24,11 @@ export const createOutgoingRequestMessage = (widgetId, payload) =>
 export const createOutgoingResponseMessage = (request, body, isError) =>
 {
   const id = ++nextMessageId;
-  const { widgetId } = request;
-  const correlationId = ++nextCorrelationId;
+  const { widgetId, correlationId } = request;
   const status = isError ? 'error' : 'success';
 
-  const parsedBody = body === null ? body : JSON.stringify(body);
-  return new WidgetResponse({ id: id.toString(), widgetId, correlationId: correlationId.toString(), body: parsedBody, status });
+  //const parsedBody = body === null ? body : JSON.stringify(body);
+  return new WidgetResponse({ id: id.toString(), widgetId, correlationId: correlationId.toString(), body, status });
 };
 
 export const parseIncomingMessage = raw => {
@@ -61,7 +60,8 @@ export const parseIncomingRequestMessage = raw =>
 export const parseIncomingResponseMessage = raw =>
 {
   const { id, widgetId, correlationId, body, status } = raw;
-  return new WidgetResponse({ id, widgetId, correlationId, body: body === null ?  null : JSON.parse(body), status });
+  const parsedBody = status === 'error' && typeof  body === 'string' ? JSON.parse(body) : body;
+  return new WidgetResponse({ id, widgetId, correlationId, body: parsedBody, status });
 };
 
 
@@ -108,7 +108,7 @@ export class WidgetResponse
   /**
    * @return {*}
    */
-  get body() { return JSON.parse(this.props.body); }; //not good it's dynamic
+  get body() { return this.props.body };
 
   toJS = () => ({ ...this.props })
 }
