@@ -1,3 +1,5 @@
+import { EventMap } from './EventMap';
+
 export const CHANNEL_INTERNAL = 'event.channel_internal';
 export const CHANNEL_INCOMING = 'event.channel_incoming';
 export const CHANNEL_OUTGOING = 'event.channel_outgoing';
@@ -15,6 +17,56 @@ export const invocations = {
   INVOCATION_REQUESTRESPONSE
 };
 
+/**
+ * Builds an event map from an object literal description where keys are event keys and values are event names
+ *
+ * @param {Object} events
+ * @param {Object} eventProps
+ * @return {EventMap}
+ */
+export const buildMap = (events, eventProps) =>
+{
+  const names = Object.keys(events).map(key => events[key]);
+
+  const map = {};
+  Object.keys(events).forEach(key => {
+    const value = events[key];
+    map[key] = value;
+    map[value] = key;
+  });
+
+  return new EventMap({ map, names, props: eventProps });
+};
+
+/**
+ * @param {String} eventName
+ * @param {String} channelType
+ * @param {String} invocationType
+ * @param {EventMap} eventMap
+ */
+export const matchEvent = (eventName, {channelType, invocationType}, eventMap) => {
+  if (! eventMap.isEventName(eventName)) { return false; }
+  const props = eventMap.getEventProps(eventName);
+
+  return matchProps(props, {channelType, invocationType});
+};
+
+/**
+ * @param {*} actualProps
+ * @param {String} channelType
+ * @param {String} invocationType
+ * @return {boolean}
+ */
+const matchProps = (actualProps, {channelType, invocationType}) =>
+{
+  if (actualProps === null) { return channelType === null && invocationType === null }
+
+  if (channelType === null && invocationType === null) { return false; }
+  if (channelType !== null && actualProps.channelType !== channelType) { return false; }
+  if (invocationType !== null && actualProps.invocationType !== invocationType) { return false; }
+
+  return true;
+};
 
 export default class Event
 {
