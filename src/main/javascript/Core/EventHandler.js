@@ -15,7 +15,7 @@ const dispatchIncomingEvent = (eventName, eventProps, rawMessage) => {
 
   const message = parseIncomingMessage(rawMessage);
   if (message instanceof WidgetRequest && eventProps.invocationType === INVOCATION_REQUESTRESPONSE) {
-    MessageBus.once(message.id, response => {
+    MessageBus.once(message.correlationId, response => {
       postRobotSend(eventName, response);
     });
     MessageBus.emit(eventName, message);
@@ -26,7 +26,7 @@ const dispatchIncomingEvent = (eventName, eventProps, rawMessage) => {
   }
 
   if (message instanceof WidgetResponse && eventProps.invocationType === INVOCATION_REQUESTRESPONSE) {
-    MessageBus.emit(message.id, message);
+    MessageBus.emit(message.correlationId, message);
   }
 };
 
@@ -85,7 +85,7 @@ export const handleOutgoingEvent = (eventName, eventProps) =>
       const request = createOutgoingRequestMessage(widgetId, data);
 
       // register a response listener
-      MessageBus.once(request.id, response => (response.status == 'success' ? resolve(response.body) : reject(response.body)) );
+      MessageBus.once(request.correlationId, response => (response.status == 'success' ? resolve(response.body) : reject(response.body)) );
       postRobotSend(eventName, request.toJS());
     }
   } else if (eventProps.invocationType === INVOCATION_FIREANDFORGET) {

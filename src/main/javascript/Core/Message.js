@@ -60,7 +60,8 @@ export const parseIncomingRequestMessage = raw =>
 export const parseIncomingResponseMessage = raw =>
 {
   const { id, widgetId, correlationId, body, status } = raw;
-  const parsedBody = status === 'error' && typeof  body === 'string' ? JSON.parse(body) : body;
+  // still receiving json encoded strings as body from success responses
+  const parsedBody = typeof body === 'string' ? JSON.parse(body) : body;
   return new WidgetResponse({ id, widgetId, correlationId, body: parsedBody, status });
 };
 
