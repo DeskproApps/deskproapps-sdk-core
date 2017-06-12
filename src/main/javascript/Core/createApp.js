@@ -2,12 +2,14 @@ import { isBrowser } from './utils';
 
 import { windowProxy } from './Window';
 
-import { RequestEventDispatcher, ResponseEventDispatcher } from './EventDispatcher';
+import { InternalEventDispatcher, IncomingEventDispatcher, OutgoingEventDispatcher } from './EventDispatcher';
 
-import { registerListeners as registerStateListeners, StateApiFacade } from '../State';
-import { registerListeners as registerWebAPIListeners } from '../WebAPI';
-import { registerListeners as registerContextListeners } from './ContextEventHandlers';
-import { registerListeners as registerAppEventListeners } from './AppEventHandlers';
+import { registerEventHandlers as registerStateEventHandlers, StateApiFacade } from '../State';
+
+import { registerEventHandlers as registerAppEventHandlers } from './AppEventHandlers';
+import { registerEventHandlers as registerContextEventHandlers } from './ContextEventHandlers';
+import { registerEventHandlers as registerWebAPIEventHandlers } from '../WebAPI';
+import { registerEventHandlers as registerTicketEventHandlers } from '../Context/TicketEventHandlers';
 
 import App from './App';
 
@@ -16,11 +18,13 @@ import { InstanceProps, ContextProps } from './Props';
 
 //register event listeners
 [
-  registerStateListeners,
-  registerWebAPIListeners,
-  registerContextListeners,
-  registerAppEventListeners
-].forEach(registrar => registrar(RequestEventDispatcher, ResponseEventDispatcher));
+  registerStateEventHandlers,
+  registerAppEventHandlers,
+  registerContextEventHandlers,
+  registerWebAPIEventHandlers,
+
+  registerTicketEventHandlers
+].forEach(registrar => registrar(IncomingEventDispatcher, OutgoingEventDispatcher));
 
 /**
  * @param dpParams
@@ -97,19 +101,51 @@ const getXcomponentOptions = (dpParams) => {
 };
 
 /**
+ * Maps the xchild props into normalized application props
+ *
  * @param xchild
- * @return {InstanceProps}
+ * @return {{}}
  */
-const extractInstancePropsFromXChild = xchild => new InstanceProps(xchild.props);
+const mapXChildPropsToAppProps = xchild => {
+  const { props } = xchild;
+
+  const contextProps = {
+    contextType: props.contextType,
+    contextEntityId: props.contextEntityId,
+    contextLocationId: props.contextLocationId,
+    contextTabId: props.contextTabId
+  };
+
+  const instanceProps = {
+    appId: props.appId,
+    appTitle: props.appTitle,
+    appPackageName: props.appPackageName,
+    instanceId: props.instanceId
+  };
+
+  return { ...contextProps, ...instanceProps }
+};
 
 /**
- * @param xchild
- * @return {ContextProps}
+ * Creates an application using the keys defined on the props object
+ *
+ * @param {{}} props
+ * @return {App}
  */
-const extractContextPropsFromXChild = xchild => {
-  const { props } = xchild;
+export const createAppFromProps = props =>
+{
   const { contextType: type, contextEntityId: entityId, contextLocationId: locationId, contextTabId: tabId } = props;
-  return new ContextProps({ type, entityId, locationId, tabId });
+
+  const appProps = {
+    incomingDispatcher: IncomingEventDispatcher,
+    outgoingDispatcher: OutgoingEventDispatcher,
+    internalDispatcher: InternalEventDispatcher,
+    instanceProps: new InstanceProps(props),
+    contextProps: new ContextProps({ type, entityId, locationId, tabId }),
+    windowProxy
+  };
+
+  return new App(appProps);
 };
 
 /**
@@ -122,19 +158,14 @@ const createApp = (cb) => {
   if (xcomponent.isChild()) {
       xcomponent.child().init().then(xchild => {
 
-        const props = {
-          eventDispatcher: RequestEventDispatcher,
-          instanceProps: extractInstancePropsFromXChild(xchild),
-          contextProps: extractContextPropsFromXChild(xchild),
-          windowProxy
-        };
+        const props = mapXChildPropsToAppProps(xchild);
+        const app = createAppFromProps(props);
 
-        const app = new App(props);
         // register the app with the resize listener
         windowProxy.addEventListener('bodyResize', () => app.resetSize());
         windowProxy.addEventListener('load', () => cb(app));
       }).catch();
-  } else if (isBrowser()) {
+  } else if (isBrowser()) { // TODO this is clearly not going to work so the scenario where the app can run without xcomponent needs rethinking
       windowProxy.addEventListener('load', () => cb(app));
   }
 };

@@ -3,16 +3,18 @@ import * as ContextEvents from './ContextEvents';
 export class Context
 {
   /**
-   * @param {EventDispatcher} eventDispatcher
+   * @param {EventDispatcher} outgoingDispatcher
+   * @param {EventDispatcher} incomingDispatcher
    * @param {String} type
    * @param {String} entityId
    * @param {String} locationId
    * @param {String} tabId
    * @param otherProps
    */
-  constructor({ eventDispatcher, type, entityId, locationId, tabId, ...otherProps }) {
+  constructor({ outgoingDispatcher, incomingDispatcher, type, entityId, locationId, tabId, ...otherProps }) {
     this.props = {
-      eventDispatcher,
+      outgoingDispatcher,
+      incomingDispatcher,
       type,
       entityId,
       locationId,
@@ -32,27 +34,27 @@ export class Context
   /**
    * @async
    */
-  isTabActive = () => this.props.eventDispatcher.emitAsync(ContextEvents.EVENT_TAB_STATUS, this.props.tabId).then(status => status.active);
+  isTabActive = () => this.props.outgoingDispatcher.emitAsync(ContextEvents.EVENT_TAB_STATUS, this.props.tabId).then(status => status.active);
 
   /**
    * @async
    */
-  activateTab = () => this.props.eventDispatcher.emitAsync(ContextEvents.EVENT_TAB_ACTIVATE, this.props.tabId);
+  activateTab = () => this.props.outgoingDispatcher.emitAsync(ContextEvents.EVENT_TAB_ACTIVATE, this.props.tabId);
 
   /**
    * @async
    */
-  closeTab = () => this.props.eventDispatcher.emitAsync(ContextEvents.EVENT_TAB_CLOSE, this.props.tabId);
+  closeTab = () => this.props.outgoingDispatcher.emitAsync(ContextEvents.EVENT_TAB_CLOSE, this.props.tabId);
 
   /**
    * @async
    */
-  getTabData = () => this.props.eventDispatcher.emitAsync(ContextEvents.EVENT_TAB_DATA, this.props.tabId);
+  getTabData = () => this.props.outgoingDispatcher.emitAsync(ContextEvents.EVENT_TAB_DATA, this.props.tabId);
 
   /**
    * @async
    */
-  getMe = () => this.props.eventDispatcher.emitAsync(ContextEvents.EVENT_ME_GET);
+  getMe = () => this.props.outgoingDispatcher.emitAsync(ContextEvents.EVENT_ME_GET);
 
 
 

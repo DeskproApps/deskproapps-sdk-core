@@ -19,7 +19,8 @@ class StateApiFacade
     const state = { name, scope: StateBuilder.buildSharedScope(this.props) };
     return this.props.eventDispatcher
       .emitAsync(Events.EVENT_STATE_GET, state, defaultIfUnset)
-      .then(state => state ? state : defaultIfUnset)
+      .then(state => state ? JSON.parse(state.value) : null)
+      .then(value => value ? value : defaultIfUnset)
     ;
   };
 
@@ -35,7 +36,8 @@ class StateApiFacade
     const state = { name, scope: StateBuilder.buildPrivateScope(this.props) };
     return this.props.eventDispatcher
       .emitAsync(Events.EVENT_STATE_GET, state, defaultIfUnset)
-      .then(state => state ? state : defaultIfUnset)
+      .then(state => state ? JSON.parse(state.value) : null)
+      .then(value => value ? value : defaultIfUnset)
     ;
   };
 
@@ -49,7 +51,10 @@ class StateApiFacade
     if (!name) { throw new Error('name argument is required'); }
 
     const state = { name, value: JSON.stringify(value), scope: StateBuilder.buildSharedScope(this.props) };
-    return this.props.eventDispatcher.emitAsync(Events.EVENT_STATE_SET, state);
+    return this.props.eventDispatcher
+      .emitAsync(Events.EVENT_STATE_SET, state)
+      .then(state => state ? JSON.parse(state.value) : null)
+    ;
   };
 
   /**
@@ -62,7 +67,10 @@ class StateApiFacade
     if (!name) { throw new Error('name argument is required'); }
 
     const state = { name, value: JSON.stringify(value), scope: StateBuilder.buildPrivateScope(this.props) };
-    return this.props.eventDispatcher.emitAsync(Events.EVENT_STATE_SET, state);
+    return this.props.eventDispatcher
+      .emitAsync(Events.EVENT_STATE_SET, state)
+      .then(state => state ? JSON.parse(state.value) : null)
+    ;
   };
 
   /**
@@ -74,7 +82,11 @@ class StateApiFacade
     if (!name) { throw new Error('name argument is required'); }
 
     const state = { name, scope: StateBuilder.buildSharedScope(this.props) };
-    return this.props.eventDispatcher.emitAsync(Events.EVENT_STATE_DELETE, state);
+    return this.props.eventDispatcher
+      .emitAsync(Events.EVENT_STATE_DELETE, state)
+      .then(state => state ? JSON.parse(state.value) : null)
+    ;
+
   };
 
   /**
@@ -86,7 +98,10 @@ class StateApiFacade
     if (!name) { throw new Error('name argument is required'); }
 
     const state = { name, scope: StateBuilder.buildPrivateScope(this.props) };
-    return this.props.eventDispatcher.emitAsync(Events.EVENT_STATE_DELETE, state);
+    return this.props.eventDispatcher
+      .emitAsync(Events.EVENT_STATE_DELETE, state)
+      .then(state => state ? JSON.parse(state.value) : null)
+    ;
   };
 
   /**
@@ -98,7 +113,7 @@ class StateApiFacade
     if (!name) { throw new Error('name argument is required'); }
 
     const defaultIfUnset = {};
-    return this.props.asyncGetShared(name, defaultIfUnset).then(foundState => foundState !== defaultIfUnset);
+    return this.props.asyncGetShared(name, defaultIfUnset).then(value => value !== defaultIfUnset);
   };
 
   /**
@@ -110,7 +125,7 @@ class StateApiFacade
     if (!name) { throw new Error('name argument is required'); }
 
     const defaultIfUnset = {};
-    return this.props.asyncGetPrivate(name, defaultIfUnset).then(foundState => foundState !== defaultIfUnset);
+    return this.props.asyncGetPrivate(name, defaultIfUnset).then(value => value !== defaultIfUnset);
   };
 }
 

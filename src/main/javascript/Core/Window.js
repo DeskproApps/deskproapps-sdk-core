@@ -19,12 +19,17 @@ const parseDpParamsFromLocation = location => {
 
 class WindowProxy {
 
-  constructor() {
+  /**
+   * @param {Window} windowObject
+   */
+  constructor(windowObject) {
+
+    this.props = { windowObject };
 
     const windowListeners = { load: [], bodyResize: [] };
 
     this.state = {
-      dpParams: parseDpParamsFromLocation(window.location),
+      dpParams: parseDpParamsFromLocation(windowObject.location),
       windowListeners,
     };
 
@@ -32,16 +37,16 @@ class WindowProxy {
       this.erd = elementResizeDetectorMaker({
         strategy: "scroll"
       });
-      this.erd.listenTo(window.document.body, () => windowListeners.bodyResize.forEach(cb => cb()))
+      this.erd.listenTo(windowObject.document.body, () => windowListeners.bodyResize.forEach(cb => cb()))
     });
 
-    window.onload = () => {
+    windowObject.onload = () => {
       windowListeners.load.forEach(cb => cb());
       windowListeners.load = [];
     };
   }
 
-  get bodySize() { return getSize(window.document.body); }
+  get bodySize() { return getSize(this.props.windowObject.document.body); }
 
   /**
    * @param {String} eventName
@@ -49,8 +54,10 @@ class WindowProxy {
    */
   addEventListener = (eventName, cb) =>
   {
+    const { windowObject } = this.props;
+
     // fire the callback immediately
-    if (eventName === 'load' && window.document.readyState === 'complete') {
+    if (eventName === 'load' && windowObject.document.readyState === 'complete') {
       cb();
       return;
     }
@@ -62,12 +69,13 @@ class WindowProxy {
   };
 
   get xchild() {
-    return window.xchild;
+    const { windowObject } = this.props;
+    return windowObject.xchild;
   }
 
   get dpParams() { return this.state.dpParams; }
 }
 
-export const windowProxy = new WindowProxy();
+export const windowProxy = new WindowProxy(window);
 export default WindowProxy;
 

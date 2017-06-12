@@ -1,78 +1,20 @@
 import { Context } from '../Core/Context';
-import Event from '../Core/Event';
-
-import * as TicketEvents from './TicketEvents';
+import { CHANNEL_INCOMING } from '../Core/Event'
+import { matchEvent } from './TicketEvents';
 
 export class TicketContext extends Context
 {
   static get TYPE() { return 'ticket'; }
 
-  /**
-   * @async
-   * @param {String} id
-   */
-  fetchTicket = id => {
-    //'/ticket/{id}'
-  };
+  on = (eventName, eventHandler) => {
+    // the event is not an incoming event so we can't subscribe to it
+    if (! matchEvent(eventName, { channelType: CHANNEL_INCOMING })) { return; }
 
-  /**
-   * @async
-   * @param {String} id
-   */
-  fetchPerson = id => {
-    //'/people/{id}'
-  };
-
-  /**
-   * @async
-   */
-  fetchOrg = () => {
-
-  };
-
-  /**
-   * @async
-   */
-  fetchAgent = () => {
-
-  };
-
-  /**
-   * @async
-   */
-  fetchCcdPeople = () => {
-
-  };
-
-  /**
-   * @async
-   */
-  fetchCcdPeople = () => {
-
-  };
-
-  /**
-   * @async
-   */
-  fetchMessages = () => {
-
-  };
-
-  /**
-   * @async
-   * @param {String} id
-   */
-  fetchMessageById = id => {
-
-  };
-
-  /**
-   * @async
-   * @param {String} message
-   */
-  addTicketLogMessage = message => {
-    const event = new Event({ name: TicketEvents.EVENT_BEFORE_MESSAGE_ADDED });
-  };
+    this.props.outgoingDispatcher
+      .emitAsync('app.subscribe_to_event', { events: [eventName] })
+      .then(() => this.props.incomingDispatcher.on(eventName, eventHandler))
+    ;
+  }
 }
 
 export const tryAndCreate = props => props.type === TicketContext.TYPE ? new TicketContext(props) : null;

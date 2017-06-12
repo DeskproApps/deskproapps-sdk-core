@@ -1,4 +1,6 @@
 import { TicketContext, tryAndCreate as TicketContextFactory } from './TicketContext';
+import { registerRequestListeners as registerTicketRequestListeners } from './TicketEventHandlers';
+
 import { PersonContext, tryAndCreate as PersonContextFactory } from './PersonContext';
 import { OrganizationContext, tryAndCreate as OrganizationContextFactory } from './OrganizationContext';
 
@@ -18,13 +20,14 @@ export const factories = [
 ];
 
 /**
- * @param {EventEmitter} eventDispatcher
+ * @param {EventEmitter} outgoingDispatcher
+ * @param {EventEmitter} incomingDispatcher
  * @param {ContextProps} contextProps
  * @return {Context}
  */
-export const createContext = (eventDispatcher, contextProps) =>
+export const createContext = (outgoingDispatcher, incomingDispatcher, contextProps) =>
 {
-  const props = { eventDispatcher, ...contextProps.toJS() };
+  const props = { outgoingDispatcher, incomingDispatcher, ...contextProps.toJS() };
   let context = null;
   for (const factory of factories) {
     context = factory(props);
@@ -32,5 +35,12 @@ export const createContext = (eventDispatcher, contextProps) =>
   }
 
   throw new Error(`unknown context type ${contextProps.type}. Valid context types are: ${types.join(', ')}`);
+};
+
+export const registerListeners = (RequestEventDispatcher, ResponseEventDispatcher) => {
+//register event listeners
+  [
+    registerTicketRequestListeners,
+  ].forEach(registrar => registrar(RequestEventDispatcher, ResponseEventDispatcher));
 };
 

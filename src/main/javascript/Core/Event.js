@@ -1,4 +1,72 @@
-import * as MessageBroker from './MessageBroker';
+import { EventMap } from './EventMap';
+
+export const CHANNEL_INTERNAL = 'event.channel_internal';
+export const CHANNEL_INCOMING = 'event.channel_incoming';
+export const CHANNEL_OUTGOING = 'event.channel_outgoing';
+export const channels = {
+  CHANNEL_INCOMING,
+  CHANNEL_INTERNAL,
+  CHANNEL_OUTGOING
+};
+
+export const INVOCATION_FIREANDFORGET = 'event.invocation_fireandforget';
+export const INVOCATION_REQUESTRESPONSE = 'event.invocation_requestresponse';
+
+export const invocations = {
+  INVOCATION_FIREANDFORGET,
+  INVOCATION_REQUESTRESPONSE
+};
+
+/**
+ * Builds an event map from an object literal description where keys are event keys and values are event names
+ *
+ * @param {Object} events
+ * @param {Object} eventProps
+ * @return {EventMap}
+ */
+export const buildMap = (events, eventProps) =>
+{
+  const names = Object.keys(events).map(key => events[key]);
+
+  const map = {};
+  Object.keys(events).forEach(key => {
+    const value = events[key];
+    map[key] = value;
+    map[value] = key;
+  });
+
+  return new EventMap({ map, names, props: eventProps });
+};
+
+/**
+ * @param {String} eventName
+ * @param {String} channelType
+ * @param {String} invocationType
+ * @param {EventMap} eventMap
+ */
+export const matchEvent = (eventName, {channelType, invocationType}, eventMap) => {
+  if (! eventMap.isEventName(eventName)) { return false; }
+  const props = eventMap.getEventProps(eventName);
+
+  return matchProps(props, {channelType, invocationType});
+};
+
+/**
+ * @param {*} actualProps
+ * @param {String} channelType
+ * @param {String} invocationType
+ * @return {boolean}
+ */
+const matchProps = (actualProps, {channelType, invocationType}) =>
+{
+  if (actualProps === null) { return channelType === null && invocationType === null }
+
+  if (channelType === null && invocationType === null) { return false; }
+  if (channelType !== null && actualProps.channelType !== channelType) { return false; }
+  if (invocationType !== null && actualProps.invocationType !== invocationType) { return false; }
+
+  return true;
+};
 
 export default class Event
 {
@@ -15,7 +83,3 @@ export default class Event
     return this.props.enabled;
   }
 }
-
-export const createRequestEventListener = (eventName, createRequestHandler, createResponseHandler) => {
-  return MessageBroker.createEventListener(eventName, createRequestHandler(eventName), createResponseHandler(eventName));
-};

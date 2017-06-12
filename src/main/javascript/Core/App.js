@@ -21,23 +21,27 @@ const emitIfNotCanceled = (eventDispatcher, eventName, beforeEventName) =>
 class App
 {
   /**
-   * @param {EventDispatcher} eventDispatcher
+   * @param {EventDispatcher} outgoingDispatcher
+   * @param {EventDispatcher} incomingDispatcher
+   * @param {EventDispatcher} internalDispatcher
    * @param {InstanceProps} instanceProps
    * @param {ContextProps} contextProps
    * @param {WindowProxy} windowProxy
    */
-  constructor({ eventDispatcher, instanceProps, contextProps, windowProxy })
+  constructor({ outgoingDispatcher, incomingDispatcher, internalDispatcher, instanceProps, contextProps, windowProxy })
   {
-    const context = createContext(eventDispatcher, contextProps);
+    const context = createContext(outgoingDispatcher,incomingDispatcher, contextProps);
     this.props = {
-      eventDispatcher,
+      outgoingDispatcher,
+      incomingDispatcher,
+      internalDispatcher,
       instanceProps,
       contextProps,
-      restApi: createDeskproApiClient(eventDispatcher),
-      appState: createAppStateClient(eventDispatcher),
-      tabState: createContextStateClient(eventDispatcher, context),
+      restApi: createDeskproApiClient(outgoingDispatcher),
+      appState: createAppStateClient(outgoingDispatcher),
+      tabState: createContextStateClient(outgoingDispatcher, context),
       context,
-      ui: createUI(eventDispatcher),
+      ui: createUI(internalDispatcher),
       windowProxy,
       visibility: 'expanded', // hidden, collapsed, expanded
     };
@@ -61,13 +65,14 @@ class App
   /**
    * @return {EventEmitter}
    */
-  get eventDispatcher() { return this.props.eventDispatcher; }
+  get eventDispatcher() { return this.props.internalDispatcher; }
 
   /**
    * @param {String} eventName
    * @param {function} listener
    */
   on = (eventName, listener) => {
+    // TODO need to check if eventName is an internal one, for now just assume everyything is
     this.eventDispatcher.on(eventName, listener);
   };
 
@@ -76,6 +81,7 @@ class App
    * @param {function} listener
    */
   off = (eventName, listener) => {
+    // TODO need to check if eventName is an internal one, for now just assume everyything is
     this.eventDispatcher.removeListener(eventName, listener);
   };
 
@@ -84,11 +90,13 @@ class App
    * @param {function} listener
    */
   once = (eventName, listener) => {
+    // TODO need to check if eventName is an internal one, for now just assume everyything is
     this.eventDispatcher.once(eventName, listener);
   };
 
   emit = (eventName, ...args) => {
-    const { eventDispatcher } = this.props;
+    // TODO need to check if eventName is an internal one, for now just assume everyything is
+    const { internalDispatcher: eventDispatcher } = this.props;
     const dispatcherArgs = [eventName].concat(args);
     eventDispatcher.emit.apply(eventDispatcher, dispatcherArgs);
   };
@@ -126,7 +134,7 @@ class App
     const oldCount = this.stateProps.badgeCount;
     this.stateProps.badgeCount = newCount;
 
-    const { eventDispatcher } = this.props;
+    const { internalDispatcher:eventDispatcher } = this.props;
     eventDispatcher.emit(AppEvents.EVENT_BADGECOUNT_CHANGED, newCount, oldCount);
   }
 
@@ -164,7 +172,7 @@ class App
   }
 
   show = () => {
-    const { eventDispatcher, visibility } = this.props;
+    const { internalDispatcher: eventDispatcher, visibility } = this.props;
 
     if (visibility === 'hidden') {
       const emitResult = emitIfNotCanceled(eventDispatcher, AppEvents.EVENT_SHOW, AppEvents.EVENT_BEFORE_SHOW);
@@ -175,7 +183,7 @@ class App
   };
 
   hide = () => {
-    const { eventDispatcher } = this.props;
+    const { internalDispatcher: eventDispatcher } = this.props;
     const emitResult = emitIfNotCanceled(eventDispatcher, AppEvents.EVENT_HIDE, AppEvents.EVENT_BEFORE_HIDE);
     if (emitResult) {
       this.props.visibility = 'hidden';
@@ -183,7 +191,7 @@ class App
   };
 
   collapse = () => {
-    const { eventDispatcher } = this.props;
+    const { internalDispatcher: eventDispatcher } = this.props;
     const emitResult = emitIfNotCanceled(eventDispatcher, AppEvents.EVENT_COLLAPSE, AppEvents.EVENT_BEFORE_COLLAPSE);
     if (emitResult) {
       this.props.visibility = 'collapsed';
@@ -191,7 +199,7 @@ class App
   };
 
   expand = () => {
-    const { eventDispatcher } = this.props;
+    const { internalDispatcher: eventDispatcher } = this.props;
     const emitResult = emitIfNotCanceled(eventDispatcher, AppEvents.EVENT_EXPAND, AppEvents.EVENT_BEFORE_EXPAND);
     if (emitResult) {
       this.props.visibility = 'expanded';
@@ -199,7 +207,7 @@ class App
   };
 
   refresh = () => {
-    const { eventDispatcher } = this.props;
+    const { internalDispatcher: eventDispatcher } = this.props;
     eventDispatcher.emit(AppEvents.EVENT_REFRESH);
   };
 
@@ -209,7 +217,7 @@ class App
     }
 
     this.stateProps.isResizing = true;
-    const { eventDispatcher, windowProxy } = this.props;
+    const { outgoingDispatcher: eventDispatcher, windowProxy } = this.props;
 
     eventDispatcher
       .emitAsync(AppEvents.EVENT_RESET_SIZE, { size: windowProxy.bodySize })
@@ -219,8 +227,13 @@ class App
   };
 
   unload = () => {
-    const { eventDispatcher } = this.props;
+    const { internalDispatcher: eventDispatcher } = this.props;
     eventDispatcher.emit(AppEvents.EVENT_UNLOAD);
+  };
+
+  showNotification = (notification) => {
+    const { outgoingDispatcher: eventDispatcher } = this.props;
+    eventDispatcher.emitAsync(AppEvents.EVENT_SHOW_NOTIFICATION, notification);
   };
 
   // CLIENTS
