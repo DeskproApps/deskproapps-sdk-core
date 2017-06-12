@@ -101,19 +101,51 @@ const getXcomponentOptions = (dpParams) => {
 };
 
 /**
+ * Maps the xchild props into normalized application props
+ *
  * @param xchild
- * @return {InstanceProps}
+ * @return {{}}
  */
-const extractInstancePropsFromXChild = xchild => new InstanceProps(xchild.props);
+const mapXChildPropsToAppProps = xchild => {
+  const { props } = xchild;
+
+  const contextProps = {
+    contextType: props.contextType,
+    contextEntityId: props.contextEntityId,
+    contextLocationId: props.contextLocationId,
+    contextTabId: props.contextTabId
+  };
+
+  const instanceProps = {
+    appId: props.appId,
+    appTitle: props.appTitle,
+    appPackageName: props.appPackageName,
+    instanceId: props.instanceId
+  };
+
+  return { ...contextProps, ...instanceProps }
+};
 
 /**
- * @param xchild
- * @return {ContextProps}
+ * Creates an application using the keys defined on the props object
+ *
+ * @param {{}} props
+ * @return {App}
  */
-const extractContextPropsFromXChild = xchild => {
-  const { props } = xchild;
+export const createAppFromProps = props =>
+{
   const { contextType: type, contextEntityId: entityId, contextLocationId: locationId, contextTabId: tabId } = props;
-  return new ContextProps({ type, entityId, locationId, tabId });
+
+  const appProps = {
+    incomingDispatcher: IncomingEventDispatcher,
+    outgoingDispatcher: OutgoingEventDispatcher,
+    internalDispatcher: InternalEventDispatcher,
+    instanceProps: new InstanceProps(props),
+    contextProps: new ContextProps({ type, entityId, locationId, tabId }),
+    windowProxy
+  };
+
+  return new App(appProps);
 };
 
 /**
@@ -126,21 +158,14 @@ const createApp = (cb) => {
   if (xcomponent.isChild()) {
       xcomponent.child().init().then(xchild => {
 
-        const props = {
-          incomingDispatcher: IncomingEventDispatcher,
-          outgoingDispatcher: OutgoingEventDispatcher,
-          internalDispatcher: InternalEventDispatcher,
-          instanceProps: extractInstancePropsFromXChild(xchild),
-          contextProps: extractContextPropsFromXChild(xchild),
-          windowProxy
-        };
+        const props = mapXChildPropsToAppProps(xchild);
+        const app = createAppFromProps(props);
 
-        const app = new App(props);
         // register the app with the resize listener
         windowProxy.addEventListener('bodyResize', () => app.resetSize());
         windowProxy.addEventListener('load', () => cb(app));
       }).catch();
-  } else if (isBrowser()) {
+  } else if (isBrowser()) { // TODO this is clearly not going to work so the scenario where the app can run without xcomponent needs rethinking
       windowProxy.addEventListener('load', () => cb(app));
   }
 };

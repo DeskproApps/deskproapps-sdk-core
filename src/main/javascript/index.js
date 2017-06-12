@@ -1,5 +1,7 @@
 
 export createApp from './Core/createApp';
+export { createAppFromProps } from './Core/createApp';
+
 export App from './Core/App';
 
 import * as AppEvents from './Core/AppEvents';
