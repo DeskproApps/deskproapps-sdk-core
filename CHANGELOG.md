@@ -1,6 +1,6 @@
 ## UPCOMING
 
-* [FEATURE] add fire-and-forget events
+* [FEATURE] allow deskpro window to send requests to listening widgets
 * [FEATURE] add possibility to send notifications for display in the main deskpro window
 
 ## vv1.0.0-alpha.4 - 2017-06-02

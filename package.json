@@ -5,9 +5,10 @@
   "main": "lib/main/javascript/index.js",
   "scripts": {
     "release": "npm_bump",
-    "make-lib": "NPM_ROOT=$(npm root -g); BABEL=${NPM_ROOT}'/@deskproapps/dpat/node_modules/.bin/babel'; rm -rf lib/* && ${BABEL} src/main/javascript -d lib/main/javascript && ${BABEL} src/xcomponent -d lib/xcomponent && ${BABEL} src/post-robot -d lib/post-robot",
-    "make-dist": "NPM_ROOT=$(npm root -g); WEBPACK=${NPM_ROOT}'/@deskproapps/dpat/node_modules/.bin/webpack --config src/webpack/webpack.config-dist.js'; rm -rf dist/* && DPA_PACKAGE_MODE=slim ${WEBPACK} && ${WEBPACK}",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "make-clean": "rm -rf dist/*;  rm -rf lib/*",
+    "make-lib": "BABEL='./bin/babel-dpat.sh'; ${BABEL} src/main/javascript -d lib/main/javascript && ${BABEL} src/xcomponent -d lib/xcomponent && ${BABEL} src/post-robot -d lib/post-robot",
+    "make-dist": "WEBPACK='./bin/webpack-dpat.sh --config src/webpack/webpack.config-dist.js'; DPA_PACKAGE=${DPA_PACKAGE} ${WEBPACK}",
+    "test": "jest src/test"
   },
   "repository": {
     "type": "git",
@@ -29,13 +30,14 @@
     "lib/",
     "src"
   ],
-  "devDependencies": {
-    "eventemitter3": "2.0.3"
-  },
   "dependencies": {
+    "eventemitter3": "2.0.3",
     "element-resize-detector": "^1.1.12",
     "get-size": "^2.0.2",
     "post-robot": "4.0.0",
     "xcomponent": "1.0.125"
+  },
+  "devDependencies": {
+    "jest": "^20.0.4"
   }
 }
