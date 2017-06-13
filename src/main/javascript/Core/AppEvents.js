@@ -22,7 +22,6 @@ export const EVENT_ICON_CHANGED = 'app.icon_changed';
 export const EVENT_BADGECOUNT_CHANGED = 'app.badgecount_changed';
 
 export const EVENT_RESET_SIZE = 'app.reset_size';
-export const EVENT_SHOW_NOTIFICATION = 'app.show_notification';
 export const EVENT_SUBSCRIBE = 'app.subscribe_to_event';
 
 const events = {
@@ -43,7 +42,6 @@ const events = {
   EVENT_UNLOAD,
 
   EVENT_RESET_SIZE: { channelType: CHANNEL_OUTGOING, invocationType: INVOCATION_REQUESTRESPONSE },
-  EVENT_SHOW_NOTIFICATION: { channelType: CHANNEL_OUTGOING, invocationType: INVOCATION_FIREANDFORGET },
   EVENT_SUBSCRIBE: { channelType: CHANNEL_OUTGOING, invocationType: INVOCATION_FIREANDFORGET },
 };
 export const props = events;

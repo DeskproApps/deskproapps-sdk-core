@@ -5,6 +5,7 @@ import { createContext } from '../Context';
 import { create as createUI } from '../UI';
 import { createAppStateClient, createContextStateClient, StateApiFacade } from '../State';
 import { createDeskproApiClient } from '../WebAPI';
+import { createDeskproWindowFacade } from '../DeskproWindow';
 
 const emitIfNotCanceled = (eventDispatcher, eventName, beforeEventName) =>
 {
@@ -40,6 +41,7 @@ class App
       restApi: createDeskproApiClient(outgoingDispatcher),
       appState: createAppStateClient(outgoingDispatcher),
       tabState: createContextStateClient(outgoingDispatcher, context),
+      deskproWindow: createDeskproWindowFacade(outgoingDispatcher),
       context,
       ui: createUI(internalDispatcher),
       windowProxy,
@@ -231,15 +233,17 @@ class App
     eventDispatcher.emit(AppEvents.EVENT_UNLOAD);
   };
 
-  showNotification = (notification) => {
-    const { outgoingDispatcher: eventDispatcher } = this.props;
-    eventDispatcher.emitAsync(AppEvents.EVENT_SHOW_NOTIFICATION, notification);
-  };
-
   // CLIENTS
 
   /**
-   * @return {StateApiFacade}
+   * @return {DeskproWindowFacade}
+   */
+  get deskproWindow() {
+    return this.props.deskproWindow;
+  };
+
+  /**
+   * @return {DeskproAPIClient}
    */
   get restApi() { return this.props.restApi; };
 

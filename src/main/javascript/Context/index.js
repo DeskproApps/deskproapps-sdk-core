@@ -37,10 +37,4 @@ export const createContext = (outgoingDispatcher, incomingDispatcher, contextPro
   throw new Error(`unknown context type ${contextProps.type}. Valid context types are: ${types.join(', ')}`);
 };
 
-export const registerListeners = (RequestEventDispatcher, ResponseEventDispatcher) => {
-//register event listeners
-  [
-    registerTicketRequestListeners,
-  ].forEach(registrar => registrar(RequestEventDispatcher, ResponseEventDispatcher));
-};
 
