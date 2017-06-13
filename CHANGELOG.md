@@ -1,4 +1,8 @@
-## UPCOMING
+## Upcoming
+
+* [FEATURE] allow interaction with the DeskPro Window via Deskpro Window API
+
+## v1.0.0-alpha.5 - 2017-06-13
 
 * [FEATURE] allow deskpro window to send requests to listening widgets
 * [FEATURE] add possibility to send notifications for display in the main DeskPro window

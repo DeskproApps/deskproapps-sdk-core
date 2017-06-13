@@ -10,6 +10,7 @@ import { registerEventHandlers as registerAppEventHandlers } from './AppEventHan
 import { registerEventHandlers as registerContextEventHandlers } from './ContextEventHandlers';
 import { registerEventHandlers as registerWebAPIEventHandlers } from '../WebAPI';
 import { registerEventHandlers as registerTicketEventHandlers } from '../Context/TicketEventHandlers';
+import { registerEventHandlers as registerDeskproWindowEventHandlers } from '../DeskproWindow';
 
 import App from './App';
 
@@ -22,7 +23,7 @@ import { InstanceProps, ContextProps } from './Props';
   registerAppEventHandlers,
   registerContextEventHandlers,
   registerWebAPIEventHandlers,
-
+  registerDeskproWindowEventHandlers,
   registerTicketEventHandlers
 ].forEach(registrar => registrar(IncomingEventDispatcher, OutgoingEventDispatcher));
 

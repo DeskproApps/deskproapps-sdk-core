@@ -10,9 +10,6 @@ export class EventDispatcher extends EventEmitter
   };
 }
 
-export const RequestEventDispatcher = new EventDispatcher();
-export const ResponseEventDispatcher = new EventDispatcher();
-
 export const IncomingEventDispatcher = new EventDispatcher();
 export const OutgoingEventDispatcher = new EventDispatcher();
 export const InternalEventDispatcher = new EventDispatcher();
