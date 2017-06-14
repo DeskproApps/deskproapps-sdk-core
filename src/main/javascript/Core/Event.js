@@ -40,15 +40,20 @@ export const buildMap = (events, eventProps) =>
 
 /**
  * @param {String} eventName
- * @param {String} channelType
- * @param {String} invocationType
+ * @param {Object} propsPattern
  * @param {EventMap} eventMap
  */
-export const matchEvent = (eventName, {channelType, invocationType}, eventMap) => {
-  if (! eventMap.isEventName(eventName)) { return false; }
-  const props = eventMap.getEventProps(eventName);
+export const matchEvent = (eventName, propsPattern, eventMap) => {
+  if (! eventMap.isEventName(eventName)) {
+    return false;
+  }
 
-  return matchProps(props, {channelType, invocationType});
+  if (!propsPattern) {
+    return true;
+  }
+
+  const actualProps = eventMap.getEventProps(eventName);
+  return matchProps(actualProps, propsPattern);
 };
 
 /**
@@ -59,11 +64,11 @@ export const matchEvent = (eventName, {channelType, invocationType}, eventMap) =
  */
 const matchProps = (actualProps, {channelType, invocationType}) =>
 {
-  if (actualProps === null) { return channelType === null && invocationType === null }
+  if (!actualProps) { return !channelType && !invocationType }
 
-  if (channelType === null && invocationType === null) { return false; }
-  if (channelType !== null && actualProps.channelType !== channelType) { return false; }
-  if (invocationType !== null && actualProps.invocationType !== invocationType) { return false; }
+  if (!channelType && !invocationType ) { return false; }
+  if (channelType && actualProps.channelType !== channelType) { return false; }
+  if (invocationType && actualProps.invocationType !== invocationType) { return false; }
 
   return true;
 };

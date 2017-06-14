@@ -14,3 +14,5 @@ import * as ContextEvents from './Core/ContextEvents';
 export {ContextEvents}
 export { TicketEvents } from './Context';
 
+import * as DeskproWindowEvents from './DeskproWindow/Events';
+export { DeskproWindowEvents };
