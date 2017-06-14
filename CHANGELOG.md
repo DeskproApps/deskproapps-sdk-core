@@ -1,4 +1,4 @@
-## Upcoming
+## v1.0.0-alpha.7 - 2017-06-14
 
 * [FIX] event matching fails if any event props pattern is not specified
 * [FEATURE] expose UI API methods to allow changing, hiding and showing a badge count 
