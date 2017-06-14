@@ -19,7 +19,6 @@ export const EVENT_UNLOAD = 'app.unload';
 
 export const EVENT_TITLE_CHANGED = 'app.title_changed';
 export const EVENT_ICON_CHANGED = 'app.icon_changed';
-export const EVENT_BADGECOUNT_CHANGED = 'app.badgecount_changed';
 
 export const EVENT_RESET_SIZE = 'app.reset_size';
 export const EVENT_SUBSCRIBE = 'app.subscribe_to_event';

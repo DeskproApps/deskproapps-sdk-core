@@ -7,7 +7,7 @@ export App from './Core/App';
 import * as AppEvents from './Core/AppEvents';
 export { AppEvents };
 
-export { UIEvents } from './UI';
+export { UIEvents, UIConstants } from './UI';
 export { StateEvents } from './State';
 
 import * as ContextEvents from './Core/ContextEvents';
