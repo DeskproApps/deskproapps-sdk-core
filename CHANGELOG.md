@@ -1,3 +1,8 @@
+## Upcoming
+
+* [FIX] event matching fails if any event props pattern is not specified
+* [FEATURE] expose UI API methods to allow changing, hiding and showing a badge count 
+
 ## v1.0.0-alpha.6 - 2017-06-13
 
 * [FEATURE] allow interaction with the DeskPro Window via Deskpro Window API

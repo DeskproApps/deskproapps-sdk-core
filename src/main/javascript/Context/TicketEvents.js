@@ -16,4 +16,4 @@ export const props = {
 
 export const eventMap = buildMap(events, props);
 
-export const matchEvent = (eventName, {channelType, invocationType}) => match(eventName, {channelType, invocationType}, eventMap);
+export const matchEvent = (eventName, propsPattern) => match(eventName, propsPattern, eventMap);

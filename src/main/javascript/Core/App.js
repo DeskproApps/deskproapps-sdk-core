@@ -58,7 +58,7 @@ class App
   // UI API
 
   /**
-   * @return {UI}
+   * @return {UIFacade}
    */
   get ui() { return this.props.ui; }
 
