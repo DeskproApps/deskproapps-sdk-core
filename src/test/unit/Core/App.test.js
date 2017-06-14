@@ -12,7 +12,7 @@ test('successfully create an application', done => {
     instanceProps: new InstanceProps({ appId: 1, appTitle: "title", appPackageName: "com.deskpro.app", instanceId: 1 }),
     contextProps:  new ContextProps({ type: 'ticket', entityId: 1, locationId: 1, tabId : 'tab-1' }),
     windowProxy: new WindowProxy({
-      location : { search: '' },
+      location : { search: '', hash: '' },
       document: { readyState : 'notReady' }
     })
   };
