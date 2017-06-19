@@ -15,6 +15,15 @@ export class DeskproAPIClient
     this.props = { eventDispatcher };
   }
 
+  fetch = (url,  init) => {
+    this.props.eventDispatcher.emitAsync(Events.EVENT_WEBAPI_REQUEST_FETCH, { url, init})
+  };
+
+  fetchCORS = (url,  init) => {
+    const corsInit = { ...init, mode: 'cors'};
+    this.props.eventDispatcher.emitAsync(Events.EVENT_WEBAPI_REQUEST_FETCH, { url, init: corsInit })
+  };
+
   get = (path) => this.props.eventDispatcher.emitAsync(Events.EVENT_WEBAPI_REQUEST_DESKPRO, { method: 'get', path});
 
   post = (path, body) => this.props.eventDispatcher.emitAsync(Events.EVENT_WEBAPI_REQUEST_DESKPRO, { method: 'post', path, body });
