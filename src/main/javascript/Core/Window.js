@@ -1,20 +1,32 @@
 import getSize from 'get-size';
 import elementResizeDetectorMaker from 'element-resize-detector';
+import { parseQueryString, validate as validateInitParams } from './InitProps';
 
-const parseDpParamsFromLocation = location => {
+/**
+ * @param {{search: String, hash: String}}location
+ * @return {InitProps|null}
+ */
+const parseInitParamsFromLocation = location => {
+  let params = null;
 
-  const dpParams = {};
+  // build a list of potential sources for init params, ordered by priority
+  const paramsQueryStrings = [
+    location.hash.length ? location.hash.substring(1) : null,
+    location.search.length ? location.search.substring(1) : null
+  ].filter(string => !!string);
 
-  const paramPrefix = 'dp.';
-  const queryParams = location.search.substring(1).split('&').map(nameAndValue => nameAndValue.split('='));
-  for (const param of queryParams) {
-    const [name, value] = param;
-    if (name.substr(0, paramPrefix.length) === paramPrefix) {
-      dpParams[name] = value;
+  if (paramsQueryStrings.length === 0) { return params; }
+
+  for (const queryString of paramsQueryStrings) {
+    const initParams = parseQueryString(queryString);
+
+    if (validateInitParams(initParams)) {
+      params = initParams;
+      break;
     }
   }
 
-  return dpParams;
+  return params;
 };
 
 class WindowProxy {
@@ -29,7 +41,7 @@ class WindowProxy {
     const windowListeners = { load: [], bodyResize: [] };
 
     this.state = {
-      dpParams: parseDpParamsFromLocation(windowObject.location),
+      initParams: parseInitParamsFromLocation(windowObject.location),
       windowListeners,
     };
 
@@ -73,7 +85,10 @@ class WindowProxy {
     return windowObject.xchild;
   }
 
-  get dpParams() { return this.state.dpParams; }
+  /**
+   * @return {InitProps|null}
+   */
+  get initParams() { return this.state.initParams; }
 }
 
 export const windowProxy = new WindowProxy(window);

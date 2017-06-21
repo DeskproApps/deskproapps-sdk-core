@@ -28,14 +28,14 @@ import { InstanceProps, ContextProps } from './Props';
 ].forEach(registrar => registrar(IncomingEventDispatcher, OutgoingEventDispatcher));
 
 /**
- * @param dpParams
+ * @param {InitProps} initParams
  * @return {{dimensions: {width: string, height: string}, props: {widgetId: {type: string, required: boolean}, appId: {type: string, required: boolean}, appTitle: {type: string, required: boolean}, appPackageName: {type: string, required: boolean}, instanceId: {type: string, required: boolean}, onDpMessage: {type: string, required: boolean}}, scrolling: boolean, autoResize: boolean, tag: *, url: string}}
  */
-const getXcomponentOptions = (dpParams) => {
+const getXcomponentOptions = initParams => {
 
   return {
     scrolling: false,
-    tag: dpParams['dp.xconf.tag'], //needs to match xcomponent config on the parent
+    tag: initParams.dpXconfTag, //needs to match xcomponent config on the parent
     url: 'http://localhost', // dummy entry to bypass validation
 
     dimensions: { width: '100%', height: '100%' },
@@ -153,7 +153,7 @@ export const createAppFromProps = props =>
  * @param {function} cb
  */
 const createApp = (cb) => {
-  const xcomponentOptions = getXcomponentOptions(windowProxy.dpParams);
+  const xcomponentOptions = getXcomponentOptions(windowProxy.initParams);
   const xcomponent = create(xcomponentOptions);
 
   if (xcomponent.isChild()) {

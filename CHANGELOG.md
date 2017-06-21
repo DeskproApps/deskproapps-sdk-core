@@ -1,3 +1,8 @@
+## Upcoming
+
+* [FEATURE] read initialization params first from the location hash then fallback to the location query string
+* [FEATURE] add Fetch API support for deskpro api request
+
 ## v1.0.0-alpha.7 - 2017-06-14
 
 * [FIX] event matching fails if any event props pattern is not specified
