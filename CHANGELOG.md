@@ -1,4 +1,4 @@
-## Upcoming
+## v1.0.0-alpha.8 - 2017-06-21
 
 * [FEATURE] read initialization params first from the location hash then fallback to the location query string
 * [FEATURE] add Fetch API support for deskpro api request
