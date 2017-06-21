@@ -15,8 +15,6 @@ const parseInitParamsFromLocation = location => {
     location.search.length ? location.search.substring(1) : null
   ].filter(string => !!string);
 
-  console.log(paramsQueryStrings);
-
   if (paramsQueryStrings.length === 0) { return params; }
 
   for (const queryString of paramsQueryStrings) {
