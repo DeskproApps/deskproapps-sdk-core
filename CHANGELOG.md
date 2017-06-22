@@ -1,3 +1,8 @@
+## Upcoming
+
+* [FEATURE] add tabUrl property to `app.context` object
+* [FEATURE] allow experimental properties to be passed from the Deskpro window
+
 ## v1.0.0-alpha.8 - 2017-06-21
 
 * [FEATURE] read initialization params first from the location hash then fallback to the location query string

@@ -15,7 +15,7 @@ import { registerEventHandlers as registerDeskproWindowEventHandlers } from '../
 import App from './App';
 
 import { create } from '../../../xcomponent';
-import { InstanceProps, ContextProps } from './Props';
+import { InstanceProps, ContextProps } from './AppProps';
 
 //register event listeners
 [
@@ -54,47 +54,13 @@ const getXcomponentOptions = initParams => {
         required: true
       },
 
-      // INSTANCE PROPERTIES
-
-      appId: {
-        type: 'string',
+      instanceProps: {
+        type:     'object',
         required: true
       },
 
-      appTitle: {
-        type: 'string',
-        required: true
-      },
-
-      appPackageName: {
-        type: 'string',
-        required: true
-      },
-
-      instanceId: {
-        type: 'string',
-        required: true
-      },
-
-      // CONTEXT PROPERTIES
-
-      contextType: {
-        type: 'string',
-        required: true
-      },
-
-      contextEntityId: {
-        type: 'string',
-        required: true
-      },
-
-      contextLocationId: {
-        type: 'string',
-        required: true
-      },
-
-      contextTabId: {
-        type: 'string',
+      contextProps: {
+        type:     'object',
         required: true
       }
     }
@@ -102,47 +68,20 @@ const getXcomponentOptions = initParams => {
 };
 
 /**
- * Maps the xchild props into normalized application props
- *
- * @param xchild
- * @return {{}}
- */
-const mapXChildPropsToAppProps = xchild => {
-  const { props } = xchild;
-
-  const contextProps = {
-    contextType: props.contextType,
-    contextEntityId: props.contextEntityId,
-    contextLocationId: props.contextLocationId,
-    contextTabId: props.contextTabId
-  };
-
-  const instanceProps = {
-    appId: props.appId,
-    appTitle: props.appTitle,
-    appPackageName: props.appPackageName,
-    instanceId: props.instanceId
-  };
-
-  return { ...contextProps, ...instanceProps }
-};
-
-/**
  * Creates an application using the keys defined on the props object
  *
- * @param {{}} props
+ * @param {Object} instanceProps
+ * @param {Object} contextProps
  * @return {App}
  */
-export const createAppFromProps = props =>
+export const createAppFromProps = ({instanceProps, contextProps}) =>
 {
-  const { contextType: type, contextEntityId: entityId, contextLocationId: locationId, contextTabId: tabId } = props;
-
   const appProps = {
     incomingDispatcher: IncomingEventDispatcher,
     outgoingDispatcher: OutgoingEventDispatcher,
     internalDispatcher: InternalEventDispatcher,
-    instanceProps: new InstanceProps(props),
-    contextProps: new ContextProps({ type, entityId, locationId, tabId }),
+    instanceProps: new InstanceProps(instanceProps),
+    contextProps: new ContextProps(contextProps),
     windowProxy
   };
 
@@ -159,8 +98,8 @@ const createApp = (cb) => {
   if (xcomponent.isChild()) {
       xcomponent.child().init().then(xchild => {
 
-        const props = mapXChildPropsToAppProps(xchild);
-        const app = createAppFromProps(props);
+        const {instanceProps, contextProps} = xchild.props;
+        const app = createAppFromProps({instanceProps, contextProps});
 
         // register the app with the resize listener
         windowProxy.addEventListener('bodyResize', () => app.resetSize());

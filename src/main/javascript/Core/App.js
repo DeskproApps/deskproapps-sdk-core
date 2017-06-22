@@ -120,6 +120,16 @@ class App
     }
   }
 
+  /**
+   * @return {Object}
+   */
+  get experimentalProps() {
+    const { instanceProps, contextProps } = this.props;
+    const experimentalProps = { ...instanceProps.experimentalProps, ...contextProps.experimentalProps };
+
+    return JSON.parse(JSON.stringify(experimentalProps));
+  }
+
   resetTitle = () => {
     this.appTitle = this.props.instanceProps.appTitle;
   };

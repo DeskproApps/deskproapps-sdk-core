@@ -9,9 +9,9 @@ export class Context
    * @param {String} entityId
    * @param {String} locationId
    * @param {String} tabId
-   * @param otherProps
+   * @param {String} tabUrl
    */
-  constructor({ outgoingDispatcher, incomingDispatcher, type, entityId, locationId, tabId, ...otherProps }) {
+  constructor({ outgoingDispatcher, incomingDispatcher, type, entityId, locationId, tabId, tabUrl }) {
     this.props = {
       outgoingDispatcher,
       incomingDispatcher,
@@ -19,17 +19,34 @@ export class Context
       entityId,
       locationId,
       tabId,
-      ...otherProps
+      tabUrl
     };
   }
 
-  get type() { return this.props.type; }
+  /**
+   * @return {String}
+   */
+  get type() { return this.props.type.toString(); }
 
-  get entityId() { return this.props.entityId; }
+  /**
+   * @return {String}
+   */
+  get entityId() { return this.props.entityId.toString(); }
 
-  get locationId() { return this.props.locationId; }
+  /**
+   * @return {String}
+   */
+  get locationId() { return this.props.locationId.toString(); }
 
-  get tabId() { return this.props.tabId; }
+  /**
+   * @return {String}
+   */
+  get tabId() { return this.props.tabId.toString(); }
+
+  /**
+   * @return {String}
+   */
+  get tabUrl() { return this.props.tabUrl.toString(); }
 
   /**
    * @async
