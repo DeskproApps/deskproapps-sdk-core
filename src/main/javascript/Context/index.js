@@ -28,9 +28,8 @@ export const factories = [
 export const createContext = (outgoingDispatcher, incomingDispatcher, contextProps) =>
 {
   const props = { outgoingDispatcher, incomingDispatcher, ...contextProps.toJS() };
-  let context = null;
   for (const factory of factories) {
-    context = factory(props);
+    let context = factory(props);
     if (context) { return context; }
   }
 
