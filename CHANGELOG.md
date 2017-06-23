@@ -1,4 +1,4 @@
-## Upcoming
+## v1.0.0-alpha.9 - 2017-06-23
 
 * [FEATURE] add tabUrl property to `app.context` object
 * [FEATURE] allow experimental properties to be passed from the Deskpro window
