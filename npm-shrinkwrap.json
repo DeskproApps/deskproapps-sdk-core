@@ -97,6 +97,11 @@
       "from": "esutils@>=2.0.2 <3.0.0",
       "resolved": "https://registry.npmjs.org/esutils/-/esutils-2.0.2.tgz"
     },
+    "eventemitter3": {
+      "version": "2.0.3",
+      "from": "eventemitter3@2.0.3",
+      "resolved": "https://registry.npmjs.org/eventemitter3/-/eventemitter3-2.0.3.tgz"
+    },
     "get-size": {
       "version": "2.0.2",
       "from": "get-size@>=2.0.2 <3.0.0",

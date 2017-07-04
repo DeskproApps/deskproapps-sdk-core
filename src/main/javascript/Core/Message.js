@@ -50,7 +50,7 @@ export const parseIncomingRequestMessage = raw =>
   const { id, widgetId, correlationId, body } = raw;
 
   const parsedBody = typeof body === 'string' ? JSON.parse(body) : body;
-  return new WidgetRequest({ id, widgetId, correlationId, body: parsedBody });
+  return new WidgetRequest({ id, widgetId, correlationId: correlationId.toString(), body: parsedBody });
 };
 
 /**
@@ -62,7 +62,7 @@ export const parseIncomingResponseMessage = raw =>
   const { id, widgetId, correlationId, body, status } = raw;
   // still receiving json encoded strings as body from success responses
   const parsedBody = typeof body === 'string' ? JSON.parse(body) : body;
-  return new WidgetResponse({ id, widgetId, correlationId, body: parsedBody, status });
+  return new WidgetResponse({ id, widgetId, correlationId: correlationId.toString(), body: parsedBody, status });
 };
 
 
