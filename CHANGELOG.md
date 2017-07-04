@@ -1,3 +1,7 @@
+## Upcoming
+
+* [FIX] correlation id not used when responding to incoming requests causing messages to be dropped
+
 ## v1.0.0-alpha.9 - 2017-06-23
 
 * [FEATURE] add tabUrl property to `app.context` object

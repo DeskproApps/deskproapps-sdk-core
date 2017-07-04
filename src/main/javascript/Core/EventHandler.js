@@ -16,7 +16,8 @@ const dispatchIncomingEvent = (eventName, eventProps, rawMessage) => {
   const message = parseIncomingMessage(rawMessage);
   if (message instanceof WidgetRequest && eventProps.invocationType === INVOCATION_REQUESTRESPONSE) {
     MessageBus.once(message.correlationId, response => {
-      postRobotSend(eventName, response);
+      const payload = response instanceof WidgetResponse ? response.toJS() : response;
+      postRobotSend(eventName, payload);
     });
     MessageBus.emit(eventName, message);
   }
@@ -39,7 +40,7 @@ const createDispatchOutgoingResponseEvent = request => (error, data) => {
   const createErrorResponse = !!error;
   const response = createOutgoingResponseMessage(request, responsePayload, createErrorResponse);
 
-  MessageBus.emit(request.id, response.toJS());
+  MessageBus.emit(response.correlationId, response);
 };
 
 const registerIncomingEventHandler = (eventName, eventProps, eventHandler) => {
