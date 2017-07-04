@@ -40,9 +40,6 @@ const createDispatchOutgoingResponseEvent = request => (error, data) => {
   const createErrorResponse = !!error;
   const response = createOutgoingResponseMessage(request, responsePayload, createErrorResponse);
 
-  console.log('dispatch outgoing ', request.id, request, response);
-  console.log('message bus ', MessageBus.eventNames());
-
   MessageBus.emit(response.correlationId, response);
 };
 
