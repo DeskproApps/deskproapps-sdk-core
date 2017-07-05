@@ -1,3 +1,8 @@
+## Upcoming
+ 
+* [FEATURE] add Properties API to allow retrieving of properties passed at runtime
+* [FIX] Move all user interface methods onto the `app.ui` object 
+
 ## v1.0.0-alpha.10 - 2017-07-05
 
 * [FIX] correlation id not used when responding to incoming requests causing messages to be dropped
