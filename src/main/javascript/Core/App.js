@@ -130,93 +130,13 @@ class App
     return JSON.parse(JSON.stringify(experimentalProps));
   }
 
-  resetTitle = () => {
-    this.appTitle = this.props.instanceProps.appTitle;
-  };
+  resetTitle = () => { this.appTitle = this.props.instanceProps.appTitle; };
 
   get settings() { return []; }
 
   get packageName() { return this.props.instanceProps.appPackageName; }
 
   get instanceId() { return this.props.instanceProps.instanceId; }
-
-  get badgeCount() { return this.stateProps.badgeCount; }
-
-  set badgeCount(newCount) {
-    const oldCount = this.stateProps.badgeCount;
-    this.stateProps.badgeCount = newCount;
-
-    const { internalDispatcher:eventDispatcher } = this.props;
-    eventDispatcher.emit(AppEvents.EVENT_BADGECOUNT_CHANGED, newCount, oldCount);
-  }
-
-  /**
-   * @return {string}
-   */
-  get visibility() { return this.props.visibility };
-
-  /**
-   * @return {boolean}
-   */
-  get isVisible() {
-    return this.props.visibility !== 'hidden';
-  }
-
-  /**
-   * @return {boolean}
-   */
-  get isHidden() {
-    return this.props.visibility === 'hidden';
-  }
-
-  /**
-   * @return {boolean}
-   */
-  get isExpanded() {
-    return this.props.visibility ===  'expanded';
-  }
-
-  /**
-   * @return {boolean}
-   */
-  get isCollapsed() {
-    return this.props.visibility ===  'collapsed';
-  }
-
-  show = () => {
-    const { internalDispatcher: eventDispatcher, visibility } = this.props;
-
-    if (visibility === 'hidden') {
-      const emitResult = emitIfNotCanceled(eventDispatcher, AppEvents.EVENT_SHOW, AppEvents.EVENT_BEFORE_SHOW);
-      if (emitResult) {
-        this.props.visibility = 'expanded'
-      }
-    }
-  };
-
-  hide = () => {
-    const { internalDispatcher: eventDispatcher } = this.props;
-    const emitResult = emitIfNotCanceled(eventDispatcher, AppEvents.EVENT_HIDE, AppEvents.EVENT_BEFORE_HIDE);
-    if (emitResult) {
-      this.props.visibility = 'hidden';
-    }
-  };
-
-  collapse = () => {
-    const { internalDispatcher: eventDispatcher } = this.props;
-    const emitResult = emitIfNotCanceled(eventDispatcher, AppEvents.EVENT_COLLAPSE, AppEvents.EVENT_BEFORE_COLLAPSE);
-    if (emitResult) {
-      this.props.visibility = 'collapsed';
-    }
-  };
-
-  expand = () => {
-    const { internalDispatcher: eventDispatcher } = this.props;
-    const emitResult = emitIfNotCanceled(eventDispatcher, AppEvents.EVENT_EXPAND, AppEvents.EVENT_BEFORE_EXPAND);
-    if (emitResult) {
-      this.props.visibility = 'expanded';
-    }
-  };
 
   refresh = () => {
     const { internalDispatcher: eventDispatcher } = this.props;

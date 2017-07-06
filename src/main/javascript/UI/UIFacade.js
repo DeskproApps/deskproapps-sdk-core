@@ -1,18 +1,25 @@
+import * as AppEvents from '../Core/AppEvents';
+
 import * as Events from './Events';
 import * as Constants from './Constants';
 
 export class UIFacade
 {
   /**
-   * @param {EventEmitter} eventDispatcher
+   * @param {EventDispatcher} UIEventsDispatcher
+   * @param {function} resize
    */
-  constructor(eventDispatcher) {
+  constructor(UIEventsDispatcher, resize) {
     this.props = {
-      eventDispatcher,
+      eventDispatcher: UIEventsDispatcher,
+      resize,
+      display: Constants.DISPLAY_EXPANDED, // expanded, collapsed
+      visibility: Constants.VISIBILITY_VISIBLE, // visible, hidden
       state: Constants.STATE_READY, // loading, ready, empty, error, ? partial
-      menu: Constants.VISIBILITY_VISIBLE, //visible, hidden
-      badge: Constants.VISIBILITY_HIDDEN, //visible, hidden
+      menu: Constants.VISIBILITY_VISIBLE, // visible, hidden
+      badge: Constants.VISIBILITY_HIDDEN, // visible, hidden
       badgeCount: 0,
+      isResizing: false
     };
   }
 
@@ -32,6 +39,31 @@ export class UIFacade
       eventDispatcher.emit(Events.EVENT_BADGE_COUNTCHANGED, newCount, oldCount);
     }
   }
+
+  /**
+   * @return {string}
+   */
+  get visibility() { return this.props.visibility };
+
+  /**
+   * @return {boolean}
+   */
+  get isVisible() { return this.props.visibility === Constants.VISIBILITY_VISIBLE; }
+
+  /**
+   * @return {boolean}
+   */
+  get isHidden() { return this.props.visibility === Constants.VISIBILITY_HIDDEN; }
+
+  /**
+   * @return {boolean}
+   */
+  get isExpanded() { return this.props.display ===  Constants.DISPLAY_EXPANDED; }
+
+  /**
+   * @return {boolean}
+   */
+  get isCollapsed() { return this.props.visibility ===  Constants.DISPLAY_COLLAPSED; }
 
   showBadgeCount = () => {
     const newVisibility = Constants.VISIBILITY_VISIBLE;
@@ -89,6 +121,67 @@ export class UIFacade
       this.props.menu = newVisibility;
       eventDispatcher.emit(Events.EVENT_MENU_STATE_TRANSITION, newVisibility, oldVisibility);
     }
+  };
+
+  show = () => {
+    const { eventDispatcher, visibility } = this.props;
+
+    if (visibility === Constants.VISIBILITY_VISIBLE) {
+      const onEmitChangeVisibility = (emit) => {
+        emit();
+        this.props.visibility = Constants.VISIBILITY_VISIBLE;
+      };
+
+      eventDispatcher.emitIfNotCanceled(AppEvents.EVENT_BEFORE_SHOW, AppEvents.EVENT_SHOW, onEmitChangeVisibility);
+    }
+  };
+
+  hide = () => {
+    const { eventDispatcher, visibility } = this.props;
+
+    if (visibility !== Constants.VISIBILITY_HIDDEN) {
+      const onEmitChangeVisibility = (emit) => {
+        emit();
+        this.props.visibility = Constants.VISIBILITY_HIDDEN;
+      };
+      eventDispatcher.emitIfNotCanceled(AppEvents.EVENT_BEFORE_HIDE, AppEvents.EVENT_HIDE, onEmitChangeVisibility);
+    }
+  };
+
+  collapse = () => {
+    const { eventDispatcher, display } = this.props;
+
+    if (display !== Constants.DISPLAY_COLLAPSED) {
+      const onEmitChangeDisplay = (emit) => {
+        emit();
+        this.props.display = Constants.DISPLAY_COLLAPSED;
+      };
+
+      eventDispatcher.emitIfNotCanceled(AppEvents.EVENT_BEFORE_COLLAPSE, AppEvents.EVENT_COLLAPSE, onEmitChangeDisplay);
+    }
+  };
+
+  expand = () => {
+    const { eventDispatcher, display } = this.props;
+
+    if (display !== Constants.DISPLAY_EXPANDED) {
+      const onEmitChangeDisplay = (emit) => {
+        emit();
+        this.props.display = Constants.DISPLAY_EXPANDED;
+      };
+
+      eventDispatcher.emitIfNotCanceled(AppEvents.EVENT_BEFORE_EXPAND, AppEvents.EVENT_EXPAND, onEmitChangeDisplay);
+    }
+  };
+
+  resetSize = () => {
+    if (this.props.isResizing) { // wait until previous resize finishes to prevent a resize loop
+      return false;
+    }
+
+    this.props.isResizing = true;
+    const onResize = ({ height }) => { this.props.isResizing = false; };
+    this.props.resize(onResize);
   };
 
   showSettings = () => {
