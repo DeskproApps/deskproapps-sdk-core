@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DeskproApps/deskproapps-sdk-core.git"
+    "url": "git+https://github.com/Deskpro/deskproapps-sdk-core.git"
   },
   "keywords": [
     "deskpro",
@@ -22,9 +22,9 @@
   "author": "DeskPRO Ltd.",
   "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/DeskproApps/deskproapps-sdk-core/issues"
+    "url": "https://github.com/Deskpro/deskproapps-sdk-core/issues"
   },
-  "homepage": "https://github.com/DeskproApps/deskproapps-sdk-core#readme",
+  "homepage": "https://github.com/Deskpro/deskproapps-sdk-core#readme",
   "files": [
     "dist/",
     "lib/",
