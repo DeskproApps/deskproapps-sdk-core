@@ -8,14 +8,14 @@ import { EventEmitter } from 'eventemitter3';
  * @return {Promise}
  */
 const dispatch = (eventDispatcher, eventName, ...args) => {
-  const emitBinding     = eventDispatcher.emit.bind(eventDispatcher);
+  const emitBinding = eventDispatcher.emit.bind(eventDispatcher);
 
   const executor = (resolve, reject) => {
     const emitArgs = [eventName, resolve, reject].concat(args);
     return emitBinding.apply(null, emitArgs);
   };
 
-  return new Promise(executor());
+  return new Promise(executor);
 };
 
 /**
