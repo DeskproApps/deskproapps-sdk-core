@@ -5,4 +5,18 @@ export class PersonContext extends Context
   static get TYPE() { return 'person'; }
 }
 
-export const tryAndCreate = props => props.type === PersonContext.TYPE ? new PersonContext(props) : null;
+/**
+ * @param {EventDispatcher} outgoingDispatcher
+ * @param {EventDispatcher} incomingDispatcher
+ * @param {ContextProps} contextProps
+ * @return {PersonContext}
+ */
+export const tryAndCreate = ({outgoingDispatcher, incomingDispatcher, contextProps}) =>
+{
+  if (contextProps.contextType === PersonContext.TYPE) {
+    const props = { outgoingDispatcher, incomingDispatcher, ...contextProps.toJS(), type: contextProps.contextType };
+    return new PersonContext(props);
+  }
+
+  return null;
+};

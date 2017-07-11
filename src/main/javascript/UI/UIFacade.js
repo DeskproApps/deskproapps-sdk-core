@@ -7,12 +7,12 @@ export class UIFacade
 {
   /**
    * @param {EventDispatcher} UIEventsDispatcher
-   * @param {function} resize
+   * @param {function} resizer
    */
-  constructor(UIEventsDispatcher, resize) {
+  constructor(UIEventsDispatcher, resizer) {
     this.props = {
       eventDispatcher: UIEventsDispatcher,
-      resize,
+      resizer,
       display: Constants.DISPLAY_EXPANDED, // expanded, collapsed
       visibility: Constants.VISIBILITY_VISIBLE, // visible, hidden
       state: Constants.STATE_READY, // loading, ready, empty, error, ? partial
@@ -181,7 +181,8 @@ export class UIFacade
 
     this.props.isResizing = true;
     const onResize = ({ height }) => { this.props.isResizing = false; };
-    this.props.resize(onResize);
+    const { resizer } = this.props;
+    resizer(onResize);
   };
 
   showSettings = () => {

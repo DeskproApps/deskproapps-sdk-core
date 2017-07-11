@@ -35,7 +35,7 @@ test('successfully create an application', done => {
 
 });
 
-test('retrieve experiemental props', done => {
+test('retrieve properties', done => {
 
   const experimental = {
     instanceExperimentalOne: 'instanceExperimentalOne',
@@ -43,34 +43,33 @@ test('retrieve experiemental props', done => {
     contextExperimentalThree: 3,
   };
 
-  const instanceProps = {
+  const instanceProps = new InstanceProps({
     appId: '1',
     appTitle: "title",
     appPackageName: "com.deskpro.app",
-    instanceId: '1'
-  };
+    instanceId: '1',
 
-  const contextProps = {
+    instanceExperimentalOne: experimental.instanceExperimentalOne,
+    instanceExperimentalTwo: experimental.instanceExperimentalTwo
+  });
+
+  const contextProps = new ContextProps({
     type: 'ticket',
     entityId: '1',
     locationId: '1',
     tabId : 'tab-1' ,
     tabUrl: 'https://127.0.0.1',
-  };
+
+    contextExperimentalThree: experimental.contextExperimentalThree,
+  });
+
 
   const params = {
     outgoingDispatcher: new EventDispatcher(),
     incomingDispatcher:  new EventDispatcher(),
     internalDispatcher:  new EventDispatcher(),
-    instanceProps: new InstanceProps({
-        ...instanceProps,
-        instanceExperimentalOne: experimental.instanceExperimentalOne,
-        instanceExperimentalTwo: experimental.instanceExperimentalTwo,
-    }),
-    contextProps:  new ContextProps({
-      ...contextProps,
-      contextExperimentalThree: experimental.contextExperimentalThree,
-    }),
+    instanceProps,
+    contextProps,
     windowProxy: new WindowProxy({
       location : { search: '', hash: '' },
       document: { readyState : 'notReady' }
@@ -79,7 +78,60 @@ test('retrieve experiemental props', done => {
 
   const app = new App(params);
 
-  expect(app.experimentalProps).toEqual(experimental);
+  expect(app.getProperty('appId')).toEqual('1');
+  expect(app.getProperty('contextType')).toEqual('ticket');
+  expect(app.getProperty('contextType')).toEqual(app.context.type);
+  expect(app.getProperty('tabUrl')).toEqual('https://127.0.0.1');
+  expect(app.getProperty('instanceExperimentalTwo')).toEqual(experimental.instanceExperimentalTwo);
+
+  done();
+
+});
+
+test('retrieve property', done => {
+
+  const experimental = {
+    instanceExperimentalOne: 'instanceExperimentalOne',
+    instanceExperimentalTwo: 'instanceExperimentalTwo',
+    contextExperimentalThree: 3,
+  };
+
+  const instanceProps = new InstanceProps({
+    appId: '1',
+    appTitle: "title",
+    appPackageName: "com.deskpro.app",
+    instanceId: '1',
+
+    instanceExperimentalOne: experimental.instanceExperimentalOne,
+    instanceExperimentalTwo: experimental.instanceExperimentalTwo
+  });
+
+  const contextProps = new ContextProps({
+    type: 'ticket',
+    entityId: '1',
+    locationId: '1',
+    tabId : 'tab-1' ,
+    tabUrl: 'https://127.0.0.1',
+
+    contextExperimentalThree: experimental.contextExperimentalThree,
+  });
+
+
+  const params = {
+    outgoingDispatcher: new EventDispatcher(),
+    incomingDispatcher:  new EventDispatcher(),
+    internalDispatcher:  new EventDispatcher(),
+    instanceProps,
+    contextProps,
+    windowProxy: new WindowProxy({
+      location : { search: '', hash: '' },
+      document: { readyState : 'notReady' }
+    })
+  };
+
+  const app = new App(params);
+
+  expect(app.properties).toEqual(Object.assign({}, instanceProps.toJS(), contextProps.toJS()));
   done();
 
 });

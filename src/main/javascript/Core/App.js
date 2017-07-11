@@ -43,24 +43,16 @@ class App
       tabState: createContextStateClient(outgoingDispatcher, context),
       deskproWindow: createDeskproWindowFacade(outgoingDispatcher),
       context,
-      ui: createUI(internalDispatcher),
-      windowProxy,
+      ui: createUI(internalDispatcher, outgoingDispatcher, windowProxy),
       visibility: 'expanded', // hidden, collapsed, expanded
     };
 
-    this.stateProps = {
+    this.state = {
       isResizing: false,
       appTitle: instanceProps.appTitle,
       badgeCount: 0
     };
   }
-
-  // UI API
-
-  /**
-   * @return {UIFacade}
-   */
-  get ui() { return this.props.ui; }
 
   // EVENT EMITTER API
 
@@ -103,59 +95,81 @@ class App
     eventDispatcher.emit.apply(eventDispatcher, dispatcherArgs);
   };
 
-  // APPLICATION API
+  // Properties API
 
+  /**
+   * @param propertyName
+   * @return {String|null|undefined}
+   */
+  getProperty = (propertyName) => {
+    const { instanceProps, contextProps } = this.props;
+    let value = instanceProps.getProperty(propertyName);
+
+    if (value === undefined) {
+      value = contextProps.getProperty(propertyName);
+    }
+
+    return value;
+  };
+
+  /**
+   * @return {Object}
+   */
+  get properties() {
+    const { instanceProps, contextProps } = this.props;
+
+    const instanceProperties = instanceProps.toJS();
+    const contextProperties = contextProps.toJS();
+
+    return { ...instanceProperties, ...contextProperties };
+  }
+
+  /**
+   * @return {String}
+   */
   get appId() { return this.props.instanceProps.appId; }
 
-  get appTitle() { return this.props.instanceProps.appTitle; }
+  /**
+   * @return {String}
+   */
+  get appTitle() { return this.state.appTitle; }
 
+  /**
+   * @param {String} newTitle
+   */
   set appTitle(newTitle) {
-    const oldTitle = this.stateProps.appTitle;
+    const oldTitle = this.state.appTitle;
 
     if (newTitle !== oldTitle) {
-      this.stateProps.appTitle = newTitle;
+      this.state.appTitle = newTitle;
 
       const { eventDispatcher } = this.props;
       eventDispatcher.emit(AppEvents.EVENT_TITLE_CHANGED, newTitle, oldTitle);
     }
   }
 
+  resetAppTitle = () => { this.state.appTitle = this.props.instanceProps.appTitle; };
+
   /**
-   * @return {Object}
+   * @return {String}
    */
-  get experimentalProps() {
-    const { instanceProps, contextProps } = this.props;
-    const experimentalProps = { ...instanceProps.experimentalProps, ...contextProps.experimentalProps };
-
-    return JSON.parse(JSON.stringify(experimentalProps));
-  }
-
-  resetTitle = () => { this.appTitle = this.props.instanceProps.appTitle; };
-
-  get settings() { return []; }
-
   get packageName() { return this.props.instanceProps.appPackageName; }
 
+  /**
+   * @return {String}
+   */
   get instanceId() { return this.props.instanceProps.instanceId; }
+
+  // Settings API
+
+  /**
+   * @return {Array}
+   */
+  get settings() { return []; }
 
   refresh = () => {
     const { internalDispatcher: eventDispatcher } = this.props;
     eventDispatcher.emit(AppEvents.EVENT_REFRESH);
-  };
-
-  resetSize = () => {
-    if (this.stateProps.isResizing) { // wait until previous resize finishes to prevent a resize loop
-      return false;
-    }
-
-    this.stateProps.isResizing = true;
-    const { outgoingDispatcher: eventDispatcher, windowProxy } = this.props;
-
-    eventDispatcher
-      .emitAsync(AppEvents.EVENT_RESET_SIZE, { size: windowProxy.bodySize })
-      .then(({ height }) => {
-        this.stateProps.isResizing = false;
-      });
   };
 
   unload = () => {
@@ -164,6 +178,11 @@ class App
   };
 
   // CLIENTS
+
+  /**
+   * @return {UIFacade}
+   */
+  get ui() { return this.props.ui; }
 
   /**
    * @return {DeskproWindowFacade}

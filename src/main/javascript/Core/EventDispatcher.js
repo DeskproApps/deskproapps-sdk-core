@@ -1,29 +1,33 @@
 import { EventEmitter } from 'eventemitter3';
 
 /**
- * @param {Function} executor
+ * @param {EventDispatcher} eventDispatcher
+ * @param {String} eventName
+ * @param {Array} args
+ *
  * @return {Promise}
  */
-const createPromise = (executor) => new Promise(executor);
+const dispatch = (eventDispatcher, eventName, ...args) => {
+  const emitBinding     = eventDispatcher.emit.bind(eventDispatcher);
+
+  const executor = (resolve, reject) => {
+    const emitArgs = [eventName, resolve, reject].concat(args);
+    return emitBinding.apply(null, emitArgs);
+  };
+
+  return new Promise(executor());
+};
 
 /**
  * @param {EventDispatcher} eventDispatcher
+ *
  * @return {Promise}
  */
-export const createEmitAsync = (eventDispatcher) => {
-  "use strict";
-
-  const emit = (args) => eventDispatcher.emit.apply(eventDispatcher, args);
-  const reduce =  (cb, eventName, args, resolve, reject) => cb([eventName, resolve, reject].concat(args));
-  const dispatch = (eventName, ...args) => {
-    const executor = reduce.bind(null, emit, eventName, args);
-    return new Promise(executor);
-  };
-
-  return new Promise((resolve, reject) => resolve(dispatch));
+export const emitAsync = (eventDispatcher) =>
+{
+  const dispatchBinding = dispatch.bind(null, eventDispatcher);
+  return Promise.resolve(dispatchBinding);
 };
-
-
 
 export class EventDispatcher extends EventEmitter
 {

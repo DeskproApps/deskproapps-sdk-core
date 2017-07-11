@@ -17,4 +17,18 @@ export class TicketContext extends Context
   }
 }
 
-export const tryAndCreate = props => props.type === TicketContext.TYPE ? new TicketContext(props) : null;
+/**
+ * @param {EventDispatcher} outgoingDispatcher
+ * @param {EventDispatcher} incomingDispatcher
+ * @param {ContextProps} contextProps
+ * @return {TicketContext}
+ */
+export const tryAndCreate = ({outgoingDispatcher, incomingDispatcher, contextProps}) =>
+{
+  if (contextProps.contextType === TicketContext.TYPE) {
+    const props = { outgoingDispatcher, incomingDispatcher, ...contextProps.toJS(), type: contextProps.contextType };
+    return new TicketContext(props);
+  }
+
+  return null;
+};

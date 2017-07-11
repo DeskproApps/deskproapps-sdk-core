@@ -5,7 +5,7 @@ import * as UIConstants from './Constants';
 export { UIConstants }
 
 import { UIFacade } from './UIFacade';
-import { createEventEmittingResize } from './Resizer';
+import { createResizer } from './Resizer';
 
 /**
  * @param {EventDispatcher} internalEventDispatcher
@@ -15,6 +15,6 @@ import { createEventEmittingResize } from './Resizer';
  */
 export const create = (internalEventDispatcher, outgoingEventDispatcher, windowProxy) => {
   "use strict";
-  const eventEmittingResize = createEventEmittingResize(outgoingEventDispatcher, windowProxy);
-  return new UIFacade(internalEventDispatcher, eventEmittingResize);
+  const resizer = createResizer(outgoingEventDispatcher, windowProxy);
+  return new UIFacade(internalEventDispatcher, resizer);
 };

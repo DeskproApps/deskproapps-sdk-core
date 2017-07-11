@@ -27,13 +27,13 @@ export const factories = [
  */
 export const createContext = (outgoingDispatcher, incomingDispatcher, contextProps) =>
 {
-  const props = { outgoingDispatcher, incomingDispatcher, ...contextProps.toJS() };
+  const props = {outgoingDispatcher, incomingDispatcher, contextProps};
   for (const factory of factories) {
     let context = factory(props);
     if (context) { return context; }
   }
 
-  throw new Error(`unknown context type ${contextProps.type}. Valid context types are: ${types.join(', ')}`);
+  throw new Error(`unknown context type ${contextProps.contextType}. Valid context types are: ${types.join(', ')}`);
 };
 
 

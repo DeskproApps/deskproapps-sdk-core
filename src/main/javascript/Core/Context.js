@@ -72,8 +72,4 @@ export class Context
    * @async
    */
   getMe = () => this.props.outgoingDispatcher.emitAsync(ContextEvents.EVENT_ME_GET);
-
-
-
-
 }
