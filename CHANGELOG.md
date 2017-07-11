@@ -1,3 +1,6 @@
+## Upcoming
+* [MAINTENANCE] update links after transferring the repository to the `Deskpro` organization
+
 ## v1.0.0-alpha.10 - 2017-07-05
 
 * [FIX] correlation id not used when responding to incoming requests causing messages to be dropped
