@@ -1,4 +1,4 @@
-## Upcoming
+## v1.0.0-alpha.12 - 2017-07-12
  
 * [FEATURE] add Properties API to allow retrieving of properties passed at runtime
 * [FIX] Move all user interface methods onto the `app.ui` object 
