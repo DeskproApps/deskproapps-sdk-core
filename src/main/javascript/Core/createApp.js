@@ -102,7 +102,7 @@ const createApp = (cb) => {
         const app = createAppFromProps({instanceProps, contextProps});
 
         // register the app with the resize listener
-        windowProxy.addEventListener('bodyResize', () => app.resetSize());
+        windowProxy.addEventListener('bodyResize', () => app.ui.resetSize());
         windowProxy.addEventListener('load', () => cb(app));
       }).catch();
   } else if (isBrowser()) { // TODO this is clearly not going to work so the scenario where the app can run without xcomponent needs rethinking

@@ -1,16 +1,47 @@
-export class InstanceProps
+class PropertyBag
+{
+  /**
+   * @param {{}} props
+   */
+  constructor({ ...props })
+  {
+    this.props = { ...props };
+  }
+
+  /**
+   * @param {String} propName
+   * @return {*}
+   */
+  getProperty = (propName) => {
+    if (this.props.hasOwnProperty(propName)) {
+      return this.props[propName];
+    }
+
+    return undefined;
+  };
+
+  toJSON = () => this.toJS();
+
+  /**
+   * @return {Object}
+   */
+  toJS = () => {
+    return JSON.parse(JSON.stringify(this.props));
+  };
+}
+
+export class InstanceProps extends PropertyBag
 {
   /**
    * @param {String} appId
    * @param {String} appTitle
    * @param {String} appPackageName
    * @param {String} instanceId
-   * @param {Object} [experimentalProps] experimental props
+   * @param {{}} otherProps
    */
-  constructor({ appId, appTitle, appPackageName, instanceId, ...experimentalProps })
+  constructor({ appId, appTitle, appPackageName, instanceId, ...otherProps })
   {
-    this.props = { appId, appTitle, appPackageName, instanceId };
-    this._experimentalProps = experimentalProps;
+    super({ appId, appTitle, appPackageName, instanceId, ...otherProps })
   }
 
   /**
@@ -32,45 +63,28 @@ export class InstanceProps
    * @return {String}
    */
   get instanceId() { return this.props.instanceId; }
-
-  /**
-   * @return {Object}
-   */
-  get experimentalProps() { return JSON.parse(JSON.stringify(this._experimentalProps)); }
-
-  /**
-   * @return {Object}
-   */
-  toJS = (includeExperimental) => {
-    if (includeExperimental) {
-      const all = { ...this._props, ...this._experimentalProps };
-      return JSON.parse(JSON.stringify(all));
-    }
-
-    return JSON.parse(JSON.stringify(this.props));
-  };
 }
 
-export class ContextProps
+export class ContextProps extends PropertyBag
 {
   /**
-   * @param {String} type
+   * @param {String} type alias for contextType
+   * @param {String} contextType
    * @param {String} entityId
    * @param {String} locationId
    * @param {String} tabId
    * @param {String} tabUrl
-   * @param {Object} [experimentalProps] experimental props
+   * @param {Object} [otherProps] experimental props
    */
-  constructor({ type, entityId, locationId, tabId, tabUrl, ...experimentalProps })
+  constructor({ type, contextType, entityId, locationId, tabId, tabUrl, ...otherProps })
   {
-    this.props = { type, entityId, locationId, tabId, tabUrl };
-    this._experimentalProps = experimentalProps;
+    super({ contextType: contextType || type, entityId, locationId, tabId, tabUrl, ...otherProps });
   }
 
   /**
    * @return {String}
    */
-  get type() { return this.props.type; }
+  get contextType() { return this.props.contextType; }
 
   /**
    * @return {String}
@@ -91,22 +105,5 @@ export class ContextProps
    * @return {String}
    */
   get tabUrl() { return this.props.tabUrl; }
-
-  /**
-   * @return {Object}
-   */
-  get experimentalProps() { return JSON.parse(JSON.stringify(this._experimentalProps)); }
-
-  /**
-   * @return {Object}
-   */
-  toJS = (includeExperimental) => {
-    if (includeExperimental) {
-      const all = { ...this._props, ...this._experimentalProps };
-      return JSON.parse(JSON.stringify(all));
-    }
-
-    return JSON.parse(JSON.stringify(this.props));
-  };
 }
 

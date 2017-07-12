@@ -86,11 +86,11 @@ test('menu visibility change event fires everytime menu visibility changes', don
   ui.showMenu();
 
   expect(emitMock.mock.calls.length).toBe(2);
-  expect(emitMock.mock.calls[0][0]).toBe(UIEvents.EVENT_MENU_STATE_TRANSITION);
+  expect(emitMock.mock.calls[0][0]).toBe(UIEvents.EVENT_MENU_VISIBILITYCHANGED);
   expect(emitMock.mock.calls[0][1]).toBe(UIConstants.VISIBILITY_HIDDEN);
   expect(emitMock.mock.calls[0][2]).toBe(UIConstants.VISIBILITY_VISIBLE);
 
-  expect(emitMock.mock.calls[1][0]).toBe(UIEvents.EVENT_MENU_STATE_TRANSITION);
+  expect(emitMock.mock.calls[1][0]).toBe(UIEvents.EVENT_MENU_VISIBILITYCHANGED);
   expect(emitMock.mock.calls[1][1]).toBe(UIConstants.VISIBILITY_VISIBLE);
   expect(emitMock.mock.calls[1][2]).toBe(UIConstants.VISIBILITY_HIDDEN);
 
