@@ -18,52 +18,39 @@ export class UIFacade
       state: Constants.STATE_READY, // loading, ready, empty, error, ? partial
       menu: Constants.VISIBILITY_VISIBLE, // visible, hidden
       badge: Constants.VISIBILITY_HIDDEN, // visible, hidden
+      settings: Constants.VISIBILITY_HIDDEN, // visible, hidden
       badgeCount: 0,
       isResizing: false
     };
   }
 
-  get state() { return this.props.state; }
+  // MENU API
 
   get menu() { return this.props.menu; }
 
-  get badge() { return this.props.badge; }
+  showMenu = () => {
+    const { eventDispatcher, menu:oldVisibility } = this.props;
+    const newVisibility = Constants.VISIBILITY_VISIBLE;
 
-  get badgeCount() { return this.props.badgeCount; }
-
-  set badgeCount(newCount) {
-    const { eventDispatcher, badgeCount: oldCount } = this.props;
-    this.props.badgeCount = newCount;
-
-    if (oldCount !== newCount) {
-      eventDispatcher.emit(Events.EVENT_BADGE_COUNTCHANGED, newCount, oldCount);
+    if (oldVisibility !== newVisibility) {
+      this.props.menu = newVisibility;
+      eventDispatcher.emit(Events.EVENT_MENU_VISIBILITYCHANGED, newVisibility, oldVisibility);
     }
-  }
+  };
 
-  /**
-   * @return {string}
-   */
-  get visibility() { return this.props.visibility };
+  hideMenu = () => {
+    const { eventDispatcher, menu:oldVisibility } = this.props;
+    const newVisibility = Constants.VISIBILITY_HIDDEN;
 
-  /**
-   * @return {boolean}
-   */
-  get isVisible() { return this.props.visibility === Constants.VISIBILITY_VISIBLE; }
+    if (oldVisibility !== newVisibility) {
+      this.props.menu = newVisibility;
+      eventDispatcher.emit(Events.EVENT_MENU_VISIBILITYCHANGED, newVisibility, oldVisibility);
+    }
+  };
 
-  /**
-   * @return {boolean}
-   */
-  get isHidden() { return this.props.visibility === Constants.VISIBILITY_HIDDEN; }
+  // BADGE API
 
-  /**
-   * @return {boolean}
-   */
-  get isExpanded() { return this.props.display ===  Constants.DISPLAY_EXPANDED; }
-
-  /**
-   * @return {boolean}
-   */
-  get isCollapsed() { return this.props.visibility ===  Constants.DISPLAY_COLLAPSED; }
+  get badge() { return this.props.badge; }
 
   showBadgeCount = () => {
     const newVisibility = Constants.VISIBILITY_VISIBLE;
@@ -81,16 +68,125 @@ export class UIFacade
 
     if (oldVisibility !== newVisibility) {
       this.props.badge = newVisibility;
-     eventDispatcher.emit(Events.EVENT_BADGE_VISIBILITYCHANGED, newVisibility, oldVisibility);
+      eventDispatcher.emit(Events.EVENT_BADGE_VISIBILITYCHANGED, newVisibility, oldVisibility);
     }
   };
+
+  get badgeCount() { return this.props.badgeCount; }
+
+  set badgeCount(newCount) {
+    const { eventDispatcher, badgeCount: oldCount } = this.props;
+    this.props.badgeCount = newCount;
+
+    if (oldCount !== newCount) {
+      eventDispatcher.emit(Events.EVENT_BADGE_COUNTCHANGED, newCount, oldCount);
+    }
+  }
+
+  // APP VISIBILITY API
+
+  /**
+   * @return {string}
+   */
+  get visibility() { return this.props.visibility };
+
+  /**
+   * @return {boolean}
+   */
+  isVisible = () => { return this.props.visibility === Constants.VISIBILITY_VISIBLE; };
+
+  /**
+   * @return {boolean}
+   */
+  isHidden = () => { return this.props.visibility === Constants.VISIBILITY_HIDDEN; };
+
+  show = () => {
+    const newVisibility = Constants.VISIBILITY_VISIBLE;
+    const { eventDispatcher, visibility: oldVisibility } = this.props;
+
+    if (oldVisibility !== newVisibility) {
+      const emit = eventDispatcher.emitCancelable(
+        Events.EVENT_UI_BEFOREVISIBILITYCHANGED,
+        () => { this.props.visibility = newVisibility; }
+      );
+
+      emit(Events.EVENT_UI_VISIBILITYCHANGED, newVisibility, oldVisibility);
+    }
+  };
+
+  hide = () => {
+    const newVisibility = Constants.VISIBILITY_HIDDEN;
+    const { eventDispatcher, visibility: oldVisibility } = this.props;
+
+    if (oldVisibility !== newVisibility) {
+      const emit = eventDispatcher.emitCancelable(
+        Events.EVENT_UI_BEFOREVISIBILITYCHANGED,
+        () => { this.props.visibility = newVisibility; }
+      );
+
+      emit(Events.EVENT_UI_VISIBILITYCHANGED, newVisibility, oldVisibility);
+    }
+  };
+
+  // APP DISPLAY / APP LAYOUT API
+
+  /**
+   * @return {string}
+   */
+  get display() { return this.props.display };
+
+  /**
+   * @return {boolean}
+   */
+  isExpanded = () => { return this.props.display ===  Constants.DISPLAY_EXPANDED; };
+
+  /**
+   * @return {boolean}
+   */
+  isCollapsed = () => { return this.props.display ===  Constants.DISPLAY_COLLAPSED; };
+
+  collapse = () => {
+    const newDisplay = Constants.DISPLAY_COLLAPSED;
+    const { eventDispatcher, display: oldDisplay } = this.props;
+
+    if (oldDisplay !== newDisplay) {
+      const emit = eventDispatcher.emitCancelable(
+        Events.EVENT_UI_BEFOREDISPLAYCHANGED,
+        () => { this.props.display = newDisplay; }
+      );
+
+      emit(Events.EVENT_UI_DISPLAYCHANGED, newDisplay, oldDisplay);
+    }
+  };
+
+  expand = () => {
+    const newDisplay = Constants.DISPLAY_EXPANDED;
+    const { eventDispatcher, display: oldDisplay } = this.props;
+
+    if (oldDisplay !== newDisplay) {
+      const emit = eventDispatcher.emitCancelable(
+        Events.EVENT_UI_BEFOREDISPLAYCHANGED,
+        () => { this.props.display = newDisplay; }
+      );
+
+      emit(Events.EVENT_UI_DISPLAYCHANGED, newDisplay, oldDisplay);
+    }
+  };
+
+  // UI STATE API
+
+  get state() { return this.props.state; }
+
+  isLoading = () => { return this.props.state ===  Constants.STATE_LOADING; };
+
+  isReady = () => { return this.props.state ===  Constants.STATE_READY; };
 
   showLoading = () => {
     const { eventDispatcher, state } = this.props;
 
     if (state !== Constants.STATE_LOADING) {
       this.props.state = Constants.STATE_LOADING;
-      eventDispatcher.emit(Events.EVENT_STATE_TRANSITION, Constants.STATE_LOADING, state);
+      eventDispatcher.emit(Events.EVENT_UI_STATECHANGED, Constants.STATE_LOADING, state);
     }
   };
 
@@ -99,80 +195,23 @@ export class UIFacade
 
     if (state === Constants.STATE_LOADING) {
       this.props.state = Constants.STATE_READY;
-      eventDispatcher.emit(Events.EVENT_STATE_TRANSITION, Constants.STATE_READY, state);
+      eventDispatcher.emit(Events.EVENT_UI_STATECHANGED, Constants.STATE_READY, state);
     }
   };
 
-  showMenu = () => {
-    const { eventDispatcher, menu:oldVisibility } = this.props;
+  // SETTINGS API
+
+  showSettings = () => {
     const newVisibility = Constants.VISIBILITY_VISIBLE;
+    const { eventDispatcher, settings: oldVisibility } = this.props;
 
     if (oldVisibility !== newVisibility) {
-      this.props.menu = newVisibility;
-      eventDispatcher.emit(Events.EVENT_MENU_STATE_TRANSITION, newVisibility, oldVisibility);
+      this.props.settings = newVisibility;
+      eventDispatcher.emit(Events.EVENT_SETTINGS_VISIBILITYCHANGED, newVisibility, oldVisibility);
     }
   };
 
-  hideMenu = () => {
-    const { eventDispatcher, menu:oldVisibility } = this.props;
-    const newVisibility = Constants.VISIBILITY_HIDDEN;
-
-    if (oldVisibility !== newVisibility) {
-      this.props.menu = newVisibility;
-      eventDispatcher.emit(Events.EVENT_MENU_STATE_TRANSITION, newVisibility, oldVisibility);
-    }
-  };
-
-  show = () => {
-    const { eventDispatcher, visibility } = this.props;
-
-    if (visibility === Constants.VISIBILITY_VISIBLE) {
-      const onEmitChangeVisibility = (emit) => {
-        emit();
-        this.props.visibility = Constants.VISIBILITY_VISIBLE;
-      };
-
-      eventDispatcher.emitIfNotCanceled(AppEvents.EVENT_BEFORE_SHOW, AppEvents.EVENT_SHOW, onEmitChangeVisibility);
-    }
-  };
-
-  hide = () => {
-    const { eventDispatcher, visibility } = this.props;
-
-    if (visibility !== Constants.VISIBILITY_HIDDEN) {
-      const onEmitChangeVisibility = (emit) => {
-        emit();
-        this.props.visibility = Constants.VISIBILITY_HIDDEN;
-      };
-      eventDispatcher.emitIfNotCanceled(AppEvents.EVENT_BEFORE_HIDE, AppEvents.EVENT_HIDE, onEmitChangeVisibility);
-    }
-  };
-
-  collapse = () => {
-    const { eventDispatcher, display } = this.props;
-
-    if (display !== Constants.DISPLAY_COLLAPSED) {
-      const onEmitChangeDisplay = (emit) => {
-        emit();
-        this.props.display = Constants.DISPLAY_COLLAPSED;
-      };
-
-      eventDispatcher.emitIfNotCanceled(AppEvents.EVENT_BEFORE_COLLAPSE, AppEvents.EVENT_COLLAPSE, onEmitChangeDisplay);
-    }
-  };
-
-  expand = () => {
-    const { eventDispatcher, display } = this.props;
-
-    if (display !== Constants.DISPLAY_EXPANDED) {
-      const onEmitChangeDisplay = (emit) => {
-        emit();
-        this.props.display = Constants.DISPLAY_EXPANDED;
-      };
-
-      eventDispatcher.emitIfNotCanceled(AppEvents.EVENT_BEFORE_EXPAND, AppEvents.EVENT_EXPAND, onEmitChangeDisplay);
-    }
-  };
+  // MISC API
 
   resetSize = () => {
     if (this.props.isResizing) { // wait until previous resize finishes to prevent a resize loop
@@ -184,10 +223,4 @@ export class UIFacade
     const { resizer } = this.props;
     resizer(onResize);
   };
-
-  showSettings = () => {
-    const { eventDispatcher } = this.props;
-    eventDispatcher.emit(Events.EVENT_SHOW_SETTINGS);
-  };
-
 }

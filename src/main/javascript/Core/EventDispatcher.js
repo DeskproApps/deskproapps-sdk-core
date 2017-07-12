@@ -1,4 +1,5 @@
 import { EventEmitter } from 'eventemitter3';
+import { Event } from './Event';
 
 /**
  * @param {EventDispatcher} eventDispatcher
@@ -40,20 +41,18 @@ export class EventDispatcher extends EventEmitter
 
   /**
    * @param {String} beforeEventName
-   * @param {String} eventName
-   * @param {function} dispatchEmit
-   * @return {EventDispatcher}
+   * @param {function} onBeforeEmit
+   * @return {function()}
    */
-  emitIfNotCanceled = (beforeEventName, eventName, dispatchEmit) =>
+  emitCancelable = (beforeEventName, onBeforeEmit) => (eventName, ...args) =>
   {
-    const event = new Event({ name: eventName });
+    const event = new Event({ name: eventName, args });
     this.emit(beforeEventName, event);
 
     if (event.enabled) {
-      dispatchEmit(this.emit.bind(this, eventName));
+      onBeforeEmit();
+      this.emit.apply(this, [eventName].concat(args));
     }
-
-    return this;
   };
 }
 

@@ -1,23 +1,10 @@
 import * as AppEvents from './AppEvents';
-import Event from './Event';
 
 import { createContext } from '../Context';
 import { create as createUI } from '../UI';
 import { createAppStateClient, createContextStateClient, StateApiFacade } from '../State';
 import { createDeskproApiClient } from '../WebAPI';
 import { createDeskproWindowFacade } from '../DeskproWindow';
-
-const emitIfNotCanceled = (eventDispatcher, eventName, beforeEventName) =>
-{
-  const event = new Event({ name: eventName });
-  eventDispatcher.emit(beforeEventName, event);
-
-  if (event.enabled) {
-    eventDispatcher.emit(eventName);
-  }
-
-  return event.enabled;
-};
 
 class App
 {
@@ -43,8 +30,7 @@ class App
       tabState: createContextStateClient(outgoingDispatcher, context),
       deskproWindow: createDeskproWindowFacade(outgoingDispatcher),
       context,
-      ui: createUI(internalDispatcher, outgoingDispatcher, windowProxy),
-      visibility: 'expanded', // hidden, collapsed, expanded
+      ui: createUI(internalDispatcher, outgoingDispatcher, windowProxy)
     };
 
     this.state = {
@@ -57,7 +43,7 @@ class App
   // EVENT EMITTER API
 
   /**
-   * @return {EventEmitter}
+   * @return {EventDispatcher}
    */
   get eventDispatcher() { return this.props.internalDispatcher; }
 

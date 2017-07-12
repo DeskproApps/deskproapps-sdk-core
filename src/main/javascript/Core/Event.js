@@ -73,12 +73,14 @@ const matchProps = (actualProps, {channelType, invocationType}) =>
   return true;
 };
 
-export default class Event
+export class Event
 {
 
-  constructor({ name }) {
-    this.props = { name, enabled: true }
+  constructor({ name, args }) {
+    this.props = { name, enabled: true, args }
   }
+
+  get args() { return JSON.parse(JSON.stringify(this.props.args)); }
 
   set enabled(flag) {
     this.props.enabled = flag;
