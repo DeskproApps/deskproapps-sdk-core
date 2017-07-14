@@ -1,3 +1,6 @@
+## Upcoming
+* [CHANGE] New application state API
+
 ## v1.0.0-alpha.12 - 2017-07-12
  
 * [FEATURE] add Properties API to allow retrieving of properties passed at runtime
