@@ -13,13 +13,15 @@ class StateApiFacade
   }
 
   setState(name, value, entityId, options) {
-    const url = `/apps/${this.props.instanceId}/state/${entityId}/${name}`;
+    const url = `apps/${this.props.instanceId}/state/${entityId}/${name}`;
+    const headers = { 'Accept': 'application/json' };
 
     let init;
     if (value === null || value === undefined) {
       init = { method: 'DELETE' };
     } else {
-      init = { method: 'PUT', body: value };
+      headers['Content-Type'] = 'application/json';
+      init = { method: 'PUT', body: JSON.stringify(value), headers };
     }
 
     return this.props.eventDispatcher.emitAsync(WebAPIEvents.EVENT_WEBAPI_REQUEST_FETCH, { url, init })
@@ -38,22 +40,24 @@ class StateApiFacade
   }
 
   getState(name, entityId, defaultValue = null) {
-    const url = `/apps/${this.props.instanceId}/state/${entityId}/${name}`;
+    const url = `/apps/${this.props.instanceId}/state/${entityId}/${name}?options.mode=find`;
+    const headers = { 'Accept': 'application/json' };
 
     let init = { method: 'GET' };
-    return this.props.eventDispatcher.emitAsync(WebAPIEvents.EVENT_WEBAPI_REQUEST_FETCH, { url, init })
-      .then(state => state ? JSON.parse(state) : null)
-      .then(value => value ? value : defaultValue)
+    return this.props.eventDispatcher.emitAsync(WebAPIEvents.EVENT_WEBAPI_REQUEST_FETCH, { url, init, headers })
+      .then((response) => {
+        return response.body ? response.body : defaultValue
+      })
     ;
   }
 
   getEntityState(name, defaultValue = null) {
-    const entityId = `app:${this.props.instanceId}`;
+    const entityId = `${this.props.entityType}:${this.props.entityId}`;
     return this.getState(name, entityId, defaultValue);
   }
 
   getAppState(name, defaultValue = null) {
-    const entityId = `${this.props.entityType}:${this.props.entityId}`;
+    const entityId = `app:${this.props.instanceId}`;
     return this.getState(name, entityId, defaultValue);
   }
 
