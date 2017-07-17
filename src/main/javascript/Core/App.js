@@ -2,7 +2,7 @@ import * as AppEvents from './AppEvents';
 
 import { createContext } from '../Context';
 import { create as createUI } from '../UI';
-import { createAppStateClient, createContextStateClient, StateApiFacade } from '../State';
+import { createStateAPIClient } from '../State';
 import { createDeskproApiClient } from '../WebAPI';
 import { createDeskproWindowFacade } from '../DeskproWindow';
 
@@ -26,14 +26,13 @@ class App
       instanceProps,
       contextProps,
       restApi: createDeskproApiClient(outgoingDispatcher),
-      appState: createAppStateClient(outgoingDispatcher),
-      tabState: createContextStateClient(outgoingDispatcher, context),
+      stateApi: createStateAPIClient(outgoingDispatcher, instanceProps, contextProps),
       deskproWindow: createDeskproWindowFacade(outgoingDispatcher),
       context,
       ui: createUI(internalDispatcher, outgoingDispatcher, windowProxy)
     };
 
-    this.state = {
+    this._state = {
       isResizing: false,
       appTitle: instanceProps.appTitle,
       badgeCount: 0
@@ -118,23 +117,23 @@ class App
   /**
    * @return {String}
    */
-  get appTitle() { return this.state.appTitle; }
+  get appTitle() { return this._state.appTitle; }
 
   /**
    * @param {String} newTitle
    */
   set appTitle(newTitle) {
-    const oldTitle = this.state.appTitle;
+    const oldTitle = this._state.appTitle;
 
     if (newTitle !== oldTitle) {
-      this.state.appTitle = newTitle;
+      this._state.appTitle = newTitle;
 
       const { eventDispatcher } = this.props;
       eventDispatcher.emit(AppEvents.EVENT_TITLE_CHANGED, newTitle, oldTitle);
     }
   }
 
-  resetAppTitle = () => { this.state.appTitle = this.props.instanceProps.appTitle; };
+  resetAppTitle = () => { this._state.appTitle = this.props.instanceProps.appTitle; };
 
   /**
    * @return {String}
@@ -185,12 +184,7 @@ class App
   /**
    * @return {StateApiFacade}
    */
-  get appState() { return this.props.appState; };
-
-  /**
-   * @return {StateApiFacade}
-   */
-  get tabState() { return this.props.tabState; };
+  get state() { return this.props.stateApi; };
 
   /**
    * @return {Context}
