@@ -15,6 +15,7 @@ export { StateApiFacade } from './StateApiFacade';
  */
 export const createStateAPIClient = (eventDispatcher, instanceProps, contextProps) => {
   const props = {
+    appId: instanceProps.appId,
     instanceId: instanceProps.instanceId,
     entityType: contextProps.contextType,
     entityId: contextProps.entityId
