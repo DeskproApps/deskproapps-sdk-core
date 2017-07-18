@@ -1,5 +1,6 @@
 import * as StateEvents from './Events';
 import {StateApiFacade} from './StateApiFacade';
+import {StateStorageAdapter} from './StateStorageAdapter';
 
 export { StateEvents };
 
@@ -20,7 +21,7 @@ export const createStateAPIClient = (eventDispatcher, instanceProps, contextProp
     entityType: contextProps.contextType,
     entityId: contextProps.entityId
   };
-  return new StateApiFacade(eventDispatcher, props);
+  return new StateApiFacade(eventDispatcher, new StateStorageAdapter(), props);
 };
 
 
