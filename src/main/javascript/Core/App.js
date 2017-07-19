@@ -110,6 +110,17 @@ class App
   }
 
   /**
+   * @return {'production'|'development'}
+   */
+  get environment () {
+    const defaultEnvironment = 'production';
+
+    const { contextProps } = this.props;
+    const env = contextProps.getProperty('appsEnvironment');
+    return env || defaultEnvironment;
+  }
+
+  /**
    * @return {String}
    */
   get appId() { return this.props.instanceProps.appId; }
