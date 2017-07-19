@@ -1,4 +1,4 @@
-import { StateStorageAdapter } from './StorageAdapter';
+import { StateStorageAdapter } from './StateStorageAdapter';
 
 const validName = (nameString) => typeof nameString === 'string' && nameString.length > 0;
 
@@ -38,19 +38,25 @@ class StateApiFacade
    * @param {String} instanceId
    * @param {String} entityType
    * @param {String} entityId
+   * @param {String} appId
+   * @param other
    */
-  constructor(eventDispatcher, storageAdapter, { instanceId, entityType, entityId }) {
-    this.props = { eventDispatcher, storageAdapter, instanceId, entityType, entityId };
+  constructor(eventDispatcher, storageAdapter, { instanceId, entityType, entityId, appId, ...other }) {
+    if (! storageAdapter instanceof StateStorageAdapter) {
+      throw new Error('param storageAdapter must be an instance of StateStorageAdapter');
+    }
+    this.props = { eventDispatcher, storageAdapter, instanceId, entityType, entityId, appId, ...other };
   }
 
   setState(...args) {
+    const { storageAdapter } = this.props;
 
-    if (args.length === 4) { //
-      const [name, value, entityId, options] = args;
+    if (args.length === 3) { //
+      const [name, value, entityId] = args;
       if (! validName(name)) {
         throw new Error('Bad method call: name parameter must be a non empty string');
       }
-      const { storageAdapter } = this;
+
       return storageAdapter.handleSetState(Promise.resolve(this.props), name, value, entityId);
     }
 
@@ -61,58 +67,25 @@ class StateApiFacade
         throw batchError;
       }
 
-      const { storageAdapter } = this;
       return storageAdapter.handleSetBatchState(Promise.resolve(this.props), batch, entityId);
     }
 
-    if (args.length == 3 && args[0] instanceof Array && typeof args[1] === 'string' && typeof args[2] === 'object') {
-      const [name, value, entityId] = args;
-      if (name ) {
-        const batchError = validateNameValuePairsList(name);
-        if (batchError instanceof Error) {
-          throw batchError;
-        }
-        const { storageAdapter } = this;
-        return storageAdapter.handleSetBatchState(Promise.resolve(this.props), name, value);
-      }
-    }
-
-    if (args.length == 3 && typeof args[0] === 'string' && typeof args[2] === 'object') {
-      const [name, value, entityId] = args;
-      if (! validName(name)) {
-        throw new Error('Bad method call: name parameter must be a non empty string');
-      }
-
-      const { storageAdapter } = this;
-      return storageAdapter.handleSetState(Promise.resolve(this.props), name, value, entityId);
-    }
-
-    throw new Error('Bad method call');
+    throw new Error(`Bad method call: unknown number of args: ${args.length}`);
   }
 
   setAppState(...args) {
     const entityId = `app:${this.props.appId}`;
-    if (args.length == 3) {
-      const [ name, value, options ] = args;
-      return this.setState(name, value, entityId, options);
-    }
-
-    if (args.length == 2 && args[0] instanceof Array ) {
-      const [ batch, options ] = args;
-      return this.setState(batch, entityId, options);
-    }
-
-    if (args.length == 2 && typeof args[0] == 'string' ) {
+    if (args.length == 2) {
       const [ name, value ] = args;
       return this.setState(name, value, entityId);
     }
 
-    if (args.length == 1 && typeof args[0] instanceof Array ) {
+    if (args.length == 1) {
       const [ batch ] = args;
       return this.setState(batch, entityId);
     }
 
-    throw new Error('Bad method call');
+    throw new Error(`Bad method call: unknown number of args: ${args.length}`);
   }
 
   /**
@@ -120,27 +93,17 @@ class StateApiFacade
    */
   setEntityState(...args) {
     const entityId = `${this.props.entityType}:${this.props.entityId}`;
-    if (args.length == 3) {
-      const [ name, value, options ] = args;
-      return this.setState(name, value, entityId, options);
-    }
-
-    if (args.length == 2 && args[0] instanceof Array ) {
-      const [ batch, options ] = args;
-      return this.setState(batch, entityId, options);
-    }
-
-    if (args.length == 2 && typeof args[0] == 'string' ) {
+    if (args.length == 2) {
       const [ name, value ] = args;
       return this.setState(name, value, entityId);
     }
 
-    if (args.length == 1 && typeof args[0] instanceof Array ) {
+    if (args.length == 1) {
       const [ batch ] = args;
       return this.setState(batch, entityId);
     }
 
-    throw new Error('Bad method call');
+    throw new Error(`Bad method call: unknown number of args: ${args.length}`);
   }
 
   /**
@@ -150,8 +113,9 @@ class StateApiFacade
    * @return {Promise}
    */
   getState(name, entityId, defaultValue = null) {
+    const { storageAdapter } = this.props;
+
     if (validName(name)) {
-      const { storageAdapter } = this;
       return storageAdapter.handleGetState(Promise.resolve(this.props), name, entityId, defaultValue || null)
     }
 
@@ -165,7 +129,6 @@ class StateApiFacade
       if (invalidName.length) {
         throw new Error('Bad method call: some names were not syntactically valid');
       }
-      const { storageAdapter } = this;
       return storageAdapter.handleGetBatchState(Promise.resolve(this.props), batch, entityId, defaultValue || null)
     }
 

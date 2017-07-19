@@ -1,6 +1,7 @@
 import * as StateEvents from './Events';
 import {StateApiFacade} from './StateApiFacade';
 import {StateStorageAdapter} from './StateStorageAdapter';
+import {LocalStorageAdapter} from './LocalStorageAdapter';
 
 export { StateEvents };
 
@@ -21,7 +22,10 @@ export const createStateAPIClient = (eventDispatcher, instanceProps, contextProp
     entityType: contextProps.contextType,
     entityId: contextProps.entityId
   };
-  return new StateApiFacade(eventDispatcher, new StateStorageAdapter(), props);
+
+  const env = contextProps.getProperty('appsEnvironment');
+  const storageAdapter = env === 'development' ? LocalStorageAdapter.fromGlobals() : new StateStorageAdapter();
+  return new StateApiFacade(eventDispatcher, storageAdapter, props);
 };
 
 
