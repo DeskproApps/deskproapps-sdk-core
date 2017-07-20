@@ -1,4 +1,4 @@
-## Upcoming
+## v1.0.0-beta.1 - 2017-07-20
 
 * [CHANGE] use new application state API
 * [ADDITION] context properties include application environment related properties 
