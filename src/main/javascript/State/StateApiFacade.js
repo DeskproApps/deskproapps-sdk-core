@@ -141,7 +141,7 @@ class StateApiFacade
   }
 
   getAppState(name, defaultValue = null) {
-    const entityId = `app:${this.props.instanceId}`;
+    const entityId = `app:${this.props.appId}`;
     return this.getState(name, entityId, defaultValue);
   }
 

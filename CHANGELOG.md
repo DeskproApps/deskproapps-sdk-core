@@ -1,3 +1,6 @@
+## Upcoming
+* [FIX] use application id instead of instance id when fetching application state
+
 ## v1.0.0-beta.1 - 2017-07-20
 
 * [CHANGE] use new application state API
