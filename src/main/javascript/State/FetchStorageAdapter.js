@@ -29,7 +29,7 @@ export class FetchAdapter extends StateStorageAdapter
             'Content-Type': 'application/json'
           },
           url: `apps/${instanceId}/state/${entityId}/${name}`,
-          body: JSON.stringify(value)
+          body: JSON.stringify({value})
         };
       }
 
@@ -112,7 +112,7 @@ export class FetchAdapter extends StateStorageAdapter
             'Accept': 'application/json',
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(value)
+          body: JSON.stringify({value})
         };
       }
 
@@ -141,7 +141,7 @@ export class FetchAdapter extends StateStorageAdapter
       };
       return props.eventDispatcher.emitAsync(WebAPIEvents.EVENT_WEBAPI_REQUEST_FETCH, { url, init });
     }).then((response) => {
-      return response.body ? response.body : defaultValue
+      return response.body && response.body.value ? response.body.value : defaultValue
     })
   };
 
@@ -162,7 +162,7 @@ export class FetchAdapter extends StateStorageAdapter
       const response = batchResponse.body[name];
 
       if (response.headers.response_code === 200) {
-        result[name] = response.data;
+        result[name] = response.data.value;
       } else {
         result[name] = defaultValue;
       }
