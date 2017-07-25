@@ -1,3 +1,7 @@
+## Upcoming
+* [FEATURE] add authentication api
+* [MAINTENANCE] Remove deprecated state events
+
 ## v1.0.0-beta.9 - 2017-08-02
 * [FIX] use correct webpack build options
 
