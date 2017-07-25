@@ -1,3 +1,7 @@
+## Upcoming
+* [FEATURE] add authentication api
+* [MAINTENANCE] Remove deprecated state events
+
 ## v1.0.0-beta.2 - 2017-07-20
 * [FIX] use application id instead of instance id when fetching application state
 
