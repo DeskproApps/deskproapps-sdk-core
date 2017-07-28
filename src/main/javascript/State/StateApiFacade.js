@@ -36,16 +36,16 @@ class StateApiFacade
    * @param {EventDispatcher} eventDispatcher
    * @param {StateStorageAdapter} storageAdapter
    * @param {String} instanceId
-   * @param {String} entityType
-   * @param {String} entityId
+   * @param {String} contextEntityType
+   * @param {String} contextEntityId
    * @param {String} appId
    * @param other
    */
-  constructor(eventDispatcher, storageAdapter, { instanceId, entityType, entityId, appId, ...other }) {
+  constructor(eventDispatcher, storageAdapter, { instanceId, contextEntityType, contextEntityId, appId, ...other }) {
     if (! storageAdapter instanceof StateStorageAdapter) {
       throw new Error('param storageAdapter must be an instance of StateStorageAdapter');
     }
-    this.props = { eventDispatcher, storageAdapter, instanceId, entityType, entityId, appId, ...other };
+    this.props = { eventDispatcher, storageAdapter, instanceId, contextEntityType, contextEntityId, appId, ...other };
   }
 
   setState(...args) {
@@ -92,7 +92,7 @@ class StateApiFacade
    * @return {*}
    */
   setEntityState(...args) {
-    const entityId = `${this.props.entityType}:${this.props.entityId}`;
+    const entityId = `${this.props.contextEntityType}:${this.props.contextEntityId}`;
     if (args.length == 2) {
       const [ name, value ] = args;
       return this.setState(name, value, entityId);
@@ -136,7 +136,7 @@ class StateApiFacade
   }
 
   getEntityState(name, defaultValue = null) {
-    const entityId = `${this.props.entityType}:${this.props.entityId}`;
+    const entityId = `${this.props.contextEntityType}:${this.props.contextEntityId}`;
     return this.getState(name, entityId, defaultValue);
   }
 
