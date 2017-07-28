@@ -1,12 +1,5 @@
 import { CHANNEL_OUTGOING, INVOCATION_REQUESTRESPONSE } from '../Core/Event'
 
-export const EVENT_STATE_FIND = 'state.find';
-
-export const EVENT_STATE_GET = 'state.get';
-
-export const EVENT_STATE_SET = 'state.set';
-
-export const EVENT_STATE_DELETE = 'state.delete';
 
 const events = {
 

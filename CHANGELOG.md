@@ -1,5 +1,5 @@
 ## Upcoming
-* [FEATURE] add authentication api
+* [FEATURE] add oauth api
 * [MAINTENANCE] Remove deprecated state events
 
 ## v1.0.0-beta.2 - 2017-07-20

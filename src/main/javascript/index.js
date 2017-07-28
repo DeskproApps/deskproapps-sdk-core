@@ -16,3 +16,6 @@ export { TicketEvents } from './Context';
 
 import * as DeskproWindowEvents from './DeskproWindow/Events';
 export { DeskproWindowEvents };
+
+import { OauthToken, SecurityEvents } from './Security';
+export { OauthToken, SecurityEvents };
