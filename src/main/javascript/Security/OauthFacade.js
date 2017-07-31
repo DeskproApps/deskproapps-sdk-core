@@ -7,11 +7,23 @@ export class OauthFacade
   /**
    * @param {EventDispatcher} eventDispatcher
    * @param {function} setState
+   * @param {String} appId
+   * @param {String} helpdeskUrl
    */
-  constructor(eventDispatcher, setState)
+  constructor(eventDispatcher, setState, { appId, helpdeskUrl })
   {
-    this.props = { eventDispatcher, setState };
+    this.props = { eventDispatcher, setState, appId, helpdeskUrl };
   }
+
+  /**
+   * @param {String} provider
+   * @return {string}
+   */
+  redirectUrl = (provider) =>
+  {
+    const { appId, helpdeskUrl } = this.props;
+    return `${helpdeskUrl}/api/v2/apps/oauth-proxy/authorize/${appId}/${provider}`;
+  };
 
   /**
    * @param {String} provider
@@ -22,7 +34,8 @@ export class OauthFacade
     const connectionProps = { ...details, providerName: provider };
     const connectionJS = OauthConnection.fromJS(connectionProps).toJS();
 
-    return this.props.setState('oauth:' + provider, connectionJS).then(() => connectionJS);
+    const stateName = `oauth:${provider}`;
+    return this.props.setState(stateName, connectionJS).then(() => ({ name: stateName, value: connectionJS }));
   };
 
   /**

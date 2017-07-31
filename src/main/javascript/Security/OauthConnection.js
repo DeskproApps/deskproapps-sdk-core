@@ -1,4 +1,4 @@
-import {OauthConnection} from './OauthConnection';
+import {PropertyBag} from '../Core/PropertyBag';
 
 export class OauthConnection extends PropertyBag
 {
@@ -13,13 +13,14 @@ export class OauthConnection extends PropertyBag
    * @param {String} urlAuthorize
    * @param {String} urlAccessToken
    * @param {String} urlResourceOwnerDetails
+   * @param {String} urlRedirect
    * @param {String} clientId
    * @param {String} clientSecret
    * @param {{}} otherProps
    */
-  constructor({ providerName, urlAuthorize, urlAccessToken, urlResourceOwnerDetails, clientId, clientSecret, ...otherProps })
+  constructor({ providerName, urlAuthorize, urlAccessToken, urlResourceOwnerDetails, urlRedirect, clientId, clientSecret, ...otherProps })
   {
-    super({ providerName, urlAuthorize, urlAccessToken, urlResourceOwnerDetails, clientId, clientSecret, ...otherProps })
+    super({ providerName, urlAuthorize, urlAccessToken, urlResourceOwnerDetails, urlRedirect, clientId, clientSecret, ...otherProps })
   }
 
   get providerName() { return this.props.providerName; }
@@ -29,6 +30,8 @@ export class OauthConnection extends PropertyBag
   get urlAccessToken() { return this.props.urlAccessToken; }
 
   get urlResourceOwnerDetails() { return this.props.urlResourceOwnerDetails; }
+
+  get urlRedirect() { return this.props.urlRedirect; }
 
   get clientId() { return this.props.clientId; }
 
