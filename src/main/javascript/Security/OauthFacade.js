@@ -17,12 +17,12 @@ export class OauthFacade
 
   /**
    * @param {String} provider
-   * @return {string}
+   * @return {Promise}
    */
-  redirectUrl = (provider) =>
+  settings = (provider) =>
   {
-    const { appId, helpdeskUrl } = this.props;
-    return `${helpdeskUrl}/api/v2/apps/oauth-proxy/authorize/${appId}/${provider}`;
+    const { eventDispatcher } = this.props;
+    return eventDispatcher.emitAsync(Events.EVENT_SECURITY_SETTINGS_OAUTH, { provider });
   };
 
   /**
