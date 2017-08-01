@@ -1,5 +1,13 @@
+## Upcoming
+* [MAINTENANCE] add travis build configuration
+
 ## v1.0.0-beta.4 - 2017-08-01
 * [MAINTENANCE] install and use the local dpat as the build tool
+
+## v1.0.0-beta.3 - 2017-08-01
+* [FEATURE] add oauth api
+* [MAINTENANCE] remove deprecated state events
+* [MAINTENANCE] automatic npm deploys via travis
 
 ## v1.0.0-beta.2 - 2017-07-20
 * [FIX] use application id instead of instance id when fetching application state
