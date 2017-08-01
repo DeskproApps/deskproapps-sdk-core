@@ -1,3 +1,6 @@
+## Upcoming
+* [MAINTENANCE] install and use the local dpat as the build tool
+
 ## v1.0.0-beta.2 - 2017-07-20
 * [FIX] use application id instead of instance id when fetching application state
 
