@@ -1,4 +1,4 @@
-## Upcoming
+## v1.0.0-beta.4 - 2017-08-01
 * [MAINTENANCE] install and use the local dpat as the build tool
 
 ## v1.0.0-beta.2 - 2017-07-20
