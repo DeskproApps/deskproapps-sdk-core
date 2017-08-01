@@ -1,6 +1,7 @@
 ## Upcoming
 * [FEATURE] add oauth api
-* [MAINTENANCE] Remove deprecated state events
+* [MAINTENANCE] remove deprecated state events
+* [MAINTENANCE] automatic npm deploys via travis
 
 ## v1.0.0-beta.2 - 2017-07-20
 * [FIX] use application id instead of instance id when fetching application state

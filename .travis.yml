@@ -1,7 +1,15 @@
- language: node_js
- node_js:
-   - "6"
+language: node_js
+node_js:
+- '6'
 install:
   - npm install
 script:
   - npm test
+before_deploy: "npm run make-clean && npm run make-lib && npm run make-dist"
+deploy:
+  provider: npm
+  email: radu.helstern@gmail.com
+  api_key: $NPM_TOKEN
+  skip_cleanup: true
+  on:
+    tags: true
