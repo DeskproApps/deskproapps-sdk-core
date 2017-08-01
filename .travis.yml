@@ -4,8 +4,7 @@
 install:
   - npm install
 script:
-  - npm test
-before_deploy: "npm run make-clean && npm run make-lib && npm run make-dist"
+  - npm test && npm run make-clean && npm run make-lib && npm run make-dist
 deploy:
   provider: npm
   email: radu.helstern@gmail.com
