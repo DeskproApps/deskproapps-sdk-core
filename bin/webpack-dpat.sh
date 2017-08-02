@@ -19,7 +19,8 @@ else
 fi
 
 WEBPACK="${DPAT_MODULES}/.bin/webpack"
-[ -z "${DPA_PACKAGE}" ] && DPA_PACKAGE='compact standalone'
+[ -z "${DPA_PACKAGE}" ] && DPA_PACKAGE='slim standalone'
+
 for package_mode in ${DPA_PACKAGE}; do
     NODE_PATH=${NODE_PATH} DPA_PACKAGE_MODE=${package_mode} ${WEBPACK} "$@"
 done
