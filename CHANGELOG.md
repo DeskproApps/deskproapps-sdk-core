@@ -1,3 +1,6 @@
+## Upcoming
+* [FIX] wrong path to jest in npm run test command
+
 ## v1.0.0-beta.7 - 2017-08-02
 * [FIX] add build scripts in correct location
 

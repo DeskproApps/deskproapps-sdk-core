@@ -8,7 +8,7 @@
     "make-clean": "rm -rf dist/*;  rm -rf lib/*",
     "make-lib": "BABEL='./bin/babel-dpat.sh'; ${BABEL} src/main/javascript -d lib/main/javascript && ${BABEL} src/xcomponent -d lib/xcomponent && ${BABEL} src/post-robot -d lib/post-robot",
     "make-dist": "WEBPACK='./bin/webpack-dpat.sh --config src/webpack/webpack.config-dist.js'; DPA_PACKAGE=${DPA_PACKAGE} ${WEBPACK}",
-    "test": "jest src/test"
+    "test": "JEST='./bin/jest-dpat.sh'; ${JEST} src/test"
   },
   "repository": {
     "type": "git",
