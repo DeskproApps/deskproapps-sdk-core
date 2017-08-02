@@ -1,4 +1,4 @@
-## Upcoming
+## v1.0.0-beta.8 - 2017-08-02
 * [FIX] wrong path to jest in npm run test command
 
 ## v1.0.0-beta.7 - 2017-08-02
