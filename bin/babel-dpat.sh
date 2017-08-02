@@ -1,28 +1,17 @@
 #!/usr/bin/env bash
 
-NPM_ROOT=$(npm root -g);
-DPAT_BABEL='@deskproapps/dpat/node_modules/.bin/babel'
-
+echo Discoverying dpat installation directory
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+DPAT_ROOT="$(${DIR}/discover.sh --module dpat)"
 
-LOCAL_BABEL="$( cd "${DIR}/../node_modules/" && pwd )/${DPAT_BABEL}"
-GLOBAL_BABEL="${NPM_ROOT}/${DPAT_BABEL}"
-
-BABEL=
-if [ -f ${LOCAL_BABEL} ]
+if [ -z "${DPAT_ROOT}" ]
 then
-    BABEL=${LOCAL_BABEL}
-elif [ -f ${GLOBAL_BABEL} ]
-then
-    BABEL=${GLOBAL_BABEL}
-fi
-
-if [ -z "${BABEL}" ]
-then
-    echo 'dpat is not installed locally or globally. please install dpat'
+    echo dpat is not installed locally or globally. please install dpat
     exit 1;
 fi
-echo $BABEL;
+
+echo Adding dpat node_modules folder to NODE_PATH
+NODE_PATH=${NODE_PATH}:${DPAT_ROOT}/node_modules
+
+BABEL="${DPAT_ROOT}/node_modules/.bin/babel"
 ${BABEL} "$@"
-
-

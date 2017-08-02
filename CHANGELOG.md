@@ -1,3 +1,6 @@
+## v1.0.0-beta.7 - 2017-08-02
+* [FIX] add build scripts in correct location
+
 ## v1.0.0-beta.6 - 2017-08-02
 * [MAINTENANCE] update travis configuration to use dpat for running the test
 
