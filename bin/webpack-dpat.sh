@@ -10,10 +10,11 @@ then
     exit 1;
 fi
 
-echo Adding dpat node_modules folder to NODE_PATH
+DPAT_MODULES=${DPAT_ROOT}/node_modules
+echo Adding dpat node_modules: ${DPAT_MODULES} to NODE_PATH: ${NODE_PATH}
 NODE_PATH=${NODE_PATH}:${DPAT_ROOT}/node_modules
 
-WEBPACK="${DPAT_ROOT}/node_modules/.bin/webpack"
+WEBPACK="${DPAT_MODULES}/.bin/webpack"
 [ -z "${DPA_PACKAGE}" ] && DPA_PACKAGE='compact standalone'
 for package_mode in ${DPA_PACKAGE}; do
     DPA_PACKAGE_MODE=${package_mode} ${WEBPACK} "$@"

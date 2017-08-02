@@ -10,8 +10,9 @@ then
     exit 1;
 fi
 
-echo Adding dpat node_modules folder to NODE_PATH
+DPAT_MODULES=${DPAT_ROOT}/node_modules
+echo Adding dpat node_modules: ${DPAT_MODULES} to NODE_PATH: ${NODE_PATH}
 NODE_PATH=${NODE_PATH}:${DPAT_ROOT}/node_modules
 
-JEST="${DPAT_ROOT}/node_modules/.bin/jest"
-${JEST} $@
+JEST="${DPAT_MODULES}/.bin/jest"
+NODE_PATH=${NODE_PATH} ${JEST} $@
