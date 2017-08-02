@@ -2,11 +2,17 @@
 
 Core javascript SDK for building Deskpro Apps
 
-
 ## Contents
+- [Installation](#installation)
 - [Building](#building)
 - [Running tests](#running-tests)
-- [Publishing a release](release.md)
+- [Online documentation](https://deskpro.github.io/deskproapps-sdk-core)
+
+## Installation
+    
+To install, run:
+    
+    npm install
     
 ## Building
 
