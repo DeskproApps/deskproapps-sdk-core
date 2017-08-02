@@ -11,8 +11,12 @@ then
 fi
 
 DPAT_MODULES=${DPAT_ROOT}/node_modules
-echo Adding dpat node_modules: ${DPAT_MODULES} to NODE_PATH: ${NODE_PATH}
-NODE_PATH=${NODE_PATH}:${DPAT_ROOT}/node_modules
+echo Adding dpat node_modules: ${DPAT_MODULES} to NODE_PATH: ${NODE_PATH} .
+if [  -z "${NODE_PATH}" ]; then
+    NODE_PATH=${DPAT_ROOT}/node_modules
+else
+    NODE_PATH=${NODE_PATH}:${DPAT_ROOT}/node_modules
+fi
 
 BABEL="${DPAT_MODULES}/.bin/babel"
-${BABEL} "$@"
+NODE_PATH=${NODE_PATH} ${BABEL} "$@"
