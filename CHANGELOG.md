@@ -1,3 +1,6 @@
+## Upcoming
+* [MAINTENANCE] update travis configuration to use dpat for running the test
+
 ## v1.0.0-beta.5 - 2017-08-01
 * [MAINTENANCE] add travis build configuration
 
