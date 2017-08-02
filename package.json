@@ -7,7 +7,7 @@
     "release": "npm_bump",
     "make-clean": "rm -rf dist/*;  rm -rf lib/*",
     "make-lib": "BABEL='./bin/babel-dpat.sh'; ${BABEL} src/main/javascript -d lib/main/javascript && ${BABEL} src/xcomponent -d lib/xcomponent && ${BABEL} src/post-robot -d lib/post-robot",
-    "make-dist": "WEBPACK='./bin/webpack-dpat.sh --config src/webpack/webpack.config-dist.js'; DPA_PACKAGE=${DPA_PACKAGE} ${WEBPACK}",
+    "make-dist": "WEBPACK='./bin/webpack-dpat.sh'; DPA_PACKAGE=${DPA_PACKAGE} ${WEBPACK} --config src/webpack/webpack.config-dist.js",
     "test": "JEST='./bin/jest-dpat.sh'; ${JEST} src/test"
   },
   "repository": {
