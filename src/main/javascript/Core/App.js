@@ -1,10 +1,12 @@
 import * as AppEvents from './AppEvents';
+import {SecurityEvents} from '../Security';
 
 import { createContext } from '../Context';
 import { create as createUI } from '../UI';
 import { createStateAPIClient } from '../State';
 import { createDeskproApiClient } from '../WebAPI';
 import { createDeskproWindowFacade } from '../DeskproWindow';
+import { createOauthAPIClient } from '../Security';
 
 class App
 {
@@ -29,7 +31,8 @@ class App
       stateApi: createStateAPIClient(outgoingDispatcher, instanceProps, contextProps),
       deskproWindow: createDeskproWindowFacade(outgoingDispatcher),
       context,
-      ui: createUI(internalDispatcher, outgoingDispatcher, windowProxy)
+      ui: createUI(internalDispatcher, outgoingDispatcher, windowProxy),
+      oauth: createOauthAPIClient(outgoingDispatcher, instanceProps, contextProps)
     };
 
     this._state = {
@@ -155,6 +158,13 @@ class App
    * @return {String}
    */
   get instanceId() { return this.props.instanceProps.instanceId; }
+
+  // OAUTH API
+
+  /**
+   * @return {OauthFacade}
+   */
+  get oauth() { return this.props.oauth; }
 
   // Settings API
 

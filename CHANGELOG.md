@@ -1,3 +1,6 @@
+## Upcoming
+* [FEATURE] add security api
+
 ## v1.0.0-beta.9 - 2017-08-02
 * [FIX] use correct webpack build options
 

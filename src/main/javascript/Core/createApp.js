@@ -4,8 +4,8 @@ import { windowProxy } from './Window';
 
 import { InternalEventDispatcher, IncomingEventDispatcher, OutgoingEventDispatcher } from './EventDispatcher';
 
-import { registerEventHandlers as registerStateEventHandlers, StateApiFacade } from '../State';
-
+import { registerEventHandlers as registerStateEventHandlers } from '../State';
+import { registerEventHandlers as registerSecurityEventHandlers } from '../Security';
 import { registerEventHandlers as registerAppEventHandlers } from './AppEventHandlers';
 import { registerEventHandlers as registerContextEventHandlers } from './ContextEventHandlers';
 import { registerEventHandlers as registerWebAPIEventHandlers } from '../WebAPI';
@@ -19,6 +19,7 @@ import { InstanceProps, ContextProps } from './AppProps';
 
 //register event listeners
 [
+  registerSecurityEventHandlers,
   registerStateEventHandlers,
   registerAppEventHandlers,
   registerContextEventHandlers,
