@@ -1,4 +1,4 @@
-## Upcoming
+## v1.0.0-beta.10 - 2017-08-07
 * [FEATURE] add security api
 
 ## v1.0.0-beta.9 - 2017-08-02
