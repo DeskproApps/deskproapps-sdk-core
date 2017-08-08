@@ -24,7 +24,9 @@ ENCRYPTED_KEY_VAR="encrypted_${DEPLOY_KEY_LABEL}_key"
 ENCRYPTED_IV_VAR="encrypted_${DEPLOY_KEY_LABEL}_iv"
 ENCRYPTED_KEY=${!ENCRYPTED_KEY_VAR}
 ENCRYPTED_IV=${!ENCRYPTED_IV_VAR}
-openssl aes-256-cbc -K ${ENCRYPTED_KEY} -iv ${ENCRYPTED_IV} -in src/travis/deploy-key.enc -out src/travis/deploy-key -d
+## openssl aes-256-cbc -K ${ENCRYPTED_KEY} -iv ${ENCRYPTED_IV} -in src/travis/deploy-key.enc -out src/travis/deploy-key -d
+openssl aes-256-cbc -K $encrypted_3778a32db008_key -iv $encrypted_3778a32db008_iv -in src/travis/deploy-key.enc -out src/travis/deploy-key -d
+
 chmod 600 src/travis/deploy-key
 eval `ssh-agent -s`
 ssh-add deploy_key
