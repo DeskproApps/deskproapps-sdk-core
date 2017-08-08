@@ -14,7 +14,10 @@
   "templates": {
     "referenceTitle": "DeskPRO Apps SDK",
      "cleverLinks": true,
-     "monospaceLinks": true
+     "monospaceLinks": true,
+      "default": {
+        "includeDate": false
+      }
   },
   "opts": {
     "encoding": "utf8",

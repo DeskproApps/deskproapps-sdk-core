@@ -40,4 +40,4 @@ eval `ssh-agent -s`
 ssh-add src/travis/deploy-key
 
 # Now that we're all set up, we can push.
-git push ${SSH_REPO} HEAD:add-documentation
+git push ${SSH_REPO} HEAD:${TRAVIS_BRANCH}
