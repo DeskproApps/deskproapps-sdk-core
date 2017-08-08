@@ -2,6 +2,12 @@
 
 set -e # Exit with nonzero exit code if anything fails
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PROJECT_ROOT="$(cd ${DIR}/../../ && pwd)"
+DEPLOY_KEY_ROOT="${PROJECT_ROOT}/src/travis"
+
+echo deploy key label : ${DEPLOY_KEY_LABEL} ${DEPLOY_KEY_ROOT}
+
 git config user.name "Travis CI"
 git config user.email "${COMMIT_AUTHOR_EMAIL}"
 git config core.autocrlf false
@@ -25,7 +31,7 @@ ENCRYPTED_IV_VAR="encrypted_${DEPLOY_KEY_LABEL}_iv"
 ENCRYPTED_KEY=${!ENCRYPTED_KEY_VAR}
 ENCRYPTED_IV=${!ENCRYPTED_IV_VAR}
 ## openssl aes-256-cbc -K ${ENCRYPTED_KEY} -iv ${ENCRYPTED_IV} -in src/travis/deploy-key.enc -out src/travis/deploy-key -d
-openssl aes-256-cbc -K $encrypted_3778a32db008_key -iv $encrypted_3778a32db008_iv -in src/travis/deploy-key.enc -out src/travis/deploy-key -d
+openssl aes-256-cbc -K $encrypted_3778a32db008_key -iv $encrypted_3778a32db008_iv -in ${DEPLOY_KEY_ROOT}/deploy-key.enc -out ${DEPLOY_KEY_ROOT}/deploy-key -d
 
 chmod 600 src/travis/deploy-key
 eval `ssh-agent -s`
