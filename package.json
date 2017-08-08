@@ -8,6 +8,7 @@
     "make-clean": "rm -rf dist/*;  rm -rf lib/*",
     "make-lib": "BABEL='./bin/babel-dpat.sh'; ${BABEL} src/main/javascript -d lib/main/javascript && ${BABEL} src/xcomponent -d lib/xcomponent && ${BABEL} src/post-robot -d lib/post-robot",
     "make-dist": "WEBPACK='./bin/webpack-dpat.sh'; DPA_PACKAGE=${DPA_PACKAGE} ${WEBPACK} --config src/webpack/webpack.config-dist.js",
+    "make-docs": "DOCS='./docs/reference'; rm -rf ${DOCS}/* && jsdoc --configure ./.jsdoc --destination ${DOCS} --verbose",
     "test": "JEST='./bin/jest-dpat.sh'; ${JEST} src/test"
   },
   "repository": {
@@ -36,5 +37,8 @@
     "get-size": "^2.0.2",
     "post-robot": "4.0.0",
     "xcomponent": "1.0.125"
+  },
+  "devDependencies": {
+    "docdash": "^0.4.0"
   }
 }

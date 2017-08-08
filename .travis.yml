@@ -1,10 +1,16 @@
 language: node_js
+env:
+  global:
+    - DEPLOY_KEY_LABEL: "3778a32db008"
+    - COMMIT_AUTHOR_EMAIL: "radu.helstern@gmail.com"
 node_js:
 - '6'
 install:
   - npm install && npm install @deskproapps/dpat@0.4.12
 script:
   - npm test && npm run make-clean && npm run make-lib && npm run make-dist
+after_script:
+  - ! ./bin/travis docs --should-publish || { npm run make-docs && ./bin/travis docs --publish; }
 deploy:
   provider: npm
   api_key: $NPM_TOKEN
@@ -12,3 +18,5 @@ deploy:
   skip_cleanup: true
   on:
     tags: true
+after_deploy:
+  - ! ./bin/travis docs --should-publish || ./bin/travis docs --publish
