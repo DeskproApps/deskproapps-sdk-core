@@ -51,7 +51,7 @@ fi
 
 if [  "docs --should-publish" == "${SCRIPT}" ]; then
    bin/travis.d/docs-should-publish.sh
-elif [  "docs --should-publish" == "${SCRIPT}" ]; then
+elif [  "docs --publish" == "${SCRIPT}" ]; then
   bin/travis.d/docs-publish.sh
 fi
 
