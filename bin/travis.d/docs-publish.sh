@@ -4,16 +4,19 @@ set -e # Exit with nonzero exit code if anything fails
 
 git config user.name "Travis CI"
 git config user.email "${COMMIT_AUTHOR_EMAIL}"
+git config core.autocrlf false
+git config core.safecrlf false
 
+# Commit the "changes", i.e. the new version.
+git add -A docs/reference
+
+CHANGES=$(git status --short docs/reference | head -n 1)
 # If there are no changes to the compiled out (e.g. this is a README update) then just bail.
-if git diff --quiet -- docs/reference; then
+if [ -z "${CHANGES}" ]; then
     echo "No changes to the output on this push; exiting."
     exit 0
 fi
 
-# Commit the "changes", i.e. the new version.
-# The delta will show diffs between new and old versions.
-git add -A docs/reference
 git commit -m "Publishing documentation"
 
 # Get the deploy key by using Travis's stored variables to decrypt deploy_key.enc
