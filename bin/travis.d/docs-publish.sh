@@ -2,8 +2,6 @@
 
 set -e # Exit with nonzero exit code if anything fails
 
-exit 0;
-
 git config user.name "Travis CI"
 git config user.email "${COMMIT_AUTHOR_EMAIL}"
 
