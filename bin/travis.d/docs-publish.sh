@@ -6,6 +6,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PROJECT_ROOT="$(cd ${DIR}/../../ && pwd)"
 DEPLOY_KEY_ROOT="${PROJECT_ROOT}/src/travis"
 
+REPO=`git config remote.origin.url`
 SSH_REPO=${REPO/https:\/\/github.com\//git@github.com:}
 
 git config user.name "Travis CI"
