@@ -1,7 +1,14 @@
+/**
+ * UI/Resizer module.
+ * @module UI/Resizer
+ */
+
 import { EVENT_RESET_SIZE } from '../Core/AppEvents';
 import { emitAsync } from '../Core/EventDispatcher';
 
 /**
+ * @method
+ *
  * @param {EventDispatcher}  outgoingDispatcher
  * @param {WindowProxy} windowProxy
  * @return {function}

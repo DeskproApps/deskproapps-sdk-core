@@ -1,12 +1,34 @@
+/**
+ * State module.
+ * @module State
+ */
+
 import * as StateEvents from './Events';
 import {StateApiFacade} from './StateApiFacade';
 import {FetchAdapter} from './FetchStorageAdapter';
 import {LocalStorageAdapter} from './LocalStorageAdapter';
 
-export { StateEvents };
+export {
+  /**
+   * @type {module:State/Events}
+   * @constant
+   */
+  StateEvents
+};
 
-export { registerEventHandlers } from './EventHandlers';
-export { StateApiFacade } from './StateApiFacade';
+export {
+  /**
+   * @method
+   */
+  registerEventHandlers
+} from './EventHandlers';
+
+export {
+  /**
+   * @type {StateApiFacade}
+   */
+  StateApiFacade
+} from './StateApiFacade';
 
 const storageAdapterProps = (instanceProps, contextProps) =>
 {
@@ -19,6 +41,8 @@ const storageAdapterProps = (instanceProps, contextProps) =>
 };
 
 /**
+ * @method
+ *
  * @param {EventDispatcher} eventDispatcher
  * @param {InstanceProps} instanceProps
  * @param {ContextProps} contextProps

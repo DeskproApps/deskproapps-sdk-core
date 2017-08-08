@@ -1,17 +1,44 @@
 import { EventMap } from './EventMap';
 
+/**
+ * @type {string}
+ */
 export const CHANNEL_INTERNAL = 'event.channel_internal';
+
+/**
+ * @type {string}
+ */
 export const CHANNEL_INCOMING = 'event.channel_incoming';
+
+/**
+ * @type {string}
+ */
 export const CHANNEL_OUTGOING = 'event.channel_outgoing';
+
+/**
+ * @enum
+ * @type {{CHANNEL_INCOMING: string, CHANNEL_INTERNAL: string, CHANNEL_OUTGOING: string}}
+ */
 export const channels = {
   CHANNEL_INCOMING,
   CHANNEL_INTERNAL,
   CHANNEL_OUTGOING
 };
 
+/**
+ * @type {string}
+ */
 export const INVOCATION_FIREANDFORGET = 'event.invocation_fireandforget';
+
+/**
+ * @type {string}
+ */
 export const INVOCATION_REQUESTRESPONSE = 'event.invocation_requestresponse';
 
+/**
+ * @enum
+ * @type {{INVOCATION_FIREANDFORGET: string, INVOCATION_REQUESTRESPONSE: string}}
+ */
 export const invocations = {
   INVOCATION_FIREANDFORGET,
   INVOCATION_REQUESTRESPONSE
@@ -19,6 +46,8 @@ export const invocations = {
 
 /**
  * Builds an event map from an object literal description where keys are event keys and values are event names
+ *
+ * @method
  *
  * @param {Object} events
  * @param {Object} eventProps
@@ -39,9 +68,12 @@ export const buildMap = (events, eventProps) =>
 };
 
 /**
+ * @method
+ *
  * @param {String} eventName
  * @param {Object} propsPattern
  * @param {EventMap} eventMap
+ * @return {boolean}
  */
 export const matchEvent = (eventName, propsPattern, eventMap) => {
   if (! eventMap.isEventName(eventName)) {
@@ -57,6 +89,7 @@ export const matchEvent = (eventName, propsPattern, eventMap) => {
 };
 
 /**
+ *
  * @param {*} actualProps
  * @param {String} channelType
  * @param {String} invocationType
@@ -73,20 +106,39 @@ const matchProps = (actualProps, {channelType, invocationType}) =>
   return true;
 };
 
-export class Event
+/**
+ * @class Event
+ */
+class Event
 {
-
+  /**
+   * @param {String} name event name
+   * @param {Array} args event arguments
+   */
   constructor({ name, args }) {
     this.props = { name, enabled: true, args }
   }
 
+  /**
+   * @readonly
+   * @type {Array}
+   */
   get args() { return JSON.parse(JSON.stringify(this.props.args)); }
 
+  /**
+   * @param {boolean} flag
+   */
   set enabled(flag) {
     this.props.enabled = flag;
   }
 
+  /**
+   * @public
+   * @type {boolean}
+   */
   get enabled() {
     return this.props.enabled;
   }
 }
+
+export { Event }

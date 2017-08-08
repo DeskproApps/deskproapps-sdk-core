@@ -1,11 +1,21 @@
+/**
+ * @module Context/OrganizationContext
+ */
+
 import { Context } from '../Core/Context';
 
+/**
+ * @class
+ * @extends {Context}
+ */
 export class OrganizationContext extends Context
 {
   static get TYPE() { return 'organization'; }
 }
 
 /**
+ * @method
+ *
  * @param {EventDispatcher} outgoingDispatcher
  * @param {EventDispatcher} incomingDispatcher
  * @param {ContextProps} contextProps

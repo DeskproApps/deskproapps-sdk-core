@@ -1,8 +1,12 @@
 import { StateStorageAdapter } from './StateStorageAdapter';
 
+/**
+ * @class
+ */
 export class LocalStorageAdapter extends StateStorageAdapter
 {
   /**
+   * @member
    * @return {LocalStorageAdapter}
    */
   static fromGlobals()
@@ -11,6 +15,9 @@ export class LocalStorageAdapter extends StateStorageAdapter
     return new LocalStorageAdapter(localStorage);
   }
 
+  /**
+   * @param {LocalStorage} localStorage
+   */
   constructor (localStorage)
   {
     super();
@@ -18,6 +25,7 @@ export class LocalStorageAdapter extends StateStorageAdapter
   }
 
   /**
+   * @method
    * @param {Promise} dispatchPromise
    * @param {Array<Array>} nameValuePairsList
    * @param entityId
@@ -44,6 +52,7 @@ export class LocalStorageAdapter extends StateStorageAdapter
   };
 
   /**
+   * @method
    * @param {Promise.<{eventDispatcher:EventDispatcher}>} dispatchPromise
    * @param name
    * @param value
@@ -67,6 +76,7 @@ export class LocalStorageAdapter extends StateStorageAdapter
   };
 
   /**
+   * @method
    * @param {Promise} dispatchPromise
    * @param name
    * @param entityId
@@ -90,6 +100,7 @@ export class LocalStorageAdapter extends StateStorageAdapter
   };
 
   /**
+   * @method
    * @param {Promise} dispatchPromise
    * @param {Array<String>} nameList
    * @param {String} entityId

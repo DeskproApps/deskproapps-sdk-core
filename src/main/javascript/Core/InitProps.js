@@ -1,10 +1,18 @@
+/**
+ * @module Core/InitProps
+ */
+
 const paramPrefix = 'dp.';
 
+/**
+ * @type {{dpXconfTag: string}}
+ */
 export const propNamesMap = {
   dpXconfTag: 'dp.xconf.tag'
 };
 
 /**
+ * @method
  * @param {InitProps} props
  */
 export const validate = props => {
@@ -15,6 +23,8 @@ export const validate = props => {
 };
 
 /**
+ * @method
+ *
  * @param {String} qs
  * @return {InitProps}
  */
@@ -35,6 +45,7 @@ export const parseQueryString = (qs) => {
 };
 
 /**
+ * @ignore
  * @param {String} str
  * @return {void|*|string|XML}
  */
@@ -44,6 +55,9 @@ const toPropName = str => {
 };
 
 /**
+ * @ignore
+ * @private
+ *
  * @param {String} str
  * @return {string}
  */
@@ -55,6 +69,13 @@ const toParamName = str =>
     .toLowerCase();
 };
 
+/**
+ * @ignore
+ * @private
+ *
+ * @param props
+ * @return {*}
+ */
 const encodeAsQueryString = (props) => {
   "use strict";
 
@@ -68,16 +89,26 @@ const encodeAsQueryString = (props) => {
   return Object.keys(props).reduce(reducer, '');
 };
 
-export class InitProps
+/**
+ * @class
+ */
+class InitProps
 {
   constructor({ dpXconfTag }) {
     this.props = { dpXconfTag };
   }
 
   /**
+   * @method
+   *
    * @return {String}
    */
   get dpXconfTag () {  return this.props.dpXconfTag; }
 
+  /**
+   * @method
+   */
   toQueryString() { return encodeAsQueryString(this.props); }
 }
+
+export { InitProps }

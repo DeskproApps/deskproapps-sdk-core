@@ -1,6 +1,13 @@
+/**
+ * @class
+ */
 export class StateStorageAdapter
 {
   /**
+   * @public
+   * @virtual
+   * @method
+   *
    * @param {Promise} dispatchPromise
    * @param {Array<Array>} nameValuePairsList
    * @param entityId
@@ -11,7 +18,12 @@ export class StateStorageAdapter
     throw new Error('method must be implemented in a subclass');
   };
 
+
   /**
+   * @public
+   * @method
+   * @virtual
+   *
    * @param {Promise.<{eventDispatcher:EventDispatcher}>} dispatchPromise
    * @param name
    * @param value
@@ -24,6 +36,10 @@ export class StateStorageAdapter
   };
 
   /**
+   * @public
+   * @method
+   * @virtual
+   *
    * @param {Promise} dispatchPromise
    * @param name
    * @param entityId
@@ -36,6 +52,10 @@ export class StateStorageAdapter
   };
 
   /**
+   * @public
+   * @method
+   * @virtual
+   *
    * @param {Promise} dispatchPromise
    * @param {Array<String>} nameList
    * @param {String} entityId

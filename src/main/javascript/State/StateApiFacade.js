@@ -1,3 +1,4 @@
+
 import { StateStorageAdapter } from './StateStorageAdapter';
 
 const validName = (nameString) => typeof nameString === 'string' && nameString.length > 0;
@@ -14,6 +15,8 @@ const validNameValuePair = (nameAndValue) => {
 };
 
 /**
+ * @private
+ * @ignore
  * @param batch
  * @return {Error|null}
  */
@@ -30,6 +33,9 @@ const validateNameValuePairsList = (batch) => {
   return null;
 };
 
+/**
+ * @class
+ */
 class StateApiFacade
 {
   /**
@@ -48,6 +54,13 @@ class StateApiFacade
     this.props = { eventDispatcher, storageAdapter, instanceId, contextEntityType, contextEntityId, appId, ...other };
   }
 
+  /**
+   * @public
+   * @method
+   *
+   * @param args
+   * @return {Promise}
+   */
   setState(...args) {
     const { storageAdapter } = this.props;
 
@@ -73,6 +86,13 @@ class StateApiFacade
     throw new Error(`Bad method call: unknown number of args: ${args.length}`);
   }
 
+  /**
+   * @public
+   * @method
+   *
+   * @param args
+   * @return {Promise}
+   */
   setAppState(...args) {
     const entityId = `app:${this.props.appId}`;
     if (args.length == 2) {
@@ -89,6 +109,9 @@ class StateApiFacade
   }
 
   /**
+   * @public
+   * @method
+   *
    * @return {*}
    */
   setEntityState(...args) {
@@ -107,6 +130,9 @@ class StateApiFacade
   }
 
   /**
+   * @public
+   * @method
+   *
    * @param {string|Array<string>}name
    * @param {string} entityId
    * @param {*} defaultValue
@@ -135,11 +161,27 @@ class StateApiFacade
     throw new Error('Bad method call');
   }
 
+  /**
+   * @public
+   * @method
+   *
+   * @param name
+   * @param defaultValue
+   * @return {Promise}
+   */
   getEntityState(name, defaultValue = null) {
     const entityId = `${this.props.contextEntityType}:${this.props.contextEntityId}`;
     return this.getState(name, entityId, defaultValue);
   }
 
+  /**
+   * @public
+   * @method
+   *
+   * @param name
+   * @param defaultValue
+   * @return {Promise}
+   */
   getAppState(name, defaultValue = null) {
     const entityId = `app:${this.props.appId}`;
     return this.getState(name, entityId, defaultValue);
@@ -147,4 +189,9 @@ class StateApiFacade
 
 }
 
-export { StateApiFacade };
+export {
+  /**
+   * @memberof module:State
+   */
+  StateApiFacade
+};

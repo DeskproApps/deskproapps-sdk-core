@@ -1,3 +1,7 @@
+/**
+ * @module Core/createApp
+ */
+
 import { isBrowser } from './utils';
 
 import { windowProxy } from './Window';
@@ -29,6 +33,7 @@ import { InstanceProps, ContextProps } from './AppProps';
 ].forEach(registrar => registrar(IncomingEventDispatcher, OutgoingEventDispatcher));
 
 /**
+ * @ignore
  * @param {InitProps} initParams
  * @return {{dimensions: {width: string, height: string}, props: {widgetId: {type: string, required: boolean}, appId: {type: string, required: boolean}, appTitle: {type: string, required: boolean}, appPackageName: {type: string, required: boolean}, instanceId: {type: string, required: boolean}, onDpMessage: {type: string, required: boolean}}, scrolling: boolean, autoResize: boolean, tag: *, url: string}}
  */
@@ -71,6 +76,7 @@ const getXcomponentOptions = initParams => {
 /**
  * Creates an application using the keys defined on the props object
  *
+ * @method
  * @param {Object} instanceProps
  * @param {Object} contextProps
  * @return {App}
@@ -90,6 +96,7 @@ export const createAppFromProps = ({instanceProps, contextProps}) =>
 };
 
 /**
+ * @method
  * @param {function} cb
  */
 const createApp = (cb) => {

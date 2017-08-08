@@ -1,3 +1,8 @@
+/**
+ * Security/Events module.
+ * @module Security/Events
+ */
+
 import { CHANNEL_OUTGOING, INVOCATION_REQUESTRESPONSE } from '../Core/Event'
 
 export const EVENT_SECURITY_AUTHENTICATE_OAUTH = 'security.authenticate.oauth';
@@ -10,8 +15,22 @@ const events = {
 
 };
 
+/**
+ * @readonly
+ * @enum
+ * @type {{EVENT_SECURITY_AUTHENTICATE_OAUTH: {channelType, invocationType}, EVENT_SECURITY_SETTINGS_OAUTH: {channelType, invocationType}}}
+ */
 export const props = events;
 
+/**
+ * @readonly
+ * @type {Array}
+ */
 export const eventNames = Object.keys(events).map(key => events[key]);
 
+/**
+ * @method
+ * @param {String} name
+ * @return {boolean}
+ */
 export const isEventName = name => eventNames.indexOf(name) !== -1;

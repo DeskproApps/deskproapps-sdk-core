@@ -1,3 +1,8 @@
+/**
+ * @module Core/EventDispatcher
+ */
+
+
 import { EventEmitter } from 'eventemitter3';
 import { Event } from './Event';
 
@@ -30,8 +35,19 @@ export const emitAsync = (eventDispatcher) =>
   return Promise.resolve(dispatchBinding);
 };
 
+/**
+ * @class
+ * @extend {EventEmitter}
+ */
 export class EventDispatcher extends EventEmitter
 {
+  /**
+   * @public
+   * @method
+   * @param {Strin} eventName
+   * @param args
+   * @return {Promise}
+   */
   emitAsync = (eventName, ...args) => {
     const executor = (resolve, reject) => {
       this.emit.apply(this, [eventName, resolve, reject].concat(args));
@@ -40,6 +56,9 @@ export class EventDispatcher extends EventEmitter
   };
 
   /**
+   * @public
+   * @method
+   *
    * @param {String} beforeEventName
    * @param {function} onBeforeEmit
    * @return {function()}
@@ -56,8 +75,22 @@ export class EventDispatcher extends EventEmitter
   };
 }
 
+/**
+ * @type {EventDispatcher}
+ */
 export const IncomingEventDispatcher = new EventDispatcher();
+
+/**
+ * @type {EventDispatcher}
+ */
 export const OutgoingEventDispatcher = new EventDispatcher();
+
+/**
+ * @type {EventDispatcher}
+ */
 export const InternalEventDispatcher = new EventDispatcher();
 
+/**
+ * @type {EventDispatcher}
+ */
 export const MessageBus = new EventDispatcher();

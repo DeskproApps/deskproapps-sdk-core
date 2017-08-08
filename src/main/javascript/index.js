@@ -1,21 +1,71 @@
-
+/**
+ * @method
+ */
 export createApp from './Core/createApp';
-export { createAppFromProps } from './Core/createApp';
+export {
+  /**
+   * @method
+   */
+  createAppFromProps
+} from './Core/createApp';
 
+/**
+ * @type {App}
+ */
 export App from './Core/App';
 
 import * as AppEvents from './Core/AppEvents';
-export { AppEvents };
+export {
+  /**
+   * @type {module:Core/AppEvents}
+   */
+  AppEvents
+};
 
-export { UIEvents, UIConstants } from './UI';
-export { StateEvents } from './State';
+export {
+  /**
+   * @type {module:UI/Events}
+   */
+  UIEvents,
+  /**
+   * @type {module:UI/Constants}
+   */
+  UIConstants
+} from './UI';
+
+export {
+  /**
+   * @type {module:State/Events}
+   */
+  StateEvents
+} from './State';
 
 import * as ContextEvents from './Core/ContextEvents';
-export {ContextEvents}
+export {
+  /**
+   * @type {module:Core/ContextEvents}
+   */
+  ContextEvents
+}
 export { TicketEvents } from './Context';
 
 import * as DeskproWindowEvents from './DeskproWindow/Events';
-export { DeskproWindowEvents };
+export {
+  /**
+   * @type {module:DeskproWindow/Events}
+   */
+  DeskproWindowEvents
+};
 
 import { OauthToken, SecurityEvents } from './Security';
-export { OauthToken, SecurityEvents };
+export {
+  /**
+   * @type {OauthToken}
+   */
+  OauthToken,
+
+  /**
+   * @type {module:Security/Events}
+   */
+  SecurityEvents
+};

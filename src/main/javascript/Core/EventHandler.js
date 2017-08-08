@@ -1,3 +1,7 @@
+/**
+ * @module Core/EventHandler
+ */
+
 import { MessageBus, IncomingEventDispatcher, OutgoingEventDispatcher } from './EventDispatcher';
 import { windowProxy } from './Window';
 import { WidgetRequest, WidgetResponse, parseIncomingMessage, createOutgoingResponseMessage, createOutgoingRequestMessage } from './Message';
@@ -48,6 +52,12 @@ const registerIncomingEventHandler = (eventName, eventProps, eventHandler) => {
   postRobotOn(eventName, event => dispatchIncomingEvent(eventName, eventProps, event.data));
 };
 
+/**
+ * @method
+ *
+ * @param {String} eventName
+ * @param {Object} eventProps
+ */
 export const handleIncomingEvent = (eventName, eventProps) =>
 {
   let eventHandler;
@@ -75,6 +85,12 @@ const registerOutgoingEventHandler = (eventName, eventProps, eventHandler) => {
   postRobotOn(eventName, event => dispatchIncomingEvent(eventName, eventProps, event.data));
 };
 
+/**
+ * @method
+ *
+ * @param {string} eventName
+ * @param {object} eventProps
+ */
 export const handleOutgoingEvent = (eventName, eventProps) =>
 {
   let eventHandler;

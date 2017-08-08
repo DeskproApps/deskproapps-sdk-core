@@ -8,6 +8,9 @@ import { createDeskproApiClient } from '../WebAPI';
 import { createDeskproWindowFacade } from '../DeskproWindow';
 import { createOauthAPIClient } from '../Security';
 
+/**
+ * @class
+ */
 class App
 {
   /**
@@ -45,11 +48,13 @@ class App
   // EVENT EMITTER API
 
   /**
+   * @public
    * @return {EventDispatcher}
    */
   get eventDispatcher() { return this.props.internalDispatcher; }
 
   /**
+   * @public
    * @param {String} eventName
    * @param {function} listener
    */
@@ -59,6 +64,8 @@ class App
   };
 
   /**
+   * @public
+   * @method
    * @param {String} eventName
    * @param {function} listener
    */
@@ -68,6 +75,8 @@ class App
   };
 
   /**
+   * @public
+   * @method
    * @param {String} eventName
    * @param {function} listener
    */
@@ -76,6 +85,12 @@ class App
     this.eventDispatcher.once(eventName, listener);
   };
 
+  /**
+   * @public
+   * @method
+   * @param eventName
+   * @param args
+   */
   emit = (eventName, ...args) => {
     // TODO need to check if eventName is an internal one, for now just assume everyything is
     const { internalDispatcher: eventDispatcher } = this.props;
@@ -86,7 +101,9 @@ class App
   // Properties API
 
   /**
-   * @param propertyName
+   * @public
+   * @method
+   * @param {String} propertyName
    * @return {String|null|undefined}
    */
   getProperty = (propertyName) => {
@@ -101,6 +118,7 @@ class App
   };
 
   /**
+   * @public
    * @return {Object}
    */
   get properties() {
@@ -113,6 +131,7 @@ class App
   }
 
   /**
+   * @public
    * @return {'production'|'development'}
    */
   get environment () {
@@ -124,16 +143,19 @@ class App
   }
 
   /**
+   * @public
    * @return {String}
    */
   get appId() { return this.props.instanceProps.appId; }
 
   /**
+   * @public
    * @return {String}
    */
   get appTitle() { return this._state.appTitle; }
 
   /**
+   * @public
    * @param {String} newTitle
    */
   set appTitle(newTitle) {
@@ -150,11 +172,13 @@ class App
   resetAppTitle = () => { this._state.appTitle = this.props.instanceProps.appTitle; };
 
   /**
+   * public
    * @return {String}
    */
   get packageName() { return this.props.instanceProps.appPackageName; }
 
   /**
+   * public
    * @return {String}
    */
   get instanceId() { return this.props.instanceProps.instanceId; }
@@ -162,6 +186,7 @@ class App
   // OAUTH API
 
   /**
+   * @public
    * @return {OauthFacade}
    */
   get oauth() { return this.props.oauth; }
@@ -169,15 +194,26 @@ class App
   // Settings API
 
   /**
+   * @public
    * @return {Array}
    */
   get settings() { return []; }
 
+  // Misc API
+
+  /**
+   * @public
+   * @method
+   */
   refresh = () => {
     const { internalDispatcher: eventDispatcher } = this.props;
     eventDispatcher.emit(AppEvents.EVENT_REFRESH);
   };
 
+  /**
+   * @public
+   * @method
+   */
   unload = () => {
     const { internalDispatcher: eventDispatcher } = this.props;
     eventDispatcher.emit(AppEvents.EVENT_UNLOAD);
@@ -186,11 +222,13 @@ class App
   // CLIENTS
 
   /**
+   * @public
    * @return {UIFacade}
    */
   get ui() { return this.props.ui; }
 
   /**
+   * @public
    * @return {DeskproWindowFacade}
    */
   get deskproWindow() {
@@ -198,16 +236,19 @@ class App
   };
 
   /**
+   * @public
    * @return {DeskproAPIClient}
    */
   get restApi() { return this.props.restApi; };
 
   /**
+   * @public
    * @return {StateApiFacade}
    */
   get state() { return this.props.stateApi; };
 
   /**
+   * @public
    * @return {Context}
    */
   get context() { return this.props.context; };

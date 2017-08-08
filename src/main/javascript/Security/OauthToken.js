@@ -1,14 +1,23 @@
 import { PropertyBag } from '../Core/PropertyBag'
 
+/**
+ * @class
+ */
 export class OauthToken extends PropertyBag
 {
   /**
+   * @static
+   * @method
+   *
    * @param {{}} js
    * @return {OauthToken}
    */
   static fromJS(js) { return new OauthToken(js); }
 
   /**
+   * @static
+   * @method
+   *
    * @param response
    * @return {OauthToken}
    */
@@ -38,11 +47,27 @@ export class OauthToken extends PropertyBag
     super({ accessToken, refreshToken, expires, resourceOwnerId, ...otherProps })
   }
 
+  /**
+   * @readonly
+   * @type {string}
+   */
   get accessToken() { return this.props.accessToken; }
 
+  /**
+   * @readonly
+   * @type {string}
+   */
   get refreshToken() { return this.props.refreshToken; }
 
+  /**
+   * @readonly
+   * @type {string}
+   */
   get expires() { return this.props.expires; }
 
+  /**
+   * @readonly
+   * @type {string}
+   */
   get resourceOwnerId() { return this.props.resourceOwnerId; }
 }

@@ -1,3 +1,8 @@
+/**
+ * UI module.
+ * @module UI
+ */
+
 import * as UIEvents from './Events';
 export { UIEvents }
 

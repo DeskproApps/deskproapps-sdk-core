@@ -1,8 +1,13 @@
+/**
+ * @module Core/Message
+ */
+
 let nextMessageId = 0;
 let nextCorrelationId = 0;
 
-
 /**
+ * @method
+ *
  * @param {String} widgetId
  * @param payload
  * @return {WidgetRequest}
@@ -16,6 +21,8 @@ export const createOutgoingRequestMessage = (widgetId, payload) =>
 };
 
 /**
+ * @method
+ *
  * @param {WidgetRequest} request
  * @param {*} body
  * @param {boolean} isError
@@ -31,6 +38,12 @@ export const createOutgoingResponseMessage = (request, body, isError) =>
   return new WidgetResponse({ id: id.toString(), widgetId, correlationId: correlationId.toString(), body, status });
 };
 
+/**
+ * @method
+ *
+ * @param raw
+ * @return {*}
+ */
 export const parseIncomingMessage = raw => {
   const { status } = raw;
 
@@ -42,6 +55,8 @@ export const parseIncomingMessage = raw => {
 };
 
 /**
+ * @method
+ *
  * @param {*} raw
  * @return {WidgetRequest}
  */
@@ -54,6 +69,8 @@ export const parseIncomingRequestMessage = raw =>
 };
 
 /**
+ * @method
+ *
  * @param {*} raw
  * @return {WidgetResponse}
  */
@@ -65,7 +82,9 @@ export const parseIncomingResponseMessage = raw =>
   return new WidgetResponse({ id, widgetId, correlationId: correlationId.toString(), body: parsedBody, status });
 };
 
-
+/**
+ * @class
+ */
 export class WidgetResponse
 {
   /**
@@ -81,39 +100,58 @@ export class WidgetResponse
   }
 
   /**
+   * @readonly
    *
-   * @return {String}
+   * @type {String}
    */
   get id() { return this.props.id };
 
   /**
-   * @return {String}
+   * @readonly
+   *
+   * @type {String}
    */
   get widgetId() { return this.props.widgetId };
 
   /**
-   * @return {String}
+   * @readonly
+   *
+   * @type {String}
    */
   get correlationId() { return this.props.correlationId };
 
   /**
-   * @return {String}
+   * @readonly
+   *
+   * @type {String}
    */
   get status() { return this.props.status };
 
   /**
-   * @return {*}
+   * @readonly
+   *
+   * @type {*}
    */
   get rawBody() { return this.props.body };
 
   /**
-   * @return {*}
+   * @readonly
+   *
+   * @type {*}
    */
   get body() { return this.props.body };
 
+  /**
+   * @method
+   *
+   * @return {Object}
+   */
   toJS = () => ({ ...this.props })
 }
 
+/**
+ * @class
+ */
 export class WidgetRequest
 {
   /**
@@ -128,25 +166,37 @@ export class WidgetRequest
   }
 
   /**
+   * @readonly
    *
-   * @return {String}
+   * @type {String}
    */
   get id() { return this.props.id };
 
   /**
-   * @return {String}
+   * @readonly
+   *
+   * @type {String}
    */
   get widgetId() { return this.props.widgetId };
 
   /**
-   * @return {String}
+   * @readonly
+   *
+   * @type {String}
    */
   get correlationId() { return this.props.correlationId };
 
   /**
-   * @return {*}
+   * @readonly
+   *
+   * @type {*}
    */
   get body() { return this.props.body };
 
+  /**
+   * @method
+   *
+   * @return {Object}
+   */
   toJS = () => ({ ...this.props })
 }

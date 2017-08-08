@@ -12,8 +12,9 @@ export class PropertyBag
   }
 
   /**
+   * @method
+   *
    * @param {String} propName
-   * @function
    * @return {{}}
    */
   getProperty = (propName) => {
@@ -25,11 +26,15 @@ export class PropertyBag
   };
 
   /**
+   * @method
+   *
    * @return {Object}
    */
   toJSON = () => this.toJS();
 
   /**
+   * @method
+   *
    * @return {Object}
    */
   toJS = () => {

@@ -2,6 +2,9 @@ import * as Events from './Events';
 import {OauthToken} from './OauthToken';
 import {OauthConnection} from './OauthConnection';
 
+/**
+ * @class
+ */
 export class OauthFacade
 {
   /**
@@ -16,6 +19,8 @@ export class OauthFacade
   }
 
   /**
+   * @method
+   *
    * @param {String} provider
    * @return {Promise}
    */
@@ -26,6 +31,8 @@ export class OauthFacade
   };
 
   /**
+   * @method
+   *
    * @param {String} provider
    * @param {{ urlAuthorize:String, urlAccessToken:String, urlAccessToken:String, urlResourceOwnerDetails:String, clientId:String, clientSecret:String }}  details
    * @return {*}
@@ -39,6 +46,8 @@ export class OauthFacade
   };
 
   /**
+   * @method
+   *
    * @param provider
    * @param options
    * @return {Promise}

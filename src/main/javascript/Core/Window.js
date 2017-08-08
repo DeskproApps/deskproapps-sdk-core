@@ -1,3 +1,7 @@
+/**
+ * @module Core/Window
+ */
+
 import getSize from 'get-size';
 import elementResizeDetectorMaker from 'element-resize-detector';
 import { parseQueryString, validate as validateInitParams } from './InitProps';
@@ -29,6 +33,9 @@ const parseInitParamsFromLocation = location => {
   return params;
 };
 
+/**
+ * @class
+ */
 class WindowProxy {
 
   /**
@@ -58,9 +65,16 @@ class WindowProxy {
     };
   }
 
+  /**
+   * @public
+   * @constant
+   * @type {WindowProxy~GetSize}
+   */
   get bodySize() { return getSize(this.props.windowObject.document.body); }
 
   /**
+   * @method
+   * @public
    * @param {String} eventName
    * @param {Function} cb
    */
@@ -80,17 +94,37 @@ class WindowProxy {
     this.state.windowListeners[eventName].push(cb);
   };
 
+  /**
+   * @type {{}}
+   * @constant
+   */
   get xchild() {
     const { windowObject } = this.props;
     return windowObject.xchild;
   }
 
   /**
-   * @return {InitProps|null}
+   * @constant
+   * @type {InitProps|null}
    */
   get initParams() { return this.state.initParams; }
 }
 
+/**
+ * @type {WindowProxy}
+ */
 export const windowProxy = new WindowProxy(window);
+
 export default WindowProxy;
 
+/**
+ * GetSize Type.
+ *
+ * @typedef {Object} WindowProxy~GetSize
+ * @property {number} width - Size in pixels.
+ * @property {number} height - Size in pixels.
+ * @property {number} innerWidth - Size in pixels.
+ * @property {number} innerHeight - Size in pixels.
+ * @property {number} outerWidth - Size in pixels.
+ * @property {number} outerHeight - Size in pixels.
+ */

@@ -1,5 +1,13 @@
+/**
+ * @module Core/AppProps
+ */
+
 import {PropertyBag} from './PropertyBag'
 
+/**
+ * @class
+ * @extends {PropertyBag}
+ */
 export class InstanceProps extends PropertyBag
 {
   /**
@@ -15,26 +23,42 @@ export class InstanceProps extends PropertyBag
   }
 
   /**
-   * @return {String}
+   * @public
+   * @readonly
+   *
+   * @type {String}
    */
   get appId() { return this.props.appId; }
 
   /**
-   * @return {String}
+   * @public
+   * @readonly
+   *
+   * @type {String}
    */
   get appTitle() { return this.props.appTitle; }
 
   /**
-   * @return {String}
+   * @public
+   * @readonly
+   *
+   * @type {String}
    */
   get appPackageName() { return this.props.appPackageName; }
 
   /**
-   * @return {String}
+   * @public
+   * @readonly
+   *
+   * @type {String}
    */
   get instanceId() { return this.props.instanceId; }
 }
 
+/**
+ * @class
+ * @extends {PropertyBag}
+ */
 export class ContextProps extends PropertyBag
 {
   /**
@@ -52,27 +76,42 @@ export class ContextProps extends PropertyBag
   }
 
   /**
-   * @return {String}
+   * @public
+   * @readonly
+   *
+   * @type {String}
    */
   get contextType() { return this.props.contextType; }
 
   /**
-   * @return {String}
+   * @public
+   * @readonly
+   *
+   * @type {String}
    */
   get entityId() { return this.props.entityId; }
 
   /**
-   * @return {String}
+   * @public
+   * @readonly
+   *
+   * @type {String}
    */
   get locationId() { return this.props.locationId; }
 
   /**
-   * @return {String}
+   * @public
+   * @readonly
+   *
+   * @type {String}
    */
   get tabId() { return this.props.tabId; }
 
   /**
-   * @return {String}
+   * @public
+   * @readonly
+   *
+   * @type {String}
    */
   get tabUrl() { return this.props.tabUrl; }
 }

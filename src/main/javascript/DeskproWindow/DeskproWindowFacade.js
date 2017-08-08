@@ -6,14 +6,27 @@ import * as Events from './Events';
  */
 export const create = eventDispatcher => { return new DeskproWindowFacade(eventDispatcher); };
 
+/**
+ * @class
+ */
 export class DeskproWindowFacade
 {
   constructor(eventDispatcher) {
     this.props = { eventDispatcher };
   }
 
+  /**
+   * @method
+   *
+   * @param notification
+   */
   showNotification = notification => this.props.eventDispatcher.emitAsync(Events.EVENT_DESKPROWINDOW_SHOW_NOTIFICATION, notification);
 
+  /**
+   * @method
+   * 
+   * @param markupString
+   */
   insertMarkup = markupString => this.props.eventDispatcher.emitAsync(Events.EVENT_DESKPROWINDOW_INSERT_MARKUP, markupString);
 
 }

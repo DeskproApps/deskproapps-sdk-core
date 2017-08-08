@@ -1,12 +1,17 @@
 import { WebAPIEvents } from '../WebAPI';
 import { StateStorageAdapter } from './StateStorageAdapter';
 
+/**
+ * @class
+ */
 export class FetchAdapter extends StateStorageAdapter
 {
   /**
+   * @method
    * @param {Promise.<{eventDispatcher:EventDispatcher}>} dispatchPromise
    * @param {Array<Array>} nameValuePairsList
    * @param entityId
+   * @return {Promise}
    */
   handleSetBatchState = (dispatchPromise, nameValuePairsList, entityId) => {
     const buildRequestBody = (instanceId, body, nameAndValue) => {
@@ -89,10 +94,13 @@ export class FetchAdapter extends StateStorageAdapter
   };
 
   /**
+   * @method
+   *
    * @param {Promise.<{eventDispatcher:EventDispatcher}>} dispatchPromise
    * @param name
    * @param value
    * @param entityId
+   * @return {Promise}
    */
   handleSetState = (dispatchPromise, name, value, entityId) =>
   {
@@ -121,6 +129,8 @@ export class FetchAdapter extends StateStorageAdapter
   };
 
   /**
+   * @method
+   *
    * @param {Promise.<EventDispatcher>} dispatchPromise
    * @param name
    * @param entityId
@@ -146,6 +156,8 @@ export class FetchAdapter extends StateStorageAdapter
   };
 
   /**
+   * @method
+   *
    * @param {Promise} dispatchPromise
    * @param {Array<String>} nameList
    * @param {String} entityId

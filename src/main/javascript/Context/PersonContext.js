@@ -1,11 +1,21 @@
+/**
+ * @module Context/PersonContext
+ */
+
 import { Context } from '../Core/Context';
 
+/**
+ * @class
+ * @extends {Context}
+ */
 export class PersonContext extends Context
 {
   static get TYPE() { return 'person'; }
 }
 
 /**
+ * @method
+ *
  * @param {EventDispatcher} outgoingDispatcher
  * @param {EventDispatcher} incomingDispatcher
  * @param {ContextProps} contextProps

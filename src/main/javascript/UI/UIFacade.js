@@ -3,6 +3,9 @@ import * as AppEvents from '../Core/AppEvents';
 import * as Events from './Events';
 import * as Constants from './Constants';
 
+/**
+ * @class
+ */
 export class UIFacade
 {
   /**
@@ -28,6 +31,9 @@ export class UIFacade
 
   get menu() { return this.props.menu; }
 
+  /**
+   * @method
+   */
   showMenu = () => {
     const { eventDispatcher, menu:oldVisibility } = this.props;
     const newVisibility = Constants.VISIBILITY_VISIBLE;
@@ -38,6 +44,9 @@ export class UIFacade
     }
   };
 
+  /**
+   * @method
+   */
   hideMenu = () => {
     const { eventDispatcher, menu:oldVisibility } = this.props;
     const newVisibility = Constants.VISIBILITY_HIDDEN;
@@ -50,8 +59,15 @@ export class UIFacade
 
   // BADGE API
 
+  /**
+   * @readonly
+   * @type {string}
+   */
   get badge() { return this.props.badge; }
 
+  /**
+   * @method
+   */
   showBadgeCount = () => {
     const newVisibility = Constants.VISIBILITY_VISIBLE;
     const { eventDispatcher, badge: oldVisibility } = this.props;
@@ -62,6 +78,9 @@ export class UIFacade
     }
   };
 
+  /**
+   * @method
+   */
   hideBadgeCount = () => {
     const newVisibility = Constants.VISIBILITY_HIDDEN;
     const { eventDispatcher, badge: oldVisibility } = this.props;
@@ -72,8 +91,14 @@ export class UIFacade
     }
   };
 
+  /**
+   * @type {number}
+   */
   get badgeCount() { return this.props.badgeCount; }
 
+  /**
+   * @param {number} newCount
+   */
   set badgeCount(newCount) {
     const { eventDispatcher, badgeCount: oldCount } = this.props;
     this.props.badgeCount = newCount;
@@ -86,20 +111,28 @@ export class UIFacade
   // APP VISIBILITY API
 
   /**
-   * @return {string}
+   * @readonly
+   * @type {string}
    */
   get visibility() { return this.props.visibility };
 
   /**
+   * @method
+   *
    * @return {boolean}
    */
   isVisible = () => { return this.props.visibility === Constants.VISIBILITY_VISIBLE; };
 
   /**
+   * @method
+   *
    * @return {boolean}
    */
   isHidden = () => { return this.props.visibility === Constants.VISIBILITY_HIDDEN; };
 
+  /**
+   * @method
+   */
   show = () => {
     const newVisibility = Constants.VISIBILITY_VISIBLE;
     const { eventDispatcher, visibility: oldVisibility } = this.props;
@@ -114,6 +147,9 @@ export class UIFacade
     }
   };
 
+  /**
+   * @method
+   */
   hide = () => {
     const newVisibility = Constants.VISIBILITY_HIDDEN;
     const { eventDispatcher, visibility: oldVisibility } = this.props;
@@ -131,20 +167,28 @@ export class UIFacade
   // APP DISPLAY / APP LAYOUT API
 
   /**
-   * @return {string}
+   * @readonly
+   * @type {string}
    */
   get display() { return this.props.display };
 
   /**
+   * @method
+   *
    * @return {boolean}
    */
   isExpanded = () => { return this.props.display ===  Constants.DISPLAY_EXPANDED; };
 
   /**
+   * @method
+   *
    * @return {boolean}
    */
   isCollapsed = () => { return this.props.display ===  Constants.DISPLAY_COLLAPSED; };
 
+  /**
+   * @method
+   */
   collapse = () => {
     const newDisplay = Constants.DISPLAY_COLLAPSED;
     const { eventDispatcher, display: oldDisplay } = this.props;
@@ -159,6 +203,9 @@ export class UIFacade
     }
   };
 
+  /**
+   * @method
+   */
   expand = () => {
     const newDisplay = Constants.DISPLAY_EXPANDED;
     const { eventDispatcher, display: oldDisplay } = this.props;
@@ -175,12 +222,29 @@ export class UIFacade
 
   // UI STATE API
 
+  /**
+   * @readonly
+   * @type {string}
+   */
   get state() { return this.props.state; }
 
+  /**
+   * @method
+   *
+   * @return {boolean}
+   */
   isLoading = () => { return this.props.state ===  Constants.STATE_LOADING; };
 
+  /**
+   * @method
+   *
+   * @return {boolean}
+   */
   isReady = () => { return this.props.state ===  Constants.STATE_READY; };
 
+  /**
+   * @method
+   */
   showLoading = () => {
     const { eventDispatcher, state } = this.props;
 
@@ -190,6 +254,9 @@ export class UIFacade
     }
   };
 
+  /**
+   * @method
+   */
   hideLoading = () => {
     const { eventDispatcher, state } = this.props;
 
@@ -201,6 +268,9 @@ export class UIFacade
 
   // SETTINGS API
 
+  /**
+   * @method
+   */
   showSettings = () => {
     const newVisibility = Constants.VISIBILITY_VISIBLE;
     const { eventDispatcher, settings: oldVisibility } = this.props;
@@ -213,6 +283,11 @@ export class UIFacade
 
   // MISC API
 
+  /**
+   * @method
+   *
+   * @return {boolean}
+   */
   resetSize = () => {
     if (this.props.isResizing) { // wait until previous resize finishes to prevent a resize loop
       return false;

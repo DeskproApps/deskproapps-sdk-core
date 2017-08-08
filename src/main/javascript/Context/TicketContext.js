@@ -1,7 +1,15 @@
+/**
+ * @module Context/TicketContext
+ */
+
 import { Context } from '../Core/Context';
 import { CHANNEL_INCOMING } from '../Core/Event'
 import { matchEvent } from './TicketEvents';
 
+/**
+ * @class
+ * @extends {Context}
+ */
 export class TicketContext extends Context
 {
   static get TYPE() { return 'ticket'; }
@@ -18,6 +26,8 @@ export class TicketContext extends Context
 }
 
 /**
+ * @method
+ *
  * @param {EventDispatcher} outgoingDispatcher
  * @param {EventDispatcher} incomingDispatcher
  * @param {ContextProps} contextProps

@@ -1,3 +1,8 @@
+/**
+ * Security module.
+ * @module Security
+ */
+
 import * as SecurityEvents from './Events';
 import { OauthFacade } from './OauthFacade';
 export { SecurityEvents };

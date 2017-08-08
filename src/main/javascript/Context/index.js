@@ -1,3 +1,7 @@
+/**
+ * @module Context
+ */
+
 import { TicketContext, tryAndCreate as TicketContextFactory } from './TicketContext';
 import { registerRequestListeners as registerTicketRequestListeners } from './TicketEventHandlers';
 
@@ -7,12 +11,20 @@ import { OrganizationContext, tryAndCreate as OrganizationContextFactory } from 
 import * as TicketEvents from './TicketEvents';
 export { TicketEvents };
 
+/**
+ * @readonly
+ * @type {Array.<String>}
+ */
 export const types = [
   TicketContext.TYPE,
   PersonContext.TYPE,
   OrganizationContext.TYPE
 ];
 
+/**
+ * @readonly
+ * @type {Array.<function>}
+ */
 export const factories = [
   TicketContextFactory,
   PersonContextFactory,
@@ -20,6 +32,8 @@ export const factories = [
 ];
 
 /**
+ * @method
+ *
  * @param {EventEmitter} outgoingDispatcher
  * @param {EventEmitter} incomingDispatcher
  * @param {ContextProps} contextProps

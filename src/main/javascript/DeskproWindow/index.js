@@ -1,5 +1,30 @@
-import * as DeskproWindowEvents from './Events';
-export { DeskproWindowEvents };
+/**
+ * @module DeskproWindow
+ */
 
-export { registerEventHandlers } from './EventHandlers';
-export { create as createDeskproWindowFacade, DeskproWindowFacade } from './DeskproWindowFacade';
+import * as DeskproWindowEvents from './Events';
+export {
+  /**
+   * @type {module:DeskproWindow/Events}
+   */
+  DeskproWindowEvents
+};
+
+export {
+  /**
+   * @method
+   */
+  registerEventHandlers
+} from './EventHandlers';
+
+export {
+  /**
+   * @method
+   */
+  create as createDeskproWindowFacade,
+
+  /**
+   * @type {DeskproWindowFacade}
+   */
+  DeskproWindowFacade
+} from './DeskproWindowFacade';
