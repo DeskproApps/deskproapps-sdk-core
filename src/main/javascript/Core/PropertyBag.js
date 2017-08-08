@@ -1,3 +1,6 @@
+/**
+ * @class
+ */
 export class PropertyBag
 {
   /**
@@ -10,7 +13,8 @@ export class PropertyBag
 
   /**
    * @param {String} propName
-   * @return {*}
+   * @function
+   * @return {{}}
    */
   getProperty = (propName) => {
     if (this.props.hasOwnProperty(propName)) {
@@ -20,6 +24,9 @@ export class PropertyBag
     return undefined;
   };
 
+  /**
+   * @return {Object}
+   */
   toJSON = () => this.toJS();
 
   /**
