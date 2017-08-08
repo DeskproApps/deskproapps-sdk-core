@@ -16,7 +16,7 @@ git config core.autocrlf false
 git config core.safecrlf false
 
 # Commit the "changes", i.e. the new version.
-git add -A docs/reference
+git add docs/reference
 
 CHANGES=$(git status --short docs/reference | head -n 1)
 # If there are no changes to the compiled out (e.g. this is a README update) then just bail.
