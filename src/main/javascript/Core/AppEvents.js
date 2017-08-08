@@ -56,11 +56,14 @@ const events = {
 export const props = events;
 
 /**
+ * @readonly
  * @type {Array<string>}
  */
 export const eventNames = Object.keys(events).map(key => events[key]);
 
 /**
+ * @method
+ *
  * @param {string} name
  * @return boolean
  */

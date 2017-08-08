@@ -5,13 +5,30 @@
 
 import * as SecurityEvents from './Events';
 import { OauthFacade } from './OauthFacade';
-export { SecurityEvents };
-export { OauthToken }  from './OauthToken';
-export { registerEventHandlers } from './EventHandlers';
+export {
+  /**
+   * @type {module:Security/Events}
+   */
+  SecurityEvents
+};
+export {
+  /**
+   * @type {OauthToken}
+   */
+  OauthToken
+}  from './OauthToken';
+export {
+  /**
+   * @method
+   */
+  registerEventHandlers
+} from './EventHandlers';
 
 import { createStateAPIClient } from '../State';
 
 /**
+ * @method
+ *
  * @param eventDispatcher
  * @param {InstanceProps} instanceProps
  * @param {ContextProps} contextProps
