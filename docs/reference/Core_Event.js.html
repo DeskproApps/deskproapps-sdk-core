@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Core/Event.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="Context_Context.html">Context</a></li><li><a href="ContextProps_ContextProps.html">ContextProps</a></li><li><a href="DeskproAPIClient_DeskproAPIClient.html">DeskproAPIClient</a></li><li><a href="InstanceProps_InstanceProps.html">InstanceProps</a></li><li><a href="OauthConnection_OauthConnection.html">OauthConnection</a></li><li><a href="OauthFacade_OauthFacade.html">OauthFacade</a></li><li><a href="OauthToken_OauthToken.html">OauthToken</a></li><li><a href="PropertyBag.html">PropertyBag</a><ul class='methods'><li data-type='method'><a href="PropertyBag.html#getProperty">getProperty</a></li></ul></li><li><a href="StateApiFacade.html">StateApiFacade</a><ul class='methods'><li data-type='method'><a href="StateApiFacade.html#getState">getState</a></li><li data-type='method'><a href="StateApiFacade.html#setEntityState">setEntityState</a></li></ul></li><li><a href="UIFacade_UIFacade.html">UIFacade</a></li><li><a href="WidgetRequest_WidgetRequest.html">WidgetRequest</a></li><li><a href="WidgetResponse_WidgetResponse.html">WidgetResponse</a></li><li><a href="WindowProxy.html">WindowProxy</a></li></ul><h3>Global</h3><ul><li><a href="global.html#buildMap">buildMap</a></li><li><a href="global.html#create">create</a></li><li><a href="global.html#createApp">createApp</a></li><li><a href="global.html#createAppFromProps">createAppFromProps</a></li><li><a href="global.html#createContext">createContext</a></li><li><a href="global.html#createDispatchOutgoingResponseEvent">createDispatchOutgoingResponseEvent</a></li><li><a href="global.html#createOauthAPIClient">createOauthAPIClient</a></li><li><a href="global.html#createOutgoingRequestMessage">createOutgoingRequestMessage</a></li><li><a href="global.html#createOutgoingResponseMessage">createOutgoingResponseMessage</a></li><li><a href="global.html#createResizer">createResizer</a></li><li><a href="global.html#createStateAPIClient">createStateAPIClient</a></li><li><a href="global.html#dispatch">dispatch</a></li><li><a href="global.html#dispatchIncomingEvent">dispatchIncomingEvent</a></li><li><a href="global.html#emitAsync">emitAsync</a></li><li><a href="global.html#getXcomponentOptions">getXcomponentOptions</a></li><li><a href="global.html#matchEvent">matchEvent</a></li><li><a href="global.html#matchProps">matchProps</a></li><li><a href="global.html#parseIncomingRequestMessage">parseIncomingRequestMessage</a></li><li><a href="global.html#parseIncomingResponseMessage">parseIncomingResponseMessage</a></li><li><a href="global.html#parseInitParamsFromLocation">parseInitParamsFromLocation</a></li><li><a href="global.html#parseQueryString">parseQueryString</a></li><li><a href="global.html#toParamName">toParamName</a></li><li><a href="global.html#toPropName">toPropName</a></li><li><a href="global.html#tryAndCreate">tryAndCreate</a></li><li><a href="global.html#validate">validate</a></li><li><a href="global.html#validateNameValuePairsList">validateNameValuePairsList</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">Core/Event.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { EventMap } from './EventMap';
+
+export const CHANNEL_INTERNAL = 'event.channel_internal';
+export const CHANNEL_INCOMING = 'event.channel_incoming';
+export const CHANNEL_OUTGOING = 'event.channel_outgoing';
+export const channels = {
+  CHANNEL_INCOMING,
+  CHANNEL_INTERNAL,
+  CHANNEL_OUTGOING
+};
+
+export const INVOCATION_FIREANDFORGET = 'event.invocation_fireandforget';
+export const INVOCATION_REQUESTRESPONSE = 'event.invocation_requestresponse';
+
+export const invocations = {
+  INVOCATION_FIREANDFORGET,
+  INVOCATION_REQUESTRESPONSE
+};
+
+/**
+ * Builds an event map from an object literal description where keys are event keys and values are event names
+ *
+ * @param {Object} events
+ * @param {Object} eventProps
+ * @return {EventMap}
+ */
+export const buildMap = (events, eventProps) =>
+{
+  const names = Object.keys(events).map(key => events[key]);
+
+  const map = {};
+  Object.keys(events).forEach(key => {
+    const value = events[key];
+    map[key] = value;
+    map[value] = key;
+  });
+
+  return new EventMap({ map, names, props: eventProps });
+};
+
+/**
+ * @param {String} eventName
+ * @param {Object} propsPattern
+ * @param {EventMap} eventMap
+ */
+export const matchEvent = (eventName, propsPattern, eventMap) => {
+  if (! eventMap.isEventName(eventName)) {
+    return false;
+  }
+
+  if (!propsPattern) {
+    return true;
+  }
+
+  const actualProps = eventMap.getEventProps(eventName);
+  return matchProps(actualProps, propsPattern);
+};
+
+/**
+ * @param {*} actualProps
+ * @param {String} channelType
+ * @param {String} invocationType
+ * @return {boolean}
+ */
+const matchProps = (actualProps, {channelType, invocationType}) =>
+{
+  if (!actualProps) { return !channelType &amp;&amp; !invocationType }
+
+  if (!channelType &amp;&amp; !invocationType ) { return false; }
+  if (channelType &amp;&amp; actualProps.channelType !== channelType) { return false; }
+  if (invocationType &amp;&amp; actualProps.invocationType !== invocationType) { return false; }
+
+  return true;
+};
+
+export class Event
+{
+
+  constructor({ name, args }) {
+    this.props = { name, enabled: true, args }
+  }
+
+  get args() { return JSON.parse(JSON.stringify(this.props.args)); }
+
+  set enabled(flag) {
+    this.props.enabled = flag;
+  }
+
+  get enabled() {
+    return this.props.enabled;
+  }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.4</a> using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
