@@ -29,7 +29,7 @@ openssl aes-256-cbc -K $encrypted_3778a32db008_key -iv $encrypted_3778a32db008_i
 
 chmod 600 src/travis/deploy-key
 eval `ssh-agent -s`
-ssh-add deploy_key
+ssh-add src/travis/deploy-key
 
 # Now that we're all set up, we can push.
 git push origin
