@@ -6,8 +6,8 @@ env:
 node_js:
 - '6'
 install:
-  - npm install --no-optional
-  - npm install @deskproapps/dpat@0.4.12
+#  - npm install --no-optional
+#  - npm install @deskproapps/dpat@0.4.12
   - !./bin/travis.sh docs --should-publish || npm install jsdoc@^3.5.4;
 script:
   - !./bin/travis.sh docs --should-publish || { npm run make-docs && ./bin/travis.sh docs --publish; }
