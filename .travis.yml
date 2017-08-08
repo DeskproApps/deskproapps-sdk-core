@@ -8,9 +8,9 @@ node_js:
 install:
 #  - npm install --no-optional
 #  - npm install @deskproapps/dpat@0.4.12
-  - "! ./bin/travis.sh docs --should-publish" || { npm install jsdoc@^3.5.4 && npm install docdash@^0.4.0; }
+  - "! ./bin/travis.sh docs --should-publish || { npm install jsdoc@^3.5.4 && npm install docdash@^0.4.0; }"
 script:
-  - "! ./bin/travis.sh docs --should-publish" || { npm run make-docs && ./bin/travis.sh docs --publish; }
+  - "! ./bin/travis.sh docs --should-publish || { npm run make-docs && ./bin/travis.sh docs --publish; }"
 #  - npm test && npm run make-clean && npm run make-lib && npm run make-dist
 #after_script:
 #  - !./bin/travis.sh docs --should-publish || { npm run make-docs && ./bin/travis.sh docs --publish; }
@@ -22,4 +22,4 @@ deploy:
   on:
     tags: true
 after_deploy:
-  - !./bin/travis.sh docs --should-publish || ./bin/travis.sh docs --publish
+  - "!./bin/travis.sh docs --should-publish || ./bin/travis.sh docs --publish"
