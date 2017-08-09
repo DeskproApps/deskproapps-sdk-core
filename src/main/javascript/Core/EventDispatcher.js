@@ -44,7 +44,7 @@ export class EventDispatcher extends EventEmitter
   /**
    * @public
    * @method
-   * @param {Strin} eventName
+   * @param {string} eventName
    * @param args
    * @return {Promise}
    */
