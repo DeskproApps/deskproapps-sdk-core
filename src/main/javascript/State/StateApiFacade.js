@@ -61,7 +61,7 @@ class StateApiFacade
    * @param args
    * @return {Promise}
    */
-  setState(...args) {
+  async setState(...args) {
     const { storageAdapter } = this.props;
 
     if (args.length === 3) { //
@@ -93,7 +93,7 @@ class StateApiFacade
    * @param args
    * @return {Promise}
    */
-  setAppState(...args) {
+  async setAppState(...args) {
     const entityId = `app:${this.props.appId}`;
     if (args.length == 2) {
       const [ name, value ] = args;
@@ -112,9 +112,9 @@ class StateApiFacade
    * @public
    * @method
    *
-   * @return {*}
+   * @return {Promise}
    */
-  setEntityState(...args) {
+  async setEntityState(...args) {
     const entityId = `${this.props.contextEntityType}:${this.props.contextEntityId}`;
     if (args.length == 2) {
       const [ name, value ] = args;
@@ -138,7 +138,7 @@ class StateApiFacade
    * @param {*} defaultValue
    * @return {Promise}
    */
-  getState(name, entityId, defaultValue = null) {
+  async getState(name, entityId, defaultValue = null) {
     const { storageAdapter } = this.props;
 
     if (validName(name)) {
@@ -169,7 +169,7 @@ class StateApiFacade
    * @param defaultValue
    * @return {Promise}
    */
-  getEntityState(name, defaultValue = null) {
+  async getEntityState(name, defaultValue = null) {
     const entityId = `${this.props.contextEntityType}:${this.props.contextEntityId}`;
     return this.getState(name, entityId, defaultValue);
   }
@@ -182,7 +182,7 @@ class StateApiFacade
    * @param defaultValue
    * @return {Promise}
    */
-  getAppState(name, defaultValue = null) {
+  async getAppState(name, defaultValue = null) {
     const entityId = `app:${this.props.appId}`;
     return this.getState(name, entityId, defaultValue);
   }
@@ -190,8 +190,5 @@ class StateApiFacade
 }
 
 export {
-  /**
-   * @memberof module:State
-   */
   StateApiFacade
 };

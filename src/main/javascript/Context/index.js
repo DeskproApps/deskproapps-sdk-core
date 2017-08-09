@@ -2,11 +2,12 @@
  * @module Context
  */
 
-import { TicketContext, tryAndCreate as TicketContextFactory } from './TicketContext';
-import { registerRequestListeners as registerTicketRequestListeners } from './TicketEventHandlers';
+import { TicketContext } from './TicketContext';
+import { registerEventHandlers as registerTicketEventHandlers } from './TicketEventHandlers';
+export { registerTicketEventHandlers };
 
-import { PersonContext, tryAndCreate as PersonContextFactory } from './PersonContext';
-import { OrganizationContext, tryAndCreate as OrganizationContextFactory } from './OrganizationContext';
+import { PersonContext } from './PersonContext';
+import { OrganizationContext } from './OrganizationContext';
 
 import * as TicketEvents from './TicketEvents';
 export { TicketEvents };
@@ -26,9 +27,9 @@ export const types = [
  * @type {Array.<function>}
  */
 export const factories = [
-  TicketContextFactory,
-  PersonContextFactory,
-  OrganizationContextFactory
+  TicketContext.tryAndCreate,
+  PersonContext.tryAndCreate,
+  OrganizationContext.tryAndCreate
 ];
 
 /**

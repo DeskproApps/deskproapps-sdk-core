@@ -12,8 +12,36 @@ import { matchEvent } from './TicketEvents';
  */
 export class TicketContext extends Context
 {
+  /**
+   * @static
+   * @readonly
+   * @type {string}
+   */
   static get TYPE() { return 'ticket'; }
 
+  /**
+   * @method
+   * @static
+   *
+   * @param {EventEmitter} outgoingDispatcher
+   * @param {EventEmitter} incomingDispatcher
+   * @param {ContextProps} contextProps
+   * @return {TicketContext|null}
+   */
+  static tryAndCreate({outgoingDispatcher, incomingDispatcher, contextProps})
+  {
+    if (contextProps.contextType === TicketContext.TYPE) {
+      const props = { outgoingDispatcher, incomingDispatcher, ...contextProps.toJS(), type: contextProps.contextType };
+      return new TicketContext(props);
+    }
+
+    return null;
+  }
+
+  /**
+   * @param {string} eventName
+   * @param {object} eventHandler
+   */
   on = (eventName, eventHandler) => {
     // the event is not an incoming event so we can't subscribe to it
     if (! matchEvent(eventName, { channelType: CHANNEL_INCOMING })) { return; }
@@ -24,21 +52,3 @@ export class TicketContext extends Context
     ;
   }
 }
-
-/**
- * @method
- *
- * @param {EventDispatcher} outgoingDispatcher
- * @param {EventDispatcher} incomingDispatcher
- * @param {ContextProps} contextProps
- * @return {TicketContext}
- */
-export const tryAndCreate = ({outgoingDispatcher, incomingDispatcher, contextProps}) =>
-{
-  if (contextProps.contextType === TicketContext.TYPE) {
-    const props = { outgoingDispatcher, incomingDispatcher, ...contextProps.toJS(), type: contextProps.contextType };
-    return new TicketContext(props);
-  }
-
-  return null;
-};

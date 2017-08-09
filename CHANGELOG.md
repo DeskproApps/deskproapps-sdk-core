@@ -1,3 +1,6 @@
+## Upcoming
+* [MAINTENANCE] use async keyword for methods which return a Promise
+
 ## v1.0.0-beta.11 - 2017-08-07
 * [MAINTENANCE] update dependencies
 
