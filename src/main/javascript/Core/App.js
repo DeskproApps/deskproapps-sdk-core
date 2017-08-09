@@ -169,7 +169,7 @@ class App
     }
   }
 
-  resetAppTitle = () => { this._state.appTitle = this.props.instanceProps.appTitle; };
+  resetAppTitle = () => { this.appTitle = this.props.instanceProps.appTitle; };
 
   /**
    * public
