@@ -8,12 +8,14 @@ export class FetchAdapter extends StateStorageAdapter
 {
   /**
    * @method
+   *
    * @param {Promise.<{eventDispatcher:EventDispatcher}>} dispatchPromise
    * @param {Array<Array>} nameValuePairsList
    * @param entityId
    * @return {Promise}
    */
-  handleSetBatchState = (dispatchPromise, nameValuePairsList, entityId) => {
+  async handleSetBatchState (dispatchPromise, nameValuePairsList, entityId)
+  {
     const buildRequestBody = (instanceId, body, nameAndValue) => {
       const [name, value] = nameAndValue;
 
@@ -62,8 +64,8 @@ export class FetchAdapter extends StateStorageAdapter
      * @return {Array}
      * @param saveBatchResults
      */
-    const collectSaveFailures = (saveBatchResults) => {
-
+    const collectSaveFailures = (saveBatchResults) =>
+    {
       const reducer = (failures, nameAndValue) => {
         const [name] = nameAndValue;
         if (! saveBatchResults[name]) {
@@ -102,7 +104,7 @@ export class FetchAdapter extends StateStorageAdapter
    * @param entityId
    * @return {Promise}
    */
-  handleSetState = (dispatchPromise, name, value, entityId) =>
+  async handleSetState (dispatchPromise, name, value, entityId)
   {
     return dispatchPromise.then((props) => {
       const url = `apps/${props.instanceId}/state/${entityId}/${name}`;
@@ -131,13 +133,13 @@ export class FetchAdapter extends StateStorageAdapter
   /**
    * @method
    *
-   * @param {Promise.<EventDispatcher>} dispatchPromise
+   * @param {Promise.<{eventDispatcher:EventDispatcher}>} dispatchPromise
    * @param name
    * @param entityId
    * @param defaultValue
    * @return {Promise.<*>}
    */
-  handleGetState = (dispatchPromise, name, entityId, defaultValue = null) =>
+  async handleGetState (dispatchPromise, name, entityId, defaultValue = null)
   {
     return dispatchPromise.then((props) => {
       const url = `apps/${props.instanceId}/state/${entityId}/${name}?options.mode=find`;
@@ -158,13 +160,14 @@ export class FetchAdapter extends StateStorageAdapter
   /**
    * @method
    *
-   * @param {Promise} dispatchPromise
+   * @param {Promise.<{eventDispatcher:EventDispatcher}>} dispatchPromise
    * @param {Array<String>} nameList
    * @param {String} entityId
    * @param {*} defaultValue
    * @return {Promise.<{}>}
    */
-  handleGetBatchState = (dispatchPromise, nameList, entityId, defaultValue = null) => {
+  async handleGetBatchState (dispatchPromise, nameList, entityId, defaultValue = null)
+  {
     const buildRequestBody = (instanceId, body, name) => {
       body[name] = `apps/${instanceId}/state/${entityId}/${name}?options.mode=find`;
       return body;

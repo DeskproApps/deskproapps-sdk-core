@@ -62,7 +62,12 @@ export class Context
    * @async
    * @return {Promise}
    */
-  isTabActive = () => this.props.outgoingDispatcher.emitAsync(ContextEvents.EVENT_TAB_STATUS, this.props.tabId).then(status => status.active);
+  async isTabActive()
+  {
+    return this.props.outgoingDispatcher.emitAsync(ContextEvents.EVENT_TAB_STATUS, this.props.tabId)
+      .then(status => status.active)
+    ;
+  };
 
   /**
    * @public
@@ -70,7 +75,10 @@ export class Context
    * @async
    * @return {Promise}
    */
-  activateTab = () => this.props.outgoingDispatcher.emitAsync(ContextEvents.EVENT_TAB_ACTIVATE, this.props.tabId);
+  async activateTab()
+  {
+    return this.props.outgoingDispatcher.emitAsync(ContextEvents.EVENT_TAB_ACTIVATE, this.props.tabId);
+  }
 
   /**
    * @public
@@ -78,7 +86,9 @@ export class Context
    * @async
    * @return {Promise}
    */
-  closeTab = () => this.props.outgoingDispatcher.emitAsync(ContextEvents.EVENT_TAB_CLOSE, this.props.tabId);
+  async closeTab() {
+    return this.props.outgoingDispatcher.emitAsync(ContextEvents.EVENT_TAB_CLOSE, this.props.tabId);
+  }
 
   /**
    * @public
@@ -86,7 +96,7 @@ export class Context
    * @async
    * @return {Promise}
    */
-  getTabData = () => this.props.outgoingDispatcher.emitAsync(ContextEvents.EVENT_TAB_DATA, this.props.tabId);
+  async getTabData() { return this.props.outgoingDispatcher.emitAsync(ContextEvents.EVENT_TAB_DATA, this.props.tabId); }
 
   /**
    * @public
@@ -94,5 +104,8 @@ export class Context
    * @async
    * @return {Promise}
    */
-  getMe = () => this.props.outgoingDispatcher.emitAsync(ContextEvents.EVENT_ME_GET);
+  async getMe() {
+    console.log('omega magus');
+    return this.props.outgoingDispatcher.emitAsync(ContextEvents.EVENT_ME_GET);
+  }
 }

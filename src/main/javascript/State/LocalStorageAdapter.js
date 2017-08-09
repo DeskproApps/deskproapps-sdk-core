@@ -6,7 +6,7 @@ import { StateStorageAdapter } from './StateStorageAdapter';
 export class LocalStorageAdapter extends StateStorageAdapter
 {
   /**
-   * @member
+   * @method
    * @return {LocalStorageAdapter}
    */
   static fromGlobals()
@@ -26,12 +26,12 @@ export class LocalStorageAdapter extends StateStorageAdapter
 
   /**
    * @method
-   * @param {Promise} dispatchPromise
+   * @param {Promise.<{eventDispatcher:EventDispatcher}>} dispatchPromise
    * @param {Array<Array>} nameValuePairsList
    * @param entityId
    * @return {Promise}
    */
-  handleSetBatchState = (dispatchPromise, nameValuePairsList, entityId) =>
+  async handleSetBatchState (dispatchPromise, nameValuePairsList, entityId)
   {
     const { localStorage } = this.props;
     return dispatchPromise.then((props) => {
@@ -59,7 +59,7 @@ export class LocalStorageAdapter extends StateStorageAdapter
    * @param entityId
    * @return {Promise}
    */
-  handleSetState = (dispatchPromise, name, value, entityId) =>
+  async handleSetState (dispatchPromise, name, value, entityId)
   {
     const { localStorage } = this.props;
     return dispatchPromise.then((props) => {
@@ -77,13 +77,13 @@ export class LocalStorageAdapter extends StateStorageAdapter
 
   /**
    * @method
-   * @param {Promise} dispatchPromise
+   * @param {Promise.<{eventDispatcher:EventDispatcher}>} dispatchPromise
    * @param name
    * @param entityId
    * @param defaultValue
    * @return {Promise.<*>}
    */
-  handleGetState = (dispatchPromise, name, entityId, defaultValue = null) =>
+  async handleGetState (dispatchPromise, name, entityId, defaultValue = null)
   {
     const { localStorage } = this.props;
 
@@ -101,13 +101,13 @@ export class LocalStorageAdapter extends StateStorageAdapter
 
   /**
    * @method
-   * @param {Promise} dispatchPromise
+   * @param {Promise.<{eventDispatcher:EventDispatcher}>} dispatchPromise
    * @param {Array<String>} nameList
    * @param {String} entityId
    * @param {*} defaultValue
    * @return {Promise.<{}>}
    */
-  handleGetBatchState = (dispatchPromise, nameList, entityId, defaultValue = null) =>
+  async handleGetBatchState(dispatchPromise, nameList, entityId, defaultValue = null)
   {
     const { localStorage } = this.props;
 

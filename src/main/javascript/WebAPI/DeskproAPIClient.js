@@ -26,8 +26,9 @@ export class DeskproAPIClient
    *
    * @return {Promise}
    */
-  fetch = (url,  init) => {
-    return this.props.eventDispatcher.emitAsync(Events.EVENT_WEBAPI_REQUEST_FETCH, { url, init})
+  async fetch (url, init) {
+    const request = { url, init };
+    return this.props.eventDispatcher.emitAsync(Events.EVENT_WEBAPI_REQUEST_FETCH, request);
   };
 
   /**
@@ -38,7 +39,7 @@ export class DeskproAPIClient
    *
    * @return {Promise}
    */
-  fetchCORS = (url,  init) => {
+  async fetchCORS(url, init){
     const corsInit = { ...init, mode: 'cors'};
     return this.props.eventDispatcher.emitAsync(Events.EVENT_WEBAPI_REQUEST_FETCH, { url, init: corsInit })
   };
@@ -47,7 +48,10 @@ export class DeskproAPIClient
    * @param {string} path
    * @return {Promise}
    */
-  get = (path) => this.props.eventDispatcher.emitAsync(Events.EVENT_WEBAPI_REQUEST_DESKPRO, { method: 'get', path});
+  async get(path) {
+    const request = { method: 'get', path };
+    return this.props.eventDispatcher.emitAsync(Events.EVENT_WEBAPI_REQUEST_DESKPRO, request);
+  }
 
   /**
    * @method
@@ -57,7 +61,10 @@ export class DeskproAPIClient
    *
    * @return {Promise}
    */
-  post = (path, body) => this.props.eventDispatcher.emitAsync(Events.EVENT_WEBAPI_REQUEST_DESKPRO, { method: 'post', path, body });
+  async post(path, body) {
+    const request = { method: 'post', path, body };
+    return this.props.eventDispatcher.emitAsync(Events.EVENT_WEBAPI_REQUEST_DESKPRO, request);
+  }
 
   /**
    * @method
@@ -67,16 +74,30 @@ export class DeskproAPIClient
    *
    * @return {Promise}
    */
-  put = (path, body) => this.props.eventDispatcher.emitAsync(Events.EVENT_WEBAPI_REQUEST_DESKPRO, { method: 'put', path, body });
+  async put(path, body) {
+    const request = { method: 'put', path, body };
+    return this.props.eventDispatcher.emitAsync(Events.EVENT_WEBAPI_REQUEST_DESKPRO, request);
+  }
+
+  /**
+   * @method
+   *
+   * @param {String} path
+   * @return {Promise}
+   */
+  async del(path)
+  {
+    const request = { method: 'delete', path };
+    return this.props.eventDispatcher.emitAsync(Events.EVENT_WEBAPI_REQUEST_DESKPRO, request);
+  }
 
   /**
    * @method
    *
    * @param {string} path
-   * @param {Object} body
    *
    * @return {Promise}
    */
-  ['delete'] = (path, body) => this.props.eventDispatcher.emitAsync(Events.EVENT_WEBAPI_REQUEST_DESKPRO, { method: 'delete', path });
+  ['delete'] = (path) => this.props.eventDispatcher.emitAsync(Events.EVENT_WEBAPI_REQUEST_DESKPRO, { method: 'delete', path });
 
 }

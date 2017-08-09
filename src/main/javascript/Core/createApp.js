@@ -13,7 +13,7 @@ import { registerEventHandlers as registerSecurityEventHandlers } from '../Secur
 import { registerEventHandlers as registerAppEventHandlers } from './AppEventHandlers';
 import { registerEventHandlers as registerContextEventHandlers } from './ContextEventHandlers';
 import { registerEventHandlers as registerWebAPIEventHandlers } from '../WebAPI';
-import { registerEventHandlers as registerTicketEventHandlers } from '../Context/TicketEventHandlers';
+import { registerTicketEventHandlers } from '../Context';
 import { registerEventHandlers as registerDeskproWindowEventHandlers } from '../DeskproWindow';
 
 import App from './App';

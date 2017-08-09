@@ -1,7 +1,3 @@
-/**
- * @module Context/PersonContext
- */
-
 import { Context } from '../Core/Context';
 
 /**
@@ -10,23 +6,29 @@ import { Context } from '../Core/Context';
  */
 export class PersonContext extends Context
 {
+  /**
+   * @static
+   * @readonly
+   * @type {string}
+   */
   static get TYPE() { return 'person'; }
-}
 
-/**
- * @method
- *
- * @param {EventDispatcher} outgoingDispatcher
- * @param {EventDispatcher} incomingDispatcher
- * @param {ContextProps} contextProps
- * @return {PersonContext}
- */
-export const tryAndCreate = ({outgoingDispatcher, incomingDispatcher, contextProps}) =>
-{
-  if (contextProps.contextType === PersonContext.TYPE) {
-    const props = { outgoingDispatcher, incomingDispatcher, ...contextProps.toJS(), type: contextProps.contextType };
-    return new PersonContext(props);
+  /**
+   * @method
+   * @static
+   *
+   * @param {EventEmitter} outgoingDispatcher
+   * @param {EventEmitter} incomingDispatcher
+   * @param {ContextProps} contextProps
+   * @return {PersonContext|null}
+   */
+  static tryAndCreate({outgoingDispatcher, incomingDispatcher, contextProps})
+  {
+    if (contextProps.contextType === PersonContext.TYPE) {
+      const props = { outgoingDispatcher, incomingDispatcher, ...contextProps.toJS(), type: contextProps.contextType };
+      return new PersonContext(props);
+    }
+
+    return null;
   }
-
-  return null;
-};
+}

@@ -24,7 +24,7 @@ export class OauthFacade
    * @param {String} provider
    * @return {Promise}
    */
-  settings = (provider) =>
+  async settings(provider)
   {
     const { eventDispatcher } = this.props;
     return eventDispatcher.emitAsync(Events.EVENT_SECURITY_SETTINGS_OAUTH, { provider });
@@ -35,9 +35,10 @@ export class OauthFacade
    *
    * @param {String} provider
    * @param {{ urlAuthorize:String, urlAccessToken:String, urlAccessToken:String, urlResourceOwnerDetails:String, clientId:String, clientSecret:String }}  details
-   * @return {*}
+   * @return {Promise}
    */
-  register = (provider, details) => {
+  async register(provider, details)
+  {
     const connectionProps = { ...details, providerName: provider };
     const connectionJS = OauthConnection.fromJS(connectionProps).toJS();
 
@@ -52,7 +53,8 @@ export class OauthFacade
    * @param options
    * @return {Promise}
    */
-  access = (provider, options) => {
+  async access(provider, options)
+  {
     const { eventDispatcher } = this.props;
     return eventDispatcher
       .emitAsync(Events.EVENT_SECURITY_AUTHENTICATE_OAUTH, { provider, options })

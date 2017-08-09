@@ -20,13 +20,17 @@ export class DeskproWindowFacade
    *
    * @param notification
    */
-  showNotification = notification => this.props.eventDispatcher.emitAsync(Events.EVENT_DESKPROWINDOW_SHOW_NOTIFICATION, notification);
+  async showNotification (notification) {
+    return this.props.eventDispatcher.emitAsync(Events.EVENT_DESKPROWINDOW_SHOW_NOTIFICATION, notification);
+  }
 
   /**
    * @method
    * 
    * @param markupString
    */
-  insertMarkup = markupString => this.props.eventDispatcher.emitAsync(Events.EVENT_DESKPROWINDOW_INSERT_MARKUP, markupString);
+  async insertMarkup(markupString) {
+    return this.props.eventDispatcher.emitAsync(Events.EVENT_DESKPROWINDOW_INSERT_MARKUP, markupString);
+  }
 
 }
