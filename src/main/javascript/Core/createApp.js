@@ -2,9 +2,7 @@
  * @module Core/createApp
  */
 
-import { isBrowser } from './utils';
-
-import { windowProxy } from './Window';
+import { WidgetWindow } from '../Widget';
 
 import { InternalEventDispatcher, IncomingEventDispatcher, OutgoingEventDispatcher } from './EventDispatcher';
 
@@ -15,62 +13,28 @@ import { registerEventHandlers as registerContextEventHandlers } from './Context
 import { registerEventHandlers as registerWebAPIEventHandlers } from '../WebAPI';
 import { registerTicketEventHandlers } from '../Context';
 import { registerEventHandlers as registerDeskproWindowEventHandlers } from '../DeskproWindow';
+import { registerEventHandlers as registerWindowEventHandlers } from '../Window';
 
 import App from './App';
 
-import { create } from '../../../xcomponent';
 import { InstanceProps, ContextProps } from './AppProps';
 
-//register event listeners
-[
-  registerSecurityEventHandlers,
-  registerStateEventHandlers,
-  registerAppEventHandlers,
-  registerContextEventHandlers,
-  registerWebAPIEventHandlers,
-  registerDeskproWindowEventHandlers,
-  registerTicketEventHandlers
-].forEach(registrar => registrar(IncomingEventDispatcher, OutgoingEventDispatcher));
-
 /**
- * @ignore
- * @param {InitProps} initParams
- * @return {{dimensions: {width: string, height: string}, props: {widgetId: {type: string, required: boolean}, appId: {type: string, required: boolean}, appTitle: {type: string, required: boolean}, appPackageName: {type: string, required: boolean}, instanceId: {type: string, required: boolean}, onDpMessage: {type: string, required: boolean}}, scrolling: boolean, autoResize: boolean, tag: *, url: string}}
+ * @param {App} app
  */
-const getXcomponentOptions = initParams => {
+const registerAppEventListeners = (app) => {
+  [
+    registerSecurityEventHandlers,
+    registerStateEventHandlers,
+    registerAppEventHandlers,
+    registerContextEventHandlers,
+    registerWebAPIEventHandlers,
+    registerDeskproWindowEventHandlers,
+    registerTicketEventHandlers,
+    registerWindowEventHandlers
+  ].forEach(registrar => registrar(app, IncomingEventDispatcher, OutgoingEventDispatcher));
 
-  return {
-    scrolling: false,
-    tag: initParams.dpXconfTag, //needs to match xcomponent config on the parent
-    url: 'http://localhost', // dummy entry to bypass validation
-
-    dimensions: { width: '100%', height: '100%' },
-
-    props: {
-
-      // WIDGET PROPERTIES
-
-      widgetId: {
-        type: 'string',
-        required: true
-      },
-
-      onDpMessage: {
-        type: 'function',
-        required: true
-      },
-
-      instanceProps: {
-        type:     'object',
-        required: true
-      },
-
-      contextProps: {
-        type:     'object',
-        required: true
-      }
-    }
-  };
+  return app;
 };
 
 /**
@@ -89,7 +53,7 @@ export const createAppFromProps = ({instanceProps, contextProps}) =>
     internalDispatcher: InternalEventDispatcher,
     instanceProps: new InstanceProps(instanceProps),
     contextProps: new ContextProps(contextProps),
-    windowProxy
+    appWindow: WidgetWindow
   };
 
   return new App(appProps);
@@ -100,22 +64,11 @@ export const createAppFromProps = ({instanceProps, contextProps}) =>
  * @param {function} cb
  */
 const createApp = (cb) => {
-  const xcomponentOptions = getXcomponentOptions(windowProxy.initParams);
-  const xcomponent = create(xcomponentOptions);
-
-  if (xcomponent.isChild()) {
-      xcomponent.child().init().then(xchild => {
-
-        const {instanceProps, contextProps} = xchild.props;
-        const app = createAppFromProps({instanceProps, contextProps});
-
-        // register the app with the resize listener
-        windowProxy.addEventListener('bodyResize', () => app.ui.resetSize());
-        windowProxy.addEventListener('load', () => cb(app));
-      }).catch();
-  } else if (isBrowser()) { // TODO this is clearly not going to work so the scenario where the app can run without xcomponent needs rethinking
-      windowProxy.addEventListener('load', () => cb(app));
-  }
+  WidgetWindow
+    .connect(createAppFromProps)
+    .then(registerAppEventListeners)
+    .then(cb)
+    .catch(err => { cb(null); }); // the scenario where the app can run without xcomponent needs rethinking
 };
 
 export default createApp;

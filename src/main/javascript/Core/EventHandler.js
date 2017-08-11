@@ -3,9 +3,7 @@
  */
 
 import { MessageBus, IncomingEventDispatcher, OutgoingEventDispatcher } from './EventDispatcher';
-import { windowProxy } from './Window';
-import { WidgetRequest, WidgetResponse, parseIncomingMessage, createOutgoingResponseMessage, createOutgoingRequestMessage } from './Message';
-import { on as postRobotOn } from '../../../post-robot';
+import { WidgetWindow, WidgetRequest, WidgetResponse, WidgetFactories } from '../Widget';
 import { INVOCATION_REQUESTRESPONSE, INVOCATION_FIREANDFORGET } from './Event'
 
 /**
@@ -14,14 +12,11 @@ import { INVOCATION_REQUESTRESPONSE, INVOCATION_FIREANDFORGET } from './Event'
  * @param rawMessage
  */
 const dispatchIncomingEvent = (eventName, eventProps, rawMessage) => {
-  // this should not be here good here
-  const { onDpMessage: postRobotSend } = windowProxy.xchild.props;
-
-  const message = parseIncomingMessage(rawMessage);
+  const message = WidgetFactories.parseMessageFromJS(rawMessage);
   if (message instanceof WidgetRequest && eventProps.invocationType === INVOCATION_REQUESTRESPONSE) {
     MessageBus.once(message.correlationId, response => {
       const payload = response instanceof WidgetResponse ? response.toJS() : response;
-      postRobotSend(eventName, payload);
+      WidgetWindow.emit(eventName, payload);
     });
     MessageBus.emit(eventName, message);
   }
@@ -42,23 +37,24 @@ const dispatchIncomingEvent = (eventName, eventProps, rawMessage) => {
 const createDispatchOutgoingResponseEvent = request => (error, data) => {
   const responsePayload = error ? error: data;
   const createErrorResponse = !!error;
-  const response = createOutgoingResponseMessage(request, responsePayload, createErrorResponse);
+  const response = WidgetFactories.nextResponse(request, responsePayload, createErrorResponse);
 
   MessageBus.emit(response.correlationId, response);
 };
 
 const registerIncomingEventHandler = (eventName, eventProps, eventHandler) => {
   MessageBus.on(eventName, eventHandler);
-  postRobotOn(eventName, event => dispatchIncomingEvent(eventName, eventProps, event.data));
+  WidgetWindow.on(eventName, event => dispatchIncomingEvent(eventName, eventProps, event.data));
 };
 
 /**
  * @method
  *
+ * @param {App} app
  * @param {String} eventName
  * @param {Object} eventProps
  */
-export const handleIncomingEvent = (eventName, eventProps) =>
+export const handleIncomingEvent = (app, eventName, eventProps) =>
 {
   let eventHandler;
 
@@ -82,36 +78,35 @@ export const handleIncomingEvent = (eventName, eventProps) =>
 
 const registerOutgoingEventHandler = (eventName, eventProps, eventHandler) => {
   OutgoingEventDispatcher.on(eventName, eventHandler);
-  postRobotOn(eventName, event => dispatchIncomingEvent(eventName, eventProps, event.data));
+  WidgetWindow.on(eventName, event => dispatchIncomingEvent(eventName, eventProps, event.data));
 };
 
 /**
  * @method
  *
+ * @param {App} app
  * @param {string} eventName
  * @param {object} eventProps
  */
-export const handleOutgoingEvent = (eventName, eventProps) =>
+export const handleOutgoingEvent = (app, eventName, eventProps) =>
 {
   let eventHandler;
 
   if (eventProps.invocationType === INVOCATION_REQUESTRESPONSE) {
     eventHandler = (resolve, reject, data) => {
-      // here we are sure windowProxy.xchild has been initialized, but this knowledge only makes this function brittle
-      const { widgetId, onDpMessage: postRobotSend } = windowProxy.xchild.props;
-      const request = createOutgoingRequestMessage(widgetId, data);
 
-      // register a response listener
-      MessageBus.once(request.correlationId, response => (response.status == 'success' ? resolve(response.body) : reject(response.body)) );
-      postRobotSend(eventName, request.toJS());
+      // resolve the promise when response comes
+      const responseExecutor = response => (response.status == 'success' ? resolve(response.body) : reject(response.body));
+
+      WidgetWindow.event(eventName, data)
+        .then(({emit, request}) => {
+          MessageBus.once(request.correlationId, responseExecutor);
+          emit(request);
+        });
     }
   } else if (eventProps.invocationType === INVOCATION_FIREANDFORGET) {
     eventHandler = (resolve, reject, data) => {
-      // here we are sure windowProxy.xchild has been initialized, but this knowledge only makes this function brittle
-      const { widgetId, onDpMessage: postRobotSend } = windowProxy.xchild.props;
-
-      const request = createOutgoingRequestMessage(widgetId, data);
-      postRobotSend(eventName, request.toJS());
+      WidgetWindow.emit(eventName, data);
       resolve(data);
     }
   }

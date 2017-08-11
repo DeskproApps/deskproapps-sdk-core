@@ -10,7 +10,7 @@ import { emitAsync } from '../Core/EventDispatcher';
  * @method
  *
  * @param {EventDispatcher}  outgoingDispatcher
- * @param {WindowProxy} windowProxy
+ * @param {WidgetWindowBridge} windowProxy
  * @return {function}
  */
 export const createResizer = (outgoingDispatcher, windowProxy) => (onResize) =>

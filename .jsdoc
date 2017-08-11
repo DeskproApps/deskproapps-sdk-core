@@ -12,7 +12,7 @@
     "plugins/markdown"
   ],
   "templates": {
-    "referenceTitle": "DeskPRO Apps SDK",
+    "referenceTitle": "DeskPRO Apps React SDK",
      "cleverLinks": true,
      "monospaceLinks": true,
       "default": {

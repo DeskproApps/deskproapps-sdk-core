@@ -7,7 +7,8 @@ import * as Events from './TicketEvents';
 
 /**
  * @method
+ * @param {App} app
  */
-export const registerEventHandlers = () => {
-  handleIncomingEvent( Events.EVENT_TICKET_REPLY, Events.props.EVENT_TICKET_REPLY  )
+export const registerEventHandlers = (app) => {
+  handleIncomingEvent(app, Events.EVENT_TICKET_REPLY, Events.props.EVENT_TICKET_REPLY)
 };

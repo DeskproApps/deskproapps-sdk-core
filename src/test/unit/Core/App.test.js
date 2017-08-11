@@ -1,7 +1,7 @@
 import App from '../../../main/javascript/Core/App';
 import { EventDispatcher } from '../../../main/javascript/Core/EventDispatcher'
 import { InstanceProps, ContextProps } from '../../../main/javascript/Core/AppProps';
-import WindowProxy from '../../../main/javascript/Core/Window';
+import { AppWindowBridge } from '../../../main/javascript/Window';
 
 test('successfully create an application', done => {
 
@@ -22,7 +22,7 @@ test('successfully create an application', done => {
       tabId : 'tab-1' ,
       tabUrl: 'https://127.0.0.1'
     }),
-    windowProxy: new WindowProxy({
+    windowProxy: new AppWindowBridge({
       location : { search: '', hash: '' },
       document: { readyState : 'notReady' }
     })
@@ -70,7 +70,7 @@ test('retrieve properties', done => {
     internalDispatcher:  new EventDispatcher(),
     instanceProps,
     contextProps,
-    windowProxy: new WindowProxy({
+    windowProxy: new AppWindowBridge({
       location : { search: '', hash: '' },
       document: { readyState : 'notReady' }
     })
@@ -123,7 +123,7 @@ test('retrieve property', done => {
     internalDispatcher:  new EventDispatcher(),
     instanceProps,
     contextProps,
-    windowProxy: new WindowProxy({
+    windowProxy: new AppWindowBridge({
       location : { search: '', hash: '' },
       document: { readyState : 'notReady' }
     })

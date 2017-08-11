@@ -1,3 +1,6 @@
+## Upcoming
+* [FEATURE] Relay mouse events to app container
+
 ## v1.0.0-beta.12 - 2017-08-09
 * [MAINTENANCE] use async keyword for methods which return a Promise
 

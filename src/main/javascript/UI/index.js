@@ -27,7 +27,7 @@ import { createResizer } from './Resizer';
  *
  * @param {EventDispatcher} internalEventDispatcher
  * @param {EventDispatcher} outgoingEventDispatcher
- * @param {WindowProxy} windowProxy
+ * @param {WidgetWindowBridge} windowProxy
  * @return {UIFacade}
  */
 export const create = (internalEventDispatcher, outgoingEventDispatcher, windowProxy) => {
