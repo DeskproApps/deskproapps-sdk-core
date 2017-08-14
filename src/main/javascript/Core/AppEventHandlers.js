@@ -7,9 +7,11 @@ import { handleOutgoingEvent } from './EventHandler';
 
 /**
  * @method
+ *
+ * @param {WidgetWindowBridge} windowBridge
  * @param {App} app
  */
-export const registerEventHandlers = (app) => {
-  handleOutgoingEvent(app, Events.EVENT_RESET_SIZE, Events.props.EVENT_RESET_SIZE);
-  handleOutgoingEvent(app, Events.EVENT_SUBSCRIBE, Events.props.EVENT_SUBSCRIBE);
+export const registerEventHandlers = (windowBridge, app) => {
+  handleOutgoingEvent(windowBridge, app, Events.EVENT_RESET_SIZE, Events.props.EVENT_RESET_SIZE);
+  handleOutgoingEvent(windowBridge, app, Events.EVENT_SUBSCRIBE, Events.props.EVENT_SUBSCRIBE);
 };

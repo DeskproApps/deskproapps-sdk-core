@@ -11,28 +11,6 @@ const propNamesMap = {
 };
 
 /**
- * @method
- *
- * @param {String} qs
- * @return {*}
- */
-const parseQueryString = (qs) => {
-  "use strict";
-  const props = {};
-  
-  const queryParams = qs.split('&').map(nameAndValue => nameAndValue.split('='));
-  for (const param of queryParams) {
-    const [name, value] = param;
-    if (name.substr(0, paramPrefix.length) === paramPrefix) {
-      const propName = toPropName(name);
-      props[propName] = decodeURIComponent(value);
-    }
-  }
-
-  return props;
-};
-
-/**
  * @ignore
  * @param {String} str
  * @return {void|*|string|XML}
@@ -52,9 +30,31 @@ const toPropName = str => {
 const toParamName = str =>
 {
   return paramPrefix + str
-    .replace(/([a-z\d])([A-Z])/g, '$1' + '.' + '$2')
-    .replace(/([A-Z]+)([A-Z][a-z\d]+)/g, '$1' + '.' + '$2')
-    .toLowerCase();
+      .replace(/([a-z\d])([A-Z])/g, '$1' + '.' + '$2')
+      .replace(/([A-Z]+)([A-Z][a-z\d]+)/g, '$1' + '.' + '$2')
+      .toLowerCase();
+};
+
+/**
+ * @method
+ *
+ * @param {String} qs
+ * @return {*}
+ */
+const parseQueryString = (qs) => {
+  "use strict";
+  const props = {};
+  
+  const queryParams = qs.split('&').map(nameAndValue => nameAndValue.split('='));
+  for (const param of queryParams) {
+    const [name, value] = param;
+    if (name.substr(0, paramPrefix.length) === paramPrefix) {
+      const propName = toPropName(name);
+      props[propName] = decodeURIComponent(value);
+    }
+  }
+
+  return props;
 };
 
 /**
@@ -82,16 +82,22 @@ const encodeAsQueryString = (props) => {
  */
 class InitProps
 {
-  static PARAM_PREFIX = paramPrefix;
+  /**
+   * @type {string}
+   */
+  static get PARAM_PREFIX() { return paramPrefix; } ;
 
-  static PROP_NAMES = propNamesMap;
+  /**
+   * @type {{dpXconfTag: string}}
+   */
+  static get PROP_NAMES() { return propNamesMap; } ;
   /**
    * @param {*|InitProps} propsOrInstance
    * @return {boolean}
    */
   static validate(propsOrInstance)
   {
-    if (typeof propsOrInstance === 'object') {
+    if (propsOrInstance && typeof propsOrInstance === 'object') {
       const { dpXconfTag } = propsOrInstance;
       return typeof dpXconfTag === 'string' && dpXconfTag != '';
     }
@@ -100,16 +106,27 @@ class InitProps
   }
 
   /**
+   * @type {string} queryString
+   * @return {InitProps|null}
+   */
+  static fromQueryString(queryString)
+  {
+    const initParams = parseQueryString(queryString);
+    if (InitProps.validate(initParams)) {
+      return new InitProps(initParams);
+    }
+
+    return null;
+  }
+
+  /**
    * @param {Window} windowObject
    * @return {InitProps}
    */
-  static parseFromLocation(windowObject)
+  static fromWindow(windowObject)
   {
     const {
-      /**
-       * @type {{search: String, hash: String}}
-       */
-      location
+      /** @type {{search: String, hash: String}} */ location
     } = windowObject;
 
     // build a list of potential sources for init params, ordered by priority
@@ -121,10 +138,9 @@ class InitProps
     if (paramsQueryStrings.length === 0) { return null; }
 
     for (const queryString of paramsQueryStrings) {
-      const initParams = parseQueryString(queryString);
-
-      if (InitProps.validate(initParams)) {
-        return new InitProps(initParams);
+      const initParams = InitProps.fromQueryString(queryString);
+      if (initParams) {
+        return initParams;
       }
     }
 

@@ -3,20 +3,23 @@
  */
 
 import { MessageBus, IncomingEventDispatcher, OutgoingEventDispatcher } from './EventDispatcher';
-import { WidgetWindow, WidgetRequest, WidgetResponse, WidgetFactories } from '../Widget';
+import { WidgetRequest, WidgetResponse, WidgetFactories } from '../Widget';
 import { INVOCATION_REQUESTRESPONSE, INVOCATION_FIREANDFORGET } from './Event'
 
 /**
+ * @param {WidgetWindowBridge} windowBridge
  * @param {String} eventName
  * @param {Object} eventProps
- * @param rawMessage
+ * @param {{ data:* }} event
  */
-const dispatchIncomingEvent = (eventName, eventProps, rawMessage) => {
+const dispatchIncomingEvent = (windowBridge, eventName, eventProps, event) => {
+  const { data: rawMessage } = event;
+
   const message = WidgetFactories.parseMessageFromJS(rawMessage);
   if (message instanceof WidgetRequest && eventProps.invocationType === INVOCATION_REQUESTRESPONSE) {
     MessageBus.once(message.correlationId, response => {
       const payload = response instanceof WidgetResponse ? response.toJS() : response;
-      WidgetWindow.emit(eventName, payload);
+      windowBridge.emit(eventName, payload);
     });
     MessageBus.emit(eventName, message);
   }
@@ -42,19 +45,15 @@ const createDispatchOutgoingResponseEvent = request => (error, data) => {
   MessageBus.emit(response.correlationId, response);
 };
 
-const registerIncomingEventHandler = (eventName, eventProps, eventHandler) => {
-  MessageBus.on(eventName, eventHandler);
-  WidgetWindow.on(eventName, event => dispatchIncomingEvent(eventName, eventProps, event.data));
-};
-
 /**
  * @method
  *
+ * @param {WidgetWindowBridge} windowBridge
  * @param {App} app
  * @param {String} eventName
  * @param {Object} eventProps
  */
-export const handleIncomingEvent = (app, eventName, eventProps) =>
+export const handleIncomingEvent = (windowBridge, app, eventName, eventProps) =>
 {
   let eventHandler;
 
@@ -69,26 +68,21 @@ export const handleIncomingEvent = (app, eventName, eventProps) =>
   }
 
   if (eventHandler) {
-    registerIncomingEventHandler(eventName, eventProps, eventHandler);
+    MessageBus.on(eventName, eventHandler);
+    windowBridge.on(eventName, dispatchIncomingEvent.bind(this, windowBridge, eventName, eventProps));
   }
 
-};
-
-// outgoing events
-
-const registerOutgoingEventHandler = (eventName, eventProps, eventHandler) => {
-  OutgoingEventDispatcher.on(eventName, eventHandler);
-  WidgetWindow.on(eventName, event => dispatchIncomingEvent(eventName, eventProps, event.data));
 };
 
 /**
  * @method
  *
+ * @param {WidgetWindowBridge} windowBridge
  * @param {App} app
  * @param {string} eventName
  * @param {object} eventProps
  */
-export const handleOutgoingEvent = (app, eventName, eventProps) =>
+export const handleOutgoingEvent = (windowBridge, app, eventName, eventProps) =>
 {
   let eventHandler;
 
@@ -98,7 +92,7 @@ export const handleOutgoingEvent = (app, eventName, eventProps) =>
       // resolve the promise when response comes
       const responseExecutor = response => (response.status == 'success' ? resolve(response.body) : reject(response.body));
 
-      WidgetWindow.event(eventName, data)
+      windowBridge.event(eventName, data)
         .then(({emit, request}) => {
           MessageBus.once(request.correlationId, responseExecutor);
           emit(request);
@@ -106,13 +100,14 @@ export const handleOutgoingEvent = (app, eventName, eventProps) =>
     }
   } else if (eventProps.invocationType === INVOCATION_FIREANDFORGET) {
     eventHandler = (resolve, reject, data) => {
-      WidgetWindow.emit(eventName, data);
+      windowBridge.emit(eventName, data);
       resolve(data);
     }
   }
 
   if (eventHandler) {
-    registerOutgoingEventHandler(eventName, eventProps, eventHandler);
+    OutgoingEventDispatcher.on(eventName, eventHandler);
+    windowBridge.on(eventName, dispatchIncomingEvent.bind(this, windowBridge, eventName, eventProps));
   }
 
 };

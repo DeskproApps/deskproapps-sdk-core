@@ -1,7 +1,8 @@
 import App from '../../../main/javascript/Core/App';
 import { EventDispatcher } from '../../../main/javascript/Core/EventDispatcher'
 import { InstanceProps, ContextProps } from '../../../main/javascript/Core/AppProps';
-import { AppWindowBridge } from '../../../main/javascript/Window';
+import { WidgetWindowBridge } from '../../../main/javascript/Widget/WidgetWindowBridge';
+import { InitProps } from "../../../main/javascript/Widget/InitProps";
 
 test('successfully create an application', done => {
 
@@ -22,10 +23,7 @@ test('successfully create an application', done => {
       tabId : 'tab-1' ,
       tabUrl: 'https://127.0.0.1'
     }),
-    windowProxy: new AppWindowBridge({
-      location : { search: '', hash: '' },
-      document: { readyState : 'notReady' }
-    })
+    appWindow: new WidgetWindowBridge({}, new InitProps({dpXconfTag: ''}))
   };
 
   const app = new App(params);
@@ -70,10 +68,7 @@ test('retrieve properties', done => {
     internalDispatcher:  new EventDispatcher(),
     instanceProps,
     contextProps,
-    windowProxy: new AppWindowBridge({
-      location : { search: '', hash: '' },
-      document: { readyState : 'notReady' }
-    })
+    appWindow: new WidgetWindowBridge({}, new InitProps({dpXconfTag: ''}))
   };
 
   const app = new App(params);
@@ -123,10 +118,7 @@ test('retrieve property', done => {
     internalDispatcher:  new EventDispatcher(),
     instanceProps,
     contextProps,
-    windowProxy: new AppWindowBridge({
-      location : { search: '', hash: '' },
-      document: { readyState : 'notReady' }
-    })
+    appWindow: new WidgetWindowBridge({}, new InitProps({dpXconfTag: ''}))
   };
 
   const app = new App(params);

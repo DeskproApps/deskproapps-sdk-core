@@ -1,5 +1,4 @@
 import * as AppEvents from './AppEvents';
-import {SecurityEvents} from '../Security';
 
 import { createContext } from '../Context';
 import { create as createUI } from '../UI';

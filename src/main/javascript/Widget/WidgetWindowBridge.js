@@ -2,7 +2,6 @@ import getSize from 'get-size';
 import elementResizeDetectorMaker from 'element-resize-detector';
 import { on as postRobotOn } from '../../../post-robot';
 
-import { XcomponentFactories } from './XcomponentFactories'
 import { WidgetFactories } from './WidgetFactories'
 import { EVENT_WINDOW_MOUSEEVENT } from './Events'
 
@@ -39,12 +38,10 @@ class WidgetWindowBridge {
   /**
    * @param {Window} windowObject
    * @param {InitProps} initProps
+   * @param {function} xcomponentFactory
    */
-  constructor(windowObject, initProps) {
-    this.props = { windowObject };
-
-    const deferredWindowListeners = { load: [], bodyResize: [] };
-    this.state = { initProps, deferredWindowListeners };
+  constructor(windowObject, initProps, xcomponentFactory) {
+    this.props = { windowObject, initProps, xcomponentFactory };
 
     const onLoadExecutor = (resolve, reject) => {
       if (windowObject.document.readyState === 'complete') {
@@ -70,13 +67,12 @@ class WidgetWindowBridge {
    */
   connect(createApp)
   {
-    const { initProps } = this.state;
-    const { windowObject } = this.props;
+    const { windowObject, initProps, xcomponentFactory } = this.props;
 
     return this.onLoadPromise
       .then(() => {
-        const xcomponent = XcomponentFactories.createFromAppInitProps(initProps);
-        if (xcomponent.isChild()) {
+        const xcomponent = xcomponentFactory(initProps);
+        if (xcomponent && xcomponent.isChild()) {
           return xcomponent.child().init();
         }
         // TODO the scenario where the app can run without xcomponent needs rethinking

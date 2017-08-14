@@ -2,7 +2,7 @@
  * @module Core/createApp
  */
 
-import { WidgetWindow } from '../Widget';
+import { WidgetFactories } from '../Widget';
 
 import { InternalEventDispatcher, IncomingEventDispatcher, OutgoingEventDispatcher } from './EventDispatcher';
 
@@ -13,16 +13,21 @@ import { registerEventHandlers as registerContextEventHandlers } from './Context
 import { registerEventHandlers as registerWebAPIEventHandlers } from '../WebAPI';
 import { registerTicketEventHandlers } from '../Context';
 import { registerEventHandlers as registerDeskproWindowEventHandlers } from '../DeskproWindow';
-import { registerEventHandlers as registerWindowEventHandlers } from '../Window';
 
 import App from './App';
 
 import { InstanceProps, ContextProps } from './AppProps';
 
 /**
+ * @type {WidgetWindowBridge}
+ */
+const WidgetWindow = WidgetFactories.windowBridgeFromWindow(window);
+
+/**
+ * @param {WidgetWindowBridge} windowBridge
  * @param {App} app
  */
-const registerAppEventListeners = (app) => {
+const registerAppEventListeners = (windowBridge, app) => {
   [
     registerSecurityEventHandlers,
     registerStateEventHandlers,
@@ -30,9 +35,8 @@ const registerAppEventListeners = (app) => {
     registerContextEventHandlers,
     registerWebAPIEventHandlers,
     registerDeskproWindowEventHandlers,
-    registerTicketEventHandlers,
-    registerWindowEventHandlers
-  ].forEach(registrar => registrar(app, IncomingEventDispatcher, OutgoingEventDispatcher));
+    registerTicketEventHandlers
+  ].forEach(registrar => registrar(windowBridge, app, IncomingEventDispatcher, OutgoingEventDispatcher));
 
   return app;
 };
@@ -66,7 +70,7 @@ export const createAppFromProps = ({instanceProps, contextProps}) =>
 const createApp = (cb) => {
   WidgetWindow
     .connect(createAppFromProps)
-    .then(registerAppEventListeners)
+    .then(registerAppEventListeners.bind(null, WidgetWindow))
     .then(cb)
     .catch(err => { cb(null); }); // the scenario where the app can run without xcomponent needs rethinking
 };

@@ -21,7 +21,7 @@ class XcomponentFactories
    * @param {string} dpXconfTag
    * @return {props}
    */
-  static createFromAppInitProps({ dpXconfTag })
+  static createFromInitProps({ dpXconfTag })
   {
     const props = {
       scrolling: false,

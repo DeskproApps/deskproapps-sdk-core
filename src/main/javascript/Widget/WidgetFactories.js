@@ -1,11 +1,37 @@
 import { WidgetRequest } from './WidgetRequest'
 import { WidgetResponse } from './WidgetResponse'
+import { WidgetWindowBridge } from './WidgetWindowBridge'
+import { InitProps } from './InitProps'
+import { XcomponentFactories } from './XcomponentFactories'
 
 let nextMessageId = 0;
 let nextCorrelationId = 0;
 
 export class WidgetFactories
 {
+  /**
+   * @return {WidgetFactories.windowBridgeFromWindow}
+   */
+  static windowBridgeFromGlobals()
+  {
+    return new WidgetFactories.windowBridgeFromWindow(window);
+  }
+
+  /**
+   * @param {Window} windowObject
+   * @return {WidgetWindowBridge}
+   * @throws Error
+   */
+  static windowBridgeFromWindow(windowObject)
+  {
+    const initProps = InitProps.fromWindow(windowObject);
+    if (InitProps.validate(initProps)) {
+      return new WidgetWindowBridge(windowObject, initProps, XcomponentFactories.createFromInitProps);
+    }
+
+    throw new Error('invalid or missing init properties');
+  }
+
   /**
    * @param {*} raw
    * @return {WidgetMessage}
@@ -45,7 +71,7 @@ export class WidgetFactories
   static nextResponse (request, body, isError)
   {
     const id = ++nextMessageId;
-    const { widgetId, correlationId } = request;
+    const { /** @type {string} */ widgetId, correlationId } = request;
     const status = isError ? 'error' : 'success';
 
     //const parsedBody = body === null ? body : JSON.stringify(body);

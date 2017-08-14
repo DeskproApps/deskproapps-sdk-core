@@ -8,9 +8,11 @@ import { handleOutgoingEvent } from '../Core/EventHandler';
 
 /**
  * @method
+ *
+ * @param {WidgetWindowBridge} windowBridge
  * @param {App} app
  */
-export const registerEventHandlers = (app) => {
-  handleOutgoingEvent(app, Events.EVENT_SECURITY_AUTHENTICATE_OAUTH, Events.props.EVENT_SECURITY_AUTHENTICATE_OAUTH);
-  handleOutgoingEvent(app, Events.EVENT_SECURITY_SETTINGS_OAUTH, Events.props.EVENT_SECURITY_SETTINGS_OAUTH);
+export const registerEventHandlers = (windowBridge, app) => {
+  handleOutgoingEvent(windowBridge, app, Events.EVENT_SECURITY_AUTHENTICATE_OAUTH, Events.props.EVENT_SECURITY_AUTHENTICATE_OAUTH);
+  handleOutgoingEvent(windowBridge, app, Events.EVENT_SECURITY_SETTINGS_OAUTH, Events.props.EVENT_SECURITY_SETTINGS_OAUTH);
 };
