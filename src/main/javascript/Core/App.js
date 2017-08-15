@@ -18,9 +18,8 @@ class App
    * @param {EventDispatcher} internalDispatcher
    * @param {InstanceProps} instanceProps
    * @param {ContextProps} contextProps
-   * @param {WidgetWindowBridge} appWindow
    */
-  constructor({ outgoingDispatcher, incomingDispatcher, internalDispatcher, instanceProps, contextProps, appWindow })
+  constructor({ outgoingDispatcher, incomingDispatcher, internalDispatcher, instanceProps, contextProps })
   {
     const context = createContext(outgoingDispatcher,incomingDispatcher, contextProps);
     this.props = {
@@ -33,7 +32,7 @@ class App
       stateApi: createStateAPIClient(outgoingDispatcher, instanceProps, contextProps),
       deskproWindow: createDeskproWindowFacade(outgoingDispatcher),
       context,
-      ui: createUI(internalDispatcher, outgoingDispatcher, appWindow),
+      ui: createUI(internalDispatcher),
       oauth: createOauthAPIClient(outgoingDispatcher, instanceProps, contextProps)
     };
 

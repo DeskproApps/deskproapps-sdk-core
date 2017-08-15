@@ -11,16 +11,17 @@ import { CHANNEL_INTERNAL, CHANNEL_INCOMING, CHANNEL_OUTGOING, INVOCATION_FIREAN
 export const EVENT_WINDOW_MOUSEEVENT = 'window.mouseevent';
 
 /**
+ * @todo Should be named 'window.window-resize' when this event will be handled by the container
  * @readonly
  * @type {string}
  */
-export const EVENT_WINDOW_RESIZE = 'window.window-resize';
+export const EVENT_WINDOW_RESIZE = 'app.reset_size';
 
 const events = {
 
   EVENT_WINDOW_MOUSEEVENT : { channelType: CHANNEL_OUTGOING, invocationType: INVOCATION_FIREANDFORGET },
 
-  EVENT_WINDOW_RESIZE: { channelType: CHANNEL_OUTGOING, invocationType: INVOCATION_REQUESTRESPONSE }
+  EVENT_WINDOW_RESIZE: { channelType: CHANNEL_OUTGOING, invocationType: INVOCATION_FIREANDFORGET }
 
 };
 

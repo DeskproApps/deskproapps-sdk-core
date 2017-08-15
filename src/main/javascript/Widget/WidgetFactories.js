@@ -2,7 +2,6 @@ import { WidgetRequest } from './WidgetRequest'
 import { WidgetResponse } from './WidgetResponse'
 import { WidgetWindowBridge } from './WidgetWindowBridge'
 import { InitProps } from './InitProps'
-import { XcomponentFactories } from './XcomponentFactories'
 
 let nextMessageId = 0;
 let nextCorrelationId = 0;
@@ -26,7 +25,7 @@ export class WidgetFactories
   {
     const initProps = InitProps.fromWindow(windowObject);
     if (InitProps.validate(initProps)) {
-      return new WidgetWindowBridge(windowObject, initProps, XcomponentFactories.createFromInitProps);
+      return new WidgetWindowBridge(windowObject, initProps);
     }
 
     throw new Error('invalid or missing init properties');

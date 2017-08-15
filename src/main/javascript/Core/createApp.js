@@ -56,8 +56,7 @@ export const createAppFromProps = ({instanceProps, contextProps}) =>
     outgoingDispatcher: OutgoingEventDispatcher,
     internalDispatcher: InternalEventDispatcher,
     instanceProps: new InstanceProps(instanceProps),
-    contextProps: new ContextProps(contextProps),
-    appWindow: WidgetWindow
+    contextProps: new ContextProps(contextProps)
   };
 
   return new App(appProps);
@@ -72,7 +71,7 @@ const createApp = (cb) => {
     .connect(createAppFromProps)
     .then(registerAppEventListeners.bind(null, WidgetWindow))
     .then(cb)
-    .catch(err => { cb(null); }); // the scenario where the app can run without xcomponent needs rethinking
+    .catch(err => { cb(err); }); // the error scenario needs re-thinking
 };
 
 export default createApp;

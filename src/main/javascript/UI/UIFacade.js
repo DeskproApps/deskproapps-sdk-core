@@ -1,5 +1,3 @@
-import * as AppEvents from '../Core/AppEvents';
-
 import * as Events from './Events';
 import * as Constants from './Constants';
 
@@ -10,12 +8,10 @@ export class UIFacade
 {
   /**
    * @param {EventDispatcher} UIEventsDispatcher
-   * @param {function} resizer
    */
-  constructor(UIEventsDispatcher, resizer) {
+  constructor(UIEventsDispatcher) {
     this.props = {
       eventDispatcher: UIEventsDispatcher,
-      resizer,
       display: Constants.DISPLAY_EXPANDED, // expanded, collapsed
       visibility: Constants.VISIBILITY_VISIBLE, // visible, hidden
       state: Constants.STATE_READY, // loading, ready, empty, error, ? partial
@@ -279,23 +275,5 @@ export class UIFacade
       this.props.settings = newVisibility;
       eventDispatcher.emit(Events.EVENT_SETTINGS_VISIBILITYCHANGED, newVisibility, oldVisibility);
     }
-  };
-
-  // MISC API
-
-  /**
-   * @method
-   *
-   * @return {boolean}
-   */
-  resetSize = () => {
-    if (this.props.isResizing) { // wait until previous resize finishes to prevent a resize loop
-      return false;
-    }
-
-    this.props.isResizing = true;
-    const onResize = ({ height }) => { this.props.isResizing = false; };
-    const { resizer } = this.props;
-    resizer(onResize);
   };
 }

@@ -1,13 +1,16 @@
+import { PropertyBag } from '../Core/PropertyBag'
+
 /**
  * @type {string}
  */
 const paramPrefix = 'dp.';
 
 /**
- * @type {{dpXconfTag: string}}
+ * @type {{dpXconfTag: string, dpWidgetId: string}}
  */
 const propNamesMap = {
-  dpXconfTag: 'dp.xconf.tag'
+  dpXconfTag: 'dp.xconf.tag',
+  dpWidgetId: 'dp.widgetId',
 };
 
 /**
@@ -80,7 +83,7 @@ const encodeAsQueryString = (props) => {
 /**
  * @class
  */
-class InitProps
+class InitProps extends PropertyBag
 {
   /**
    * @type {string}
@@ -88,7 +91,7 @@ class InitProps
   static get PARAM_PREFIX() { return paramPrefix; } ;
 
   /**
-   * @type {{dpXconfTag: string}}
+   * @type {{dpXconfTag: string, dpWidgetId: string}}
    */
   static get PROP_NAMES() { return propNamesMap; } ;
   /**
@@ -98,8 +101,9 @@ class InitProps
   static validate(propsOrInstance)
   {
     if (propsOrInstance && typeof propsOrInstance === 'object') {
-      const { dpXconfTag } = propsOrInstance;
-      return typeof dpXconfTag === 'string' && dpXconfTag != '';
+      const { dpWidgetId } = propsOrInstance;
+
+      return dpWidgetId && typeof dpWidgetId === 'string' && dpWidgetId != '';
     }
 
     return false;
@@ -149,20 +153,29 @@ class InitProps
 
   /**
    * @param {string} dpXconfTag
+   * @param {string} dpWidgetId
+   * @param rest
    */
-  constructor({ dpXconfTag }) {
-    this.props = { dpXconfTag };
+  constructor({ dpXconfTag, dpWidgetId, ...rest }) {
+    super({ dpXconfTag, dpWidgetId, ...rest });
   }
 
   /**
-   * @method
+   * @deprecated
    *
-   * @return {String}
+   * @type {String}
    */
   get dpXconfTag () {  return this.props.dpXconfTag; }
 
   /**
+   * @type {string}
+   */
+  get dpWidgetId () {  return this.props.dpWidgetId; }
+
+  /**
    * @method
+   *
+   * @return {string}
    */
   toQueryString() { return encodeAsQueryString(this.props); }
 }

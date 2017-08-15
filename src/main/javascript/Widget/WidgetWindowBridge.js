@@ -1,9 +1,9 @@
 import getSize from 'get-size';
 import elementResizeDetectorMaker from 'element-resize-detector';
-import { on as postRobotOn } from '../../../post-robot';
+import * as postRobot from 'post-robot';
 
 import { WidgetFactories } from './WidgetFactories'
-import { EVENT_WINDOW_MOUSEEVENT } from './Events'
+import { EVENT_WINDOW_MOUSEEVENT, EVENT_WINDOW_RESIZE } from './Events'
 
 
 const addWindowEventListener = (eventName, listener, windowObject) =>
@@ -25,7 +25,24 @@ const mouseEventHandler = (windowBridge, e) =>
   };
 
   const payload = JSON.parse(JSON.stringify(scalarKeys(e)));
-  windowBridge.emit(EVENT_WINDOW_MOUSEEVENT, payload);
+  windowBridge.emitRequest(EVENT_WINDOW_MOUSEEVENT, payload)
+    .then(({ emit }) => emit())
+    ;
+};
+
+let isResizing = false;
+/**
+ * @param {WidgetWindowBridge} windowBridge
+ * @return {null}
+ */
+const windowSizeChangeHandler = (windowBridge) => {
+  if (isResizing) { return null; }
+
+  isResizing = true;
+  windowBridge.emitRequest(EVENT_WINDOW_RESIZE, { size: windowBridge.bodySize })
+    .then(({ emit }) => emit())
+    .then(() => { isResizing = false; })
+  ;
 };
 
 const mouseEvents = ['mousedown', 'mouseup'];
@@ -38,10 +55,9 @@ class WidgetWindowBridge {
   /**
    * @param {Window} windowObject
    * @param {InitProps} initProps
-   * @param {function} xcomponentFactory
    */
-  constructor(windowObject, initProps, xcomponentFactory) {
-    this.props = { windowObject, initProps, xcomponentFactory };
+  constructor(windowObject, initProps) {
+    this.props = { windowObject, initProps };
 
     const onLoadExecutor = (resolve, reject) => {
       if (windowObject.document.readyState === 'complete') {
@@ -52,41 +68,33 @@ class WidgetWindowBridge {
     this.onLoadPromise = new Promise(onLoadExecutor);
   }
 
+  /**
+   * @type {String}
+   */
   get widgetId () {
-    const { windowObject } = this.props;
-    if (windowObject.xchild && windowObject.xchild.props) {
-      return windowObject.xchild.props.widgetId;
-    }
-
-    return null;
+    const { initProps } = this.props;
+    return initProps.dpWidgetId;
   }
 
   /**
-   * @param createApp
+   * @param {function} createApp
    * @return {Promise.<App>}
    */
   connect(createApp)
   {
-    const { windowObject, initProps, xcomponentFactory } = this.props;
+    const { windowObject } = this.props;
+    const { widgetId } = this;
 
     return this.onLoadPromise
-      .then(() => {
-        const xcomponent = xcomponentFactory(initProps);
-        if (xcomponent && xcomponent.isChild()) {
-          return xcomponent.child().init();
-        }
-        // TODO the scenario where the app can run without xcomponent needs rethinking
-        return Promise.reject('failed to initialize xcomponent in child mode');
-      })
-      .then(xchild => createApp(xchild.props))
+      .then(() => postRobot.send(postRobot.parent, `urn:deskpro:apps.widget.onready?widgetId=${widgetId}`, {}).then(event => event.data))
+      .then(createApp)
       .then(app => {
-
         const handler = mouseEventHandler.bind(null, this);
         mouseEvents.forEach(event => addWindowEventListener(event, handler, windowObject));
 
         // register the window resize strategy
         this.erd = elementResizeDetectorMaker({ strategy: "scroll" });
-        this.erd.listenTo(windowObject.document.body, () => app.ui.resetSize());
+        this.erd.listenTo(windowObject.document.body, windowSizeChangeHandler.bind(null, this));
 
         return app;
       })
@@ -99,36 +107,48 @@ class WidgetWindowBridge {
    */
   on(eventName, handler)
   {
-    postRobotOn(eventName, handler);
+    postRobot.on(eventName, handler);
   }
 
   /**
-   * @param {string} eventName
+   * @param {String} eventName
+   * @param {Error|null} error
    * @param {{}} data
-   * @return {Promise.<{request: Object, emit: (function(this:WidgetWindowBridge))}>}
+   * @param {WidgetRequest} request
+   * @return {Promise.<{response: WidgetResponse, emit: (function())}>}
    */
-  async event(eventName, data)
+  async emitResponse(eventName, error, data, request)
   {
-    const { windowObject } = this.props;
     const { widgetId } = this;
+    const response = WidgetFactories.nextResponse(request, error ? error: data, !!error);
 
-    const request = WidgetFactories.nextRequest(widgetId, data);
-    const { onDpMessage } = windowObject.xchild.props;
+    const payload = { eventName, ...response.toJS() };
+    const event = `urn:deskpro:apps.widget.event?widgetId=${widgetId}`;
 
-    /**
-     * @param {WidgetRequest} request
-     */
-    const emit = request => onDpMessage(eventName, request.toJS());
-    return Promise.resolve({ request, emit });
+    const emit = () => {
+      postRobot.send(postRobot.parent, event, payload);
+    };
+    return Promise.resolve({ response, emit });
   }
 
-  emit(eventName, data)
+  /**
+   * @param eventName
+   * @param data
+   * @return {Promise.<{request: WidgetRequest, emit: (function())}>}
+   */
+  async emitRequest(eventName, data)
   {
-    const { windowObject } = this.props;
     const { widgetId } = this;
+    const request = WidgetFactories.nextRequest(widgetId, data);
 
-    const { onDpMessage } = windowObject.xchild.props;
-    onDpMessage(eventName, WidgetFactories.nextRequest(widgetId, data).toJS());
+    const payload = { eventName, ...request.toJS() };
+    const event = `urn:deskpro:apps.widget.event?widgetId=${widgetId}`;
+
+
+    const emit = () => {
+      postRobot.send(postRobot.parent, event, payload);
+    };
+    return Promise.resolve({ request, emit });
   }
 
   /**
@@ -141,11 +161,6 @@ class WidgetWindowBridge {
     return getSize(windowObject.document.body);
   }
 
-  /**
-   * @constant
-   * @type {InitProps|null}
-   */
-  get initParams() { return this.state.initProps; }
 }
 
 export { WidgetWindowBridge };

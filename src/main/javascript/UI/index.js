@@ -20,18 +20,11 @@ export {
 }
 
 import { UIFacade } from './UIFacade';
-import { createResizer } from './Resizer';
 
 /**
  * @method
  *
  * @param {EventDispatcher} internalEventDispatcher
- * @param {EventDispatcher} outgoingEventDispatcher
- * @param {WidgetWindowBridge} windowProxy
  * @return {UIFacade}
  */
-export const create = (internalEventDispatcher, outgoingEventDispatcher, windowProxy) => {
-  "use strict";
-  const resizer = createResizer(outgoingEventDispatcher, windowProxy);
-  return new UIFacade(internalEventDispatcher, resizer);
-};
+export const create = (internalEventDispatcher) => { return new UIFacade(internalEventDispatcher); };
