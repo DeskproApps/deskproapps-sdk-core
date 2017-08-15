@@ -19,11 +19,6 @@ import App from './App';
 import { InstanceProps, ContextProps } from './AppProps';
 
 /**
- * @type {WidgetWindowBridge}
- */
-const WidgetWindow = WidgetFactories.windowBridgeFromWindow(window);
-
-/**
  * @param {WidgetWindowBridge} windowBridge
  * @param {App} app
  */
@@ -67,6 +62,8 @@ export const createAppFromProps = ({instanceProps, contextProps}) =>
  * @param {function} cb
  */
 const createApp = (cb) => {
+  const WidgetWindow = WidgetFactories.windowBridgeFromWindow(window);
+
   WidgetWindow
     .connect(createAppFromProps)
     .then(registerAppEventListeners.bind(null, WidgetWindow))
