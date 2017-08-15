@@ -2,6 +2,7 @@ import { PropertyBag } from '../Core/PropertyBag';
 
 /**
  * @class
+ * @extends {PropertyBag}
  */
 export class WidgetMessage extends PropertyBag
 {

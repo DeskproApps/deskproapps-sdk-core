@@ -6,9 +6,15 @@ import { InitProps } from './InitProps'
 let nextMessageId = 0;
 let nextCorrelationId = 0;
 
+/**
+ * @class
+ */
 export class WidgetFactories
 {
   /**
+   * @static
+   * @method
+   *
    * @return {WidgetFactories.windowBridgeFromWindow}
    */
   static windowBridgeFromGlobals()
@@ -17,6 +23,9 @@ export class WidgetFactories
   }
 
   /**
+   * @static
+   * @method
+   *
    * @param {Window} windowObject
    * @return {WidgetWindowBridge}
    * @throws Error
@@ -32,6 +41,9 @@ export class WidgetFactories
   }
 
   /**
+   * @static
+   * @method
+   *
    * @param {*} raw
    * @return {WidgetMessage}
    */
@@ -47,6 +59,9 @@ export class WidgetFactories
   }
 
   /**
+   * @static
+   * @method
+   *
    * @param {string} widgetId
    * @param {*} payload
    * @return {WidgetRequest}
@@ -60,6 +75,7 @@ export class WidgetFactories
   };
 
   /**
+   * @static
    * @method
    *
    * @param {WidgetRequest} request
@@ -70,7 +86,15 @@ export class WidgetFactories
   static nextResponse (request, body, isError)
   {
     const id = ++nextMessageId;
-    const { /** @type {string} */ widgetId, correlationId } = request;
+    const {
+      /**
+       * @ignore
+       *
+       * @type {string}
+       * */
+      widgetId,
+      correlationId
+    } = request;
     const status = isError ? 'error' : 'success';
 
     //const parsedBody = body === null ? body : JSON.stringify(body);

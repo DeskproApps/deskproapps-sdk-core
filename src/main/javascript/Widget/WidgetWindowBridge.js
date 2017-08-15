@@ -1,11 +1,16 @@
-import getSize from 'get-size';
-import elementResizeDetectorMaker from 'element-resize-detector';
-import * as postRobot from 'post-robot';
+import getSize from "get-size";
+import elementResizeDetectorMaker from "element-resize-detector";
+import * as postRobot from "post-robot";
+import {WidgetFactories} from "./WidgetFactories";
+import {EVENT_WINDOW_MOUSEEVENT, EVENT_WINDOW_RESIZE} from "./Events";
 
-import { WidgetFactories } from './WidgetFactories'
-import { EVENT_WINDOW_MOUSEEVENT, EVENT_WINDOW_RESIZE } from './Events'
-
-
+/**
+ * @ignore
+ *
+ * @param eventName
+ * @param listener
+ * @param windowObject
+ */
 const addWindowEventListener = (eventName, listener, windowObject) =>
 {
   const addListener = windowObject.addEventListener ? windowObject.addEventListener : windowObject.attachEvent;
@@ -14,6 +19,12 @@ const addWindowEventListener = (eventName, listener, windowObject) =>
   addListener(event, listener);
 };
 
+/**
+ * @ignore
+ *
+ * @param windowBridge
+ * @param e
+ */
 const mouseEventHandler = (windowBridge, e) =>
 {
   const scalarKeys = (original) => {
@@ -32,6 +43,8 @@ const mouseEventHandler = (windowBridge, e) =>
 
 let isResizing = false;
 /**
+ * @ignore
+ *
  * @param {WidgetWindowBridge} windowBridge
  * @return {null}
  */
@@ -132,8 +145,8 @@ class WidgetWindowBridge {
   }
 
   /**
-   * @param eventName
-   * @param data
+   * @param {String} eventName
+   * @param {*} data
    * @return {Promise.<{request: WidgetRequest, emit: (function())}>}
    */
   async emitRequest(eventName, data)
@@ -154,6 +167,7 @@ class WidgetWindowBridge {
   /**
    * @public
    * @constant
+   *
    * @type {WidgetWindowBridge~GetSize}
    */
   get bodySize() {

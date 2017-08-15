@@ -1,7 +1,18 @@
 import { WidgetMessage } from './WidgetMessage'
 
+/**
+ * @class
+ * @extends {WidgetMessage}
+ */
 export class WidgetResponse extends WidgetMessage
 {
+  /**
+   * @static
+   * @method
+   *
+   * @param {*} raw
+   * @return {WidgetResponse}
+   */
   static parse(raw)
   {
     const { id, widgetId, correlationId, body, status } = raw;

@@ -1,5 +1,9 @@
 import { WidgetMessage  } from './WidgetMessage'
 
+/**
+ * @class
+ * @extends {WidgetMessage}
+ */
 export class WidgetRequest extends WidgetMessage
 {
   /**

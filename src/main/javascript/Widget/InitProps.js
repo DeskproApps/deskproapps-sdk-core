@@ -1,11 +1,15 @@
 import { PropertyBag } from '../Core/PropertyBag'
 
 /**
+ * @ignore
+ *
  * @type {string}
  */
 const paramPrefix = 'dp.';
 
 /**
+ * @ignore
+ *
  * @type {{dpXconfTag: string, dpWidgetId: string}}
  */
 const propNamesMap = {
@@ -15,6 +19,7 @@ const propNamesMap = {
 
 /**
  * @ignore
+ *
  * @param {String} str
  * @return {void|*|string|XML}
  */
@@ -39,7 +44,7 @@ const toParamName = str =>
 };
 
 /**
- * @method
+ * @ignore
  *
  * @param {String} qs
  * @return {*}
@@ -130,7 +135,12 @@ class InitProps extends PropertyBag
   static fromWindow(windowObject)
   {
     const {
-      /** @type {{search: String, hash: String}} */ location
+      /**
+       * @ignore
+       *
+       *  @type {{search: String, hash: String}}
+       * */
+      location
     } = windowObject;
 
     // build a list of potential sources for init params, ordered by priority
