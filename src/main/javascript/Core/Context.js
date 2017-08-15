@@ -105,7 +105,6 @@ export class Context
    * @return {Promise}
    */
   async getMe() {
-    console.log('omega magus');
     return this.props.outgoingDispatcher.emitAsync(ContextEvents.EVENT_ME_GET);
   }
 }

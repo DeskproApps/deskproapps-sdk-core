@@ -1,5 +1,4 @@
 import * as AppEvents from './AppEvents';
-import {SecurityEvents} from '../Security';
 
 import { createContext } from '../Context';
 import { create as createUI } from '../UI';
@@ -19,9 +18,8 @@ class App
    * @param {EventDispatcher} internalDispatcher
    * @param {InstanceProps} instanceProps
    * @param {ContextProps} contextProps
-   * @param {WindowProxy} windowProxy
    */
-  constructor({ outgoingDispatcher, incomingDispatcher, internalDispatcher, instanceProps, contextProps, windowProxy })
+  constructor({ outgoingDispatcher, incomingDispatcher, internalDispatcher, instanceProps, contextProps })
   {
     const context = createContext(outgoingDispatcher,incomingDispatcher, contextProps);
     this.props = {
@@ -34,7 +32,7 @@ class App
       stateApi: createStateAPIClient(outgoingDispatcher, instanceProps, contextProps),
       deskproWindow: createDeskproWindowFacade(outgoingDispatcher),
       context,
-      ui: createUI(internalDispatcher, outgoingDispatcher, windowProxy),
+      ui: createUI(internalDispatcher),
       oauth: createOauthAPIClient(outgoingDispatcher, instanceProps, contextProps)
     };
 

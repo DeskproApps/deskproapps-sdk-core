@@ -40,18 +40,11 @@ configParts.push({
         ]
       },
       {test: /\.(html?|css)$/, loader: 'raw-loader'}
-    ],
-    noParse: [
-      path.resolve(PROJECT_ROOT_PATH, 'node_modules/xcomponent/dist'),
-      path.resolve(PROJECT_ROOT_PATH, 'node_modules/post-robot/dist')
     ]
   },
   plugins: [],
   resolve: {
-    alias: {
-      'xcomponent/src': path.resolve(PROJECT_ROOT_PATH, 'node_modules/xcomponent/dist/xcomponent'),
-      'post-robot/src': path.resolve(PROJECT_ROOT_PATH, 'node_modules/post-robot/dist/post-robot'),
-    },
+    modules: ["node_modules", path.join(dpatRootPath, "node_modules")],
     extensions: ['*', '.js', '.jsx', '.scss', '.css']
   },
   resolveLoader: {
@@ -80,7 +73,7 @@ if (STANDALONE_PACKAGE) {
   configParts.push({
     entry: {
       slim: [path.resolve(PROJECT_ROOT_PATH, 'src/main/javascript/index.js')],
-      vendor: ['post-robot', 'xcomponent/src'],
+      vendor: ['post-robot', 'eventemitter3', 'element-resize-detector', 'get-size'],
     },
     output: {
       pathinfo: !PRODUCTION,

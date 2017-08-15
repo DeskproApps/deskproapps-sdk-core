@@ -1,3 +1,7 @@
+/**
+ * @module Core/Event
+ */
+
 import { EventMap } from './EventMap';
 
 /**

@@ -1,3 +1,8 @@
+## Upcoming
+* [FEATURE] Relay mouse events to app container
+* [FEATURE] Group base functions under `Widget` namespace 
+* [CHANGE] Use post-robot instead of xcomponent
+
 ## v1.0.0-beta.12 - 2017-08-09
 * [MAINTENANCE] use async keyword for methods which return a Promise
 
