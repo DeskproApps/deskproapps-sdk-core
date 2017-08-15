@@ -1,4 +1,4 @@
-## Upcoming
+## v1.0.0-beta.13 - 2017-08-15
 * [FEATURE] Relay mouse events to app container
 * [FEATURE] Group base functions under `Widget` namespace 
 * [CHANGE] Use post-robot instead of xcomponent
