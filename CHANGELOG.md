@@ -1,4 +1,4 @@
-## Upcoming
+## v1.0.0-beta.14 - 2017-08-15
 * [CHANGE] Instantiate WindowBridge only when createApp is called
 
 ## v1.0.0-beta.13 - 2017-08-15
