@@ -44,6 +44,7 @@ configParts.push({
   },
   plugins: [],
   resolve: {
+    modules: ["node_modules", path.join(dpatRootPath, "node_modules")],
     extensions: ['*', '.js', '.jsx', '.scss', '.css']
   },
   resolveLoader: {
