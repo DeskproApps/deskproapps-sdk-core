@@ -116,7 +116,7 @@ class StorageApiFacade
    * @param args
    * @return {Promise}
    */
-  async setAppStage(...args) {
+  async setAppState(...args) {
     return this.setAppStorage(...args);
   }
 
@@ -148,7 +148,7 @@ class StorageApiFacade
    *
    * @return {Promise}
    */
-  async setEntityStage(...args) {
+  async setEntityState(...args) {
     return this.setEntityStorage(...args);
   }
 
