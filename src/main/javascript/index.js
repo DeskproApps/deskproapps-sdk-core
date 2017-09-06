@@ -35,10 +35,10 @@ export {
 
 export {
   /**
-   * @type {module:State/Events}
+   * @type {module:Storage/Events}
    */
-  StateEvents
-} from './State';
+  StorageEvents
+} from './Storage';
 
 import * as ContextEvents from './Core/ContextEvents';
 export {

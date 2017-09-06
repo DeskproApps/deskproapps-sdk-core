@@ -2,7 +2,7 @@ import * as AppEvents from './AppEvents';
 
 import { createContext } from '../Context';
 import { create as createUI } from '../UI';
-import { createStateAPIClient } from '../State';
+import { createStorageAPIClient } from '../Storage';
 import { createDeskproApiClient } from '../WebAPI';
 import { createDeskproWindowFacade } from '../DeskproWindow';
 import { createOauthAPIClient } from '../Security';
@@ -29,7 +29,7 @@ class App
       instanceProps,
       contextProps,
       restApi: createDeskproApiClient(outgoingDispatcher),
-      stateApi: createStateAPIClient(outgoingDispatcher, instanceProps, contextProps),
+      storageApi: createStorageAPIClient(outgoingDispatcher, instanceProps, contextProps),
       deskproWindow: createDeskproWindowFacade(outgoingDispatcher),
       context,
       ui: createUI(internalDispatcher),
@@ -238,12 +238,20 @@ class App
    * @return {DeskproAPIClient}
    */
   get restApi() { return this.props.restApi; };
+  
+  /**
+   * @deprecated
+   * 
+   * @public
+   * @return {StorageApiFacade}
+   */
+  get state() { return this.props.storageApi; };
 
   /**
    * @public
-   * @return {StateApiFacade}
+   * @return {StorageApiFacade}
    */
-  get state() { return this.props.stateApi; };
+  get storage() { return this.props.storageApi; };
 
   /**
    * @public

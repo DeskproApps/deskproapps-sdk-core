@@ -9,13 +9,13 @@ export class OauthFacade
 {
   /**
    * @param {EventDispatcher} eventDispatcher
-   * @param {function} setState
+   * @param {function} setStorage
    * @param {String} appId
    * @param {String} helpdeskUrl
    */
-  constructor(eventDispatcher, setState, { appId, helpdeskUrl })
+  constructor(eventDispatcher, setStorage, { appId, helpdeskUrl })
   {
-    this.props = { eventDispatcher, setState, appId, helpdeskUrl };
+    this.props = { eventDispatcher, setStorage, appId, helpdeskUrl };
   }
 
   /**
@@ -42,8 +42,8 @@ export class OauthFacade
     const connectionProps = { ...details, providerName: provider };
     const connectionJS = OauthConnection.fromJS(connectionProps).toJS();
 
-    const stateName = `oauth:${provider}`;
-    return this.props.setState(stateName, connectionJS).then(() => ({ name: stateName, value: connectionJS }));
+    const storageName = `oauth:${provider}`;
+    return this.props.setStorage(storageName, connectionJS).then(() => ({ name: storageName, value: connectionJS }));
   };
 
   /**
