@@ -1,3 +1,6 @@
+## v1.0.0 - 2017-09-07
+* [CHANGE] Deprecate State API in favour of Storage API
+
 ## v1.0.0-beta.14 - 2017-08-15
 * [CHANGE] Instantiate WindowBridge only when createApp is called
 
