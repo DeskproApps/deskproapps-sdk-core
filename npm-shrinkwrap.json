@@ -1,6 +1,6 @@
 {
   "name": "@deskproapps/deskproapps-sdk-core",
-  "version": "1.0.0-beta.14",
+  "version": "1.0.0",
   "dependencies": {
     "@deskproapps/dpat": {
       "version": "0.5.2",
