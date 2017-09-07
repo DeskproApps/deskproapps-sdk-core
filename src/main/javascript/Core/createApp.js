@@ -6,7 +6,7 @@ import { WidgetFactories } from '../Widget';
 
 import { InternalEventDispatcher, IncomingEventDispatcher, OutgoingEventDispatcher } from './EventDispatcher';
 
-import { registerEventHandlers as registerStateEventHandlers } from '../State';
+import { registerEventHandlers as registerStorageEventHandlers } from '../Storage';
 import { registerEventHandlers as registerSecurityEventHandlers } from '../Security';
 import { registerEventHandlers as registerAppEventHandlers } from './AppEventHandlers';
 import { registerEventHandlers as registerContextEventHandlers } from './ContextEventHandlers';
@@ -25,7 +25,7 @@ import { InstanceProps, ContextProps } from './AppProps';
 const registerAppEventListeners = (windowBridge, app) => {
   [
     registerSecurityEventHandlers,
-    registerStateEventHandlers,
+    registerStorageEventHandlers,
     registerAppEventHandlers,
     registerContextEventHandlers,
     registerWebAPIEventHandlers,

@@ -24,7 +24,7 @@ export {
   registerEventHandlers
 } from './EventHandlers';
 
-import { createStateAPIClient } from '../State';
+import { createStorageAPIClient } from '../Storage';
 
 /**
  * @method
@@ -35,9 +35,9 @@ import { createStateAPIClient } from '../State';
  * @return {OauthFacade}
  */
 export const createOauthAPIClient = (eventDispatcher, instanceProps, contextProps) => {
-  const stateClient = createStateAPIClient(eventDispatcher, instanceProps, contextProps);
-  const setState = stateClient.setAppState.bind(stateClient);
+  const storageClient = createStorageAPIClient(eventDispatcher, instanceProps, contextProps);
+  const setStorage = storageClient.setAppStorage.bind(storageClient);
 
   const props = { ...instanceProps.toJS(), ...contextProps.toJS()};
-  return new OauthFacade(eventDispatcher, setState, props);
+  return new OauthFacade(eventDispatcher, setStorage, props);
 };

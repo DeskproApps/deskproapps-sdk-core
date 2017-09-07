@@ -1,6 +1,6 @@
 /**
- * State/Events module.
- * @module State/Events
+ * Storage/Events module.
+ * @module Storage/Events
  */
 
 const events = {};

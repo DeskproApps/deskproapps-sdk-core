@@ -1,10 +1,10 @@
 import { WebAPIEvents } from '../WebAPI';
-import { StateStorageAdapter } from './StateStorageAdapter';
+import { StorageAdapter } from './StorageAdapter';
 
 /**
  * @class
  */
-export class FetchAdapter extends StateStorageAdapter
+export class FetchStorageAdapter extends StorageAdapter
 {
   /**
    * @method
@@ -14,7 +14,7 @@ export class FetchAdapter extends StateStorageAdapter
    * @param entityId
    * @return {Promise}
    */
-  async handleSetBatchState (dispatchPromise, nameValuePairsList, entityId)
+  async handleSetBatchStorage (dispatchPromise, nameValuePairsList, entityId)
   {
     const buildRequestBody = (instanceId, body, nameAndValue) => {
       const [name, value] = nameAndValue;
@@ -104,7 +104,7 @@ export class FetchAdapter extends StateStorageAdapter
    * @param entityId
    * @return {Promise}
    */
-  async handleSetState (dispatchPromise, name, value, entityId)
+  async handleSetStorage (dispatchPromise, name, value, entityId)
   {
     return dispatchPromise.then((props) => {
       const url = `apps/${props.instanceId}/state/${entityId}/${name}`;
@@ -139,7 +139,7 @@ export class FetchAdapter extends StateStorageAdapter
    * @param defaultValue
    * @return {Promise.<*>}
    */
-  async handleGetState (dispatchPromise, name, entityId, defaultValue = null)
+  async handleGetStorage (dispatchPromise, name, entityId, defaultValue = null)
   {
     return dispatchPromise.then((props) => {
       const url = `apps/${props.instanceId}/state/${entityId}/${name}?options.mode=find`;
@@ -166,7 +166,7 @@ export class FetchAdapter extends StateStorageAdapter
    * @param {*} defaultValue
    * @return {Promise.<{}>}
    */
-  async handleGetBatchState (dispatchPromise, nameList, entityId, defaultValue = null)
+  async handleGetBatchStorage (dispatchPromise, nameList, entityId, defaultValue = null)
   {
     const buildRequestBody = (instanceId, body, name) => {
       body[name] = `apps/${instanceId}/state/${entityId}/${name}?options.mode=find`;

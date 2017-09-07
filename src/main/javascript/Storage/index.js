@@ -1,19 +1,19 @@
 /**
- * State module.
- * @module State
+ * Storage module.
+ * @module Storage
  */
 
-import * as StateEvents from './Events';
-import {StateApiFacade} from './StateApiFacade';
-import {FetchAdapter} from './FetchStorageAdapter';
+import * as StorageEvents from './Events';
+import {StorageApiFacade} from './StorageApiFacade';
+import {FetchStorageAdapter} from './FetchStorageAdapter';
 import {LocalStorageAdapter} from './LocalStorageAdapter';
 
 export {
   /**
-   * @type {module:State/Events}
+   * @type {module:Storage/Events}
    * @constant
    */
-  StateEvents
+  StorageEvents
 };
 
 export {
@@ -25,10 +25,10 @@ export {
 
 export {
   /**
-   * @type {StateApiFacade}
+   * @type {StorageApiFacade}
    */
-  StateApiFacade
-} from './StateApiFacade';
+  StorageApiFacade
+} from './StorageApiFacade';
 
 const storageAdapterProps = (instanceProps, contextProps) =>
 {
@@ -47,13 +47,13 @@ const storageAdapterProps = (instanceProps, contextProps) =>
  * @param {InstanceProps} instanceProps
  * @param {ContextProps} contextProps
  *
- * @return {StateApiFacade}
+ * @return {StorageApiFacade}
  */
-export const createStateAPIClient = (eventDispatcher, instanceProps, contextProps) => {
+export const createStorageAPIClient = (eventDispatcher, instanceProps, contextProps) => {
   const props = storageAdapterProps(instanceProps, contextProps);
   const env = contextProps.getProperty('appsEnvironment');
-  const storageAdapter = env === 'development' ? LocalStorageAdapter.fromGlobals() : new FetchAdapter();
-  return new StateApiFacade(eventDispatcher, storageAdapter, props);
+  const storageAdapter = env === 'development' ? LocalStorageAdapter.fromGlobals() : new FetchStorageAdapter();
+  return new StorageApiFacade(eventDispatcher, storageAdapter, props);
 };
 
 

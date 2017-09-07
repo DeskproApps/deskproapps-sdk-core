@@ -1,9 +1,9 @@
-import { StateStorageAdapter } from './StateStorageAdapter';
+import { StorageAdapter } from './StorageAdapter';
 
 /**
  * @class
  */
-export class LocalStorageAdapter extends StateStorageAdapter
+export class LocalStorageAdapter extends StorageAdapter
 {
   /**
    * @method
@@ -31,7 +31,7 @@ export class LocalStorageAdapter extends StateStorageAdapter
    * @param entityId
    * @return {Promise}
    */
-  async handleSetBatchState (dispatchPromise, nameValuePairsList, entityId)
+  async handleSetBatchStorage (dispatchPromise, nameValuePairsList, entityId)
   {
     const { localStorage } = this.props;
     return dispatchPromise.then((props) => {
@@ -59,7 +59,7 @@ export class LocalStorageAdapter extends StateStorageAdapter
    * @param entityId
    * @return {Promise}
    */
-  async handleSetState (dispatchPromise, name, value, entityId)
+  async handleSetStorage (dispatchPromise, name, value, entityId)
   {
     const { localStorage } = this.props;
     return dispatchPromise.then((props) => {
@@ -83,7 +83,7 @@ export class LocalStorageAdapter extends StateStorageAdapter
    * @param defaultValue
    * @return {Promise.<*>}
    */
-  async handleGetState (dispatchPromise, name, entityId, defaultValue = null)
+  async handleGetStorage (dispatchPromise, name, entityId, defaultValue = null)
   {
     const { localStorage } = this.props;
 
@@ -107,7 +107,7 @@ export class LocalStorageAdapter extends StateStorageAdapter
    * @param {*} defaultValue
    * @return {Promise.<{}>}
    */
-  async handleGetBatchState(dispatchPromise, nameList, entityId, defaultValue = null)
+  async handleGetBatchStorage(dispatchPromise, nameList, entityId, defaultValue = null)
   {
     const { localStorage } = this.props;
 

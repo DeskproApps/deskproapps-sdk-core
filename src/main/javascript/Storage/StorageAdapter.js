@@ -1,7 +1,7 @@
 /**
  * @class
  */
-export class StateStorageAdapter
+export class StorageAdapter
 {
   // noinspection JSMethodCanBeStatic
   /**
@@ -14,7 +14,7 @@ export class StateStorageAdapter
    * @param entityId
    * @return {Promise}
    */
-  async handleSetBatchState(dispatchPromise, nameValuePairsList, entityId)
+  async handleSetBatchStorage(dispatchPromise, nameValuePairsList, entityId)
   {
     throw new Error('method must be implemented in a subclass');
   };
@@ -31,7 +31,7 @@ export class StateStorageAdapter
    * @param entityId
    * @return {Promise}
    */
-  async handleSetState(dispatchPromise, name, value, entityId)
+  async handleSetStorage(dispatchPromise, name, value, entityId)
   {
     throw new Error('method must be implemented in a subclass');
   };
@@ -48,7 +48,7 @@ export class StateStorageAdapter
    * @param defaultValue
    * @return {Promise.<*>}
    */
-  async handleGetState(dispatchPromise, name, entityId, defaultValue = null)
+  async handleGetStorage(dispatchPromise, name, entityId, defaultValue = null)
   {
     throw new Error('method must be implemented in a subclass');
   };
@@ -64,7 +64,7 @@ export class StateStorageAdapter
    * @param {*} defaultValue
    * @return {Promise.<{}>}
    */
-  async handleGetBatchState(dispatchPromise, nameList, entityId, defaultValue = null)
+  async handleGetBatchStorage(dispatchPromise, nameList, entityId, defaultValue = null)
   {
     throw new Error('method must be implemented in a subclass');
   };
