@@ -26,7 +26,7 @@ export class LocalStorageAdapter extends StorageAdapter
 
   /**
    * @method
-   * @param {Promise.<{eventDispatcher:EventDispatcher}>} dispatchPromise
+   * @param {Promise.<{outgoingDispatcher:EventDispatcher}>} dispatchPromise
    * @param {Array<Array>} nameValuePairsList
    * @param entityId
    * @return {Promise}
@@ -53,7 +53,7 @@ export class LocalStorageAdapter extends StorageAdapter
 
   /**
    * @method
-   * @param {Promise.<{eventDispatcher:EventDispatcher}>} dispatchPromise
+   * @param {Promise.<{outgoingDispatcher:EventDispatcher}>} dispatchPromise
    * @param name
    * @param value
    * @param entityId
@@ -77,7 +77,7 @@ export class LocalStorageAdapter extends StorageAdapter
 
   /**
    * @method
-   * @param {Promise.<{eventDispatcher:EventDispatcher}>} dispatchPromise
+   * @param {Promise.<{outgoingDispatcher:EventDispatcher}>} dispatchPromise
    * @param name
    * @param entityId
    * @param defaultValue
@@ -101,7 +101,7 @@ export class LocalStorageAdapter extends StorageAdapter
 
   /**
    * @method
-   * @param {Promise.<{eventDispatcher:EventDispatcher}>} dispatchPromise
+   * @param {Promise.<{outgoingDispatcher:EventDispatcher}>} dispatchPromise
    * @param {Array<String>} nameList
    * @param {String} entityId
    * @param {*} defaultValue

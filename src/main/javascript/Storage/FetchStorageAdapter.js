@@ -9,7 +9,7 @@ export class FetchStorageAdapter extends StorageAdapter
   /**
    * @method
    *
-   * @param {Promise.<{eventDispatcher:EventDispatcher}>} dispatchPromise
+   * @param {Promise.<{outgoingDispatcher:EventDispatcher}>} dispatchPromise
    * @param {Array<Array>} nameValuePairsList
    * @param entityId
    * @return {Promise}
@@ -90,7 +90,7 @@ export class FetchStorageAdapter extends StorageAdapter
         },
         body: JSON.stringify(body)
       };
-      return props.eventDispatcher.emitAsync(WebAPIEvents.EVENT_WEBAPI_REQUEST_FETCH, { url, init });
+      return props.outgoingDispatcher.emitAsync(WebAPIEvents.EVENT_WEBAPI_REQUEST_FETCH, { url, init });
     }).then(parseSaveBatchStatus)
       .then (collectSaveFailures)
   };
@@ -98,7 +98,7 @@ export class FetchStorageAdapter extends StorageAdapter
   /**
    * @method
    *
-   * @param {Promise.<{eventDispatcher:EventDispatcher}>} dispatchPromise
+   * @param {Promise.<{outgoingDispatcher:EventDispatcher}>} dispatchPromise
    * @param name
    * @param value
    * @param entityId
@@ -126,14 +126,14 @@ export class FetchStorageAdapter extends StorageAdapter
         };
       }
 
-      return props.eventDispatcher.emitAsync(WebAPIEvents.EVENT_WEBAPI_REQUEST_FETCH, { url, init });
+      return props.outgoingDispatcher.emitAsync(WebAPIEvents.EVENT_WEBAPI_REQUEST_FETCH, { url, init });
     }).then(() => value);
   };
 
   /**
    * @method
    *
-   * @param {Promise.<{eventDispatcher:EventDispatcher}>} dispatchPromise
+   * @param {Promise.<{outgoingDispatcher:EventDispatcher}>} dispatchPromise
    * @param name
    * @param entityId
    * @param defaultValue
@@ -151,7 +151,7 @@ export class FetchStorageAdapter extends StorageAdapter
           'Content-Type': 'application/json'
         }
       };
-      return props.eventDispatcher.emitAsync(WebAPIEvents.EVENT_WEBAPI_REQUEST_FETCH, { url, init });
+      return props.outgoingDispatcher.emitAsync(WebAPIEvents.EVENT_WEBAPI_REQUEST_FETCH, { url, init });
     }).then((response) => {
       return response.body && response.body.value ? response.body.value : defaultValue
     })
@@ -160,7 +160,7 @@ export class FetchStorageAdapter extends StorageAdapter
   /**
    * @method
    *
-   * @param {Promise.<{eventDispatcher:EventDispatcher}>} dispatchPromise
+   * @param {Promise.<{outgoingDispatcher:EventDispatcher}>} dispatchPromise
    * @param {Array<String>} nameList
    * @param {String} entityId
    * @param {*} defaultValue
@@ -198,7 +198,7 @@ export class FetchStorageAdapter extends StorageAdapter
         },
         body: JSON.stringify(body)
       };
-      return props.eventDispatcher.emitAsync(WebAPIEvents.EVENT_WEBAPI_REQUEST_FETCH, { url, init });
+      return props.outgoingDispatcher.emitAsync(WebAPIEvents.EVENT_WEBAPI_REQUEST_FETCH, { url, init });
     }).then((response) => {
       return Object.keys(response.body).reduce((result, name) => parseBatchResponse(response, result, name), {});
     })
