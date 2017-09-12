@@ -77,9 +77,9 @@ class StorageApiFacade
         .then((resp) => {
           this.props.internalDispatcher.emit(
             entityId.indexOf(APP_TYPE) === 0 ? Events.EVENT_APP_CHANGED : Events.EVENT_ENTITY_CHANGED,
+            entityId,
             name,
-            value,
-            entityId
+            value
           );
           
           return resp;
@@ -97,8 +97,8 @@ class StorageApiFacade
         .then((resp) => {
           this.props.internalDispatcher.emit(
             entityId.indexOf(APP_TYPE) === 0 ? Events.EVENT_APP_CHANGED : Events.EVENT_ENTITY_CHANGED,
-            batch,
-            entityId
+            entityId,
+            batch
           );
     
           return resp;
@@ -191,9 +191,9 @@ class StorageApiFacade
         .then((value) => {
           this.props.internalDispatcher.emit(
             entityId.indexOf(APP_TYPE) === 0 ? Events.EVENT_APP_FETCHED : Events.EVENT_ENTITY_FETCHED,
+            entityId,
             name,
-            value,
-            entityId
+            value
           );
     
           return value;
@@ -214,9 +214,9 @@ class StorageApiFacade
         .then((values) => {
           this.props.internalDispatcher.emit(
             entityId.indexOf(APP_TYPE) === 0 ? Events.EVENT_APP_FETCHED : Events.EVENT_ENTITY_FETCHED,
+            entityId,
             batch,
-            values,
-            entityId
+            values
           );
     
           return values;
