@@ -5,6 +5,7 @@
 import { Context } from '../Core/Context';
 import { CHANNEL_INCOMING } from '../Core/Event'
 import { matchEvent } from './TicketEvents';
+import { CustomFieldsClient } from '../CustomFields';
 
 /**
  * @class
@@ -23,19 +24,38 @@ export class TicketContext extends Context
    * @method
    * @static
    *
-   * @param {EventEmitter} outgoingDispatcher
-   * @param {EventEmitter} incomingDispatcher
+   * @param {EventDispatcher} outgoingDispatcher
+   * @param {EventDispatcher} incomingDispatcher
+   * @param {InstanceProps} instanceProps
    * @param {ContextProps} contextProps
    * @return {TicketContext|null}
    */
-  static tryAndCreate({outgoingDispatcher, incomingDispatcher, contextProps})
+  static tryAndCreate({outgoingDispatcher, incomingDispatcher, instanceProps, contextProps})
   {
     if (contextProps.contextType === TicketContext.TYPE) {
-      const props = { outgoingDispatcher, incomingDispatcher, ...contextProps.toJS(), type: contextProps.contextType };
+      const props = {
+        outgoingDispatcher,
+        incomingDispatcher,
+        ...contextProps.toJS(),
+        type: contextProps.contextType,
+        appId: instanceProps.appId
+      };
       return new TicketContext(props);
     }
 
     return null;
+  }
+
+  /**
+   * @constructor
+   *
+   * @param {string} appId
+   * @param {{}} rest
+   */
+  constructor({appId, ...rest})
+  {
+    super(rest);
+    this.props = { ...this.props, appId };
   }
 
   /**
@@ -50,5 +70,18 @@ export class TicketContext extends Context
       .emitAsync('app.subscribe_to_event', { events: [eventName] })
       .then(() => this.props.incomingDispatcher.on(eventName, eventHandler))
     ;
+  };
+
+  /**
+   * @public
+   * @return {CustomFieldsClient}
+   */
+  get customFields() {
+    const { outgoingDispatcher, appId } = this.props;
+    return new CustomFieldsClient({
+      outgoingDispatcher,
+      appId,
+      endpoint: `tickets/${this.entityId}`
+    });
   }
 }

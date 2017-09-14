@@ -21,7 +21,7 @@ class App
    */
   constructor({ outgoingDispatcher, incomingDispatcher, internalDispatcher, instanceProps, contextProps })
   {
-    const context = createContext(outgoingDispatcher,incomingDispatcher, contextProps);
+    const context = createContext(outgoingDispatcher,incomingDispatcher, instanceProps, contextProps);
     this.props = {
       outgoingDispatcher,
       incomingDispatcher,

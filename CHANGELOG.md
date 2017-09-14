@@ -1,5 +1,6 @@
 ## Upcoming
 * [FEATURE] adds change/fetch events to the storage module
+* [FEATURE] update and fetch custom fields for tickets, organizations and persons
 
 ## v1.0.0-beta.15 - 2017-09-07
 * [CHANGE] Deprecate State API in favour of Storage API
