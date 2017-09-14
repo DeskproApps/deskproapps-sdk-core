@@ -1,3 +1,6 @@
+## Upcoming
+* [FEATURE] adds change/fetch events to the storage module
+
 ## v1.0.0-beta.15 - 2017-09-07
 * [CHANGE] Deprecate State API in favour of Storage API
 

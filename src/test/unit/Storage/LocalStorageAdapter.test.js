@@ -33,9 +33,10 @@ describe('LocalStorageAdapter', () => {
     contextEntityId:    '2'
   };
   
-  const eventDispatcher = new EventDispatcher();
-  const localStorage    = new LocalStorageAdapter(localStorageMock);
-  const storage         = new StorageApiFacade(eventDispatcher, localStorage, params);
+  const outgoingDispatcher = new EventDispatcher();
+  const internalDispatcher = new EventDispatcher();
+  const localStorage       = new LocalStorageAdapter(localStorageMock);
+  const storage            = new StorageApiFacade(outgoingDispatcher, internalDispatcher, localStorage, params);
   
   test('get from app storage', () => {
     const value = { testing: true };
