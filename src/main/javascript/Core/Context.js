@@ -28,6 +28,12 @@ export class Context
 
   /**
    * @public
+   * @return {CustomFieldsClient}
+   */
+  get customFields() { throw new Error('The current context does not support'); }
+
+  /**
+   * @public
    * @return {String}
    */
   get type() { return this.props.type.toString(); }
