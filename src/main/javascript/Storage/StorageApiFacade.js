@@ -1,5 +1,7 @@
-
+import * as Events from './Events';
 import { StorageAdapter } from './StorageAdapter';
+
+const APP_TYPE = 'app';
 
 const validName = (nameString) => typeof nameString === 'string' && nameString.length > 0;
 
@@ -39,7 +41,8 @@ const validateNameValuePairsList = (batch) => {
 class StorageApiFacade
 {
   /**
-   * @param {EventDispatcher} eventDispatcher
+   * @param {EventDispatcher} outgoingDispatcher
+   * @param {EventDispatcher} internalDispatcher
    * @param {StorageAdapter} storageAdapter
    * @param {String} instanceId
    * @param {String} contextEntityType
@@ -47,11 +50,11 @@ class StorageApiFacade
    * @param {String} appId
    * @param other
    */
-  constructor(eventDispatcher, storageAdapter, { instanceId, contextEntityType, contextEntityId, appId, ...other }) {
+  constructor(outgoingDispatcher, internalDispatcher, storageAdapter, { instanceId, contextEntityType, contextEntityId, appId, ...other }) {
     if (! storageAdapter instanceof StorageAdapter) {
       throw new Error('param storageAdapter must be an instance of StorageAdapter');
     }
-    this.props = { eventDispatcher, storageAdapter, instanceId, contextEntityType, contextEntityId, appId, ...other };
+    this.props = { outgoingDispatcher, internalDispatcher, storageAdapter, instanceId, contextEntityType, contextEntityId, appId, ...other };
   }
 
   /**
@@ -70,7 +73,17 @@ class StorageApiFacade
         throw new Error('Bad method call: name parameter must be a non empty string');
       }
 
-      return storageAdapter.handleSetStorage(Promise.resolve(this.props), name, value, entityId);
+      return storageAdapter.handleSetStorage(Promise.resolve(this.props), name, value, entityId)
+        .then((resp) => {
+          this.props.internalDispatcher.emit(
+            entityId.indexOf(APP_TYPE) === 0 ? Events.EVENT_APP_CHANGED : Events.EVENT_ENTITY_CHANGED,
+            entityId,
+            name,
+            value
+          );
+          
+          return resp;
+        });
     }
 
     if (args.length === 2) {
@@ -80,7 +93,16 @@ class StorageApiFacade
         throw batchError;
       }
 
-      return storageAdapter.handleSetBatchStorage(Promise.resolve(this.props), batch, entityId);
+      return storageAdapter.handleSetBatchStorage(Promise.resolve(this.props), batch, entityId)
+        .then((resp) => {
+          this.props.internalDispatcher.emit(
+            entityId.indexOf(APP_TYPE) === 0 ? Events.EVENT_APP_CHANGED : Events.EVENT_ENTITY_CHANGED,
+            entityId,
+            batch
+          );
+    
+          return resp;
+        });
     }
 
     throw new Error(`Bad method call: unknown number of args: ${args.length}`);
@@ -94,7 +116,7 @@ class StorageApiFacade
    * @return {Promise}
    */
   async setAppStorage(...args) {
-    const entityId = `app:${this.props.appId}`;
+    const entityId = `${APP_TYPE}:${this.props.appId}`;
     if (args.length == 2) {
       const [ name, value ] = args;
       return this.setStorage(name, value, entityId);
@@ -166,6 +188,16 @@ class StorageApiFacade
 
     if (validName(name)) {
       return storageAdapter.handleGetStorage(Promise.resolve(this.props), name, entityId, defaultValue || null)
+        .then((value) => {
+          this.props.internalDispatcher.emit(
+            entityId.indexOf(APP_TYPE) === 0 ? Events.EVENT_APP_FETCHED : Events.EVENT_ENTITY_FETCHED,
+            entityId,
+            name,
+            value
+          );
+    
+          return value;
+        });
     }
 
     const batch = name;
@@ -179,6 +211,16 @@ class StorageApiFacade
         throw new Error('Bad method call: some names were not syntactically valid');
       }
       return storageAdapter.handleGetBatchStorage(Promise.resolve(this.props), batch, entityId, defaultValue || null)
+        .then((values) => {
+          this.props.internalDispatcher.emit(
+            entityId.indexOf(APP_TYPE) === 0 ? Events.EVENT_APP_FETCHED : Events.EVENT_ENTITY_FETCHED,
+            entityId,
+            batch,
+            values
+          );
+    
+          return values;
+        });
     }
 
     throw new Error('Bad method call');

@@ -1,4 +1,5 @@
 import { Context } from '../Core/Context';
+import { CustomFieldsClient } from '../CustomFields';
 
 /**
  * @class
@@ -17,18 +18,50 @@ export class OrganizationContext extends Context
    * @method
    * @static
    *
-   * @param {EventEmitter} outgoingDispatcher
-   * @param {EventEmitter} incomingDispatcher
+   * @param {EventDispatcher} outgoingDispatcher
+   * @param {EventDispatcher} incomingDispatcher
+   * @param {InstanceProps} instanceProps
    * @param {ContextProps} contextProps
    * @return {OrganizationContext|null}
    */
-  static tryAndCreate({outgoingDispatcher, incomingDispatcher, contextProps})
+  static tryAndCreate({outgoingDispatcher, incomingDispatcher, instanceProps, contextProps})
   {
     if (contextProps.contextType === OrganizationContext.TYPE) {
-      const props = { outgoingDispatcher, incomingDispatcher, ...contextProps.toJS(), type: contextProps.contextType };
+      const props = {
+        outgoingDispatcher,
+        incomingDispatcher,
+        ...contextProps.toJS(),
+        type: contextProps.contextType,
+        appId: instanceProps.appId
+      };
       return new OrganizationContext(props);
     }
 
     return null;
+  }
+
+  /**
+   * @constructor
+   *
+   * @param {string} appId
+   * @param {{}} rest
+   */
+  constructor({appId, ...rest})
+  {
+    super(rest);
+    this.props = { ...this.props, appId };
+  }
+
+  /**
+   * @public
+   * @return {CustomFieldsClient}
+   */
+  get customFields() {
+    const { outgoingDispatcher, appId } = this.props;
+    return new CustomFieldsClient({
+      outgoingDispatcher,
+      appId,
+      endpoint: `organizations/${this.entityId}`
+    });
   }
 }

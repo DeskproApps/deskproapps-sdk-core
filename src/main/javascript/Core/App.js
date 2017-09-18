@@ -21,7 +21,7 @@ class App
    */
   constructor({ outgoingDispatcher, incomingDispatcher, internalDispatcher, instanceProps, contextProps })
   {
-    const context = createContext(outgoingDispatcher,incomingDispatcher, contextProps);
+    const context = createContext(outgoingDispatcher,incomingDispatcher, instanceProps, contextProps);
     this.props = {
       outgoingDispatcher,
       incomingDispatcher,
@@ -29,11 +29,11 @@ class App
       instanceProps,
       contextProps,
       restApi: createDeskproApiClient(outgoingDispatcher),
-      storageApi: createStorageAPIClient(outgoingDispatcher, instanceProps, contextProps),
+      storageApi: createStorageAPIClient(outgoingDispatcher, internalDispatcher, instanceProps, contextProps),
       deskproWindow: createDeskproWindowFacade(outgoingDispatcher),
       context,
       ui: createUI(internalDispatcher),
-      oauth: createOauthAPIClient(outgoingDispatcher, instanceProps, contextProps)
+      oauth: createOauthAPIClient(outgoingDispatcher, internalDispatcher, instanceProps, contextProps)
     };
 
     this._state = {

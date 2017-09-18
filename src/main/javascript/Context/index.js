@@ -35,14 +35,15 @@ export const factories = [
 /**
  * @method
  *
- * @param {EventEmitter} outgoingDispatcher
- * @param {EventEmitter} incomingDispatcher
+ * @param {EventDispatcher} outgoingDispatcher
+ * @param {EventDispatcher} incomingDispatcher
+ * @param {InstanceProps} instanceProps
  * @param {ContextProps} contextProps
  * @return {Context}
  */
-export const createContext = (outgoingDispatcher, incomingDispatcher, contextProps) =>
+export const createContext = (outgoingDispatcher, incomingDispatcher, instanceProps, contextProps) =>
 {
-  const props = {outgoingDispatcher, incomingDispatcher, contextProps};
+  const props = {outgoingDispatcher, incomingDispatcher, instanceProps, contextProps};
   for (const factory of factories) {
     let context = factory(props);
     if (context) { return context; }

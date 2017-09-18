@@ -3,7 +3,37 @@
  * @module Storage/Events
  */
 
-const events = {};
+/**
+ * @type {string}
+ */
+export const EVENT_APP_CHANGED = 'storage.app.changed';
+
+/**
+ * @type {string}
+ */
+export const EVENT_ENTITY_CHANGED = 'storage.entity.changed';
+
+/**
+ * @type {string}
+ */
+export const EVENT_APP_FETCHED = 'storage.app.fetched';
+
+/**
+ * @type {string}
+ */
+export const EVENT_ENTITY_FETCHED = 'storage.entity.fetched';
+
+/**
+ * @readonly
+ * @enum {string}
+ * @type {{EVENT_APP_CHANGED: string, EVENT_ENTITY_CHANGED: string, EVENT_APP_FETCHED: string, EVENT_ENTITY_FETCHED: string}}
+ */
+const events = {
+  EVENT_APP_CHANGED,
+  EVENT_ENTITY_CHANGED,
+  EVENT_APP_FETCHED,
+  EVENT_ENTITY_FETCHED
+};
 
 /**
  * @constant
