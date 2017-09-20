@@ -1,6 +1,6 @@
 ## Upcoming
 
-* [FIXES] npm-shrinkwrap.json out of sync with package.json
+* [FIXES] npm-shrinkwrap.json references optional dependencies
 
 ## v1.0.0-beta.16 - 2017-09-18
 * [FEATURE] adds change/fetch events to the storage module
