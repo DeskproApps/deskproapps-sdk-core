@@ -1,3 +1,7 @@
+## Upcoming
+
+* [FIXES] npm-shrinkwrap.json out of sync with package.json
+
 ## v1.0.0-beta.16 - 2017-09-18
 * [FEATURE] adds change/fetch events to the storage module
 * [FEATURE] update and fetch custom fields for tickets, organizations and persons
