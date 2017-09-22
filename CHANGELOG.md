@@ -1,4 +1,4 @@
-## Upcoming
+## v1.0.0-beta.18 - 2017-09-22
 
 * [FEATURE] allow application to be instantiated with generic contexts
 
