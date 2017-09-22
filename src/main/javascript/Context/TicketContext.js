@@ -2,7 +2,7 @@
  * @module Context/TicketContext
  */
 
-import { Context } from '../Core/Context';
+import { TabContext } from './TabContext';
 import { CHANNEL_INCOMING } from '../Core/Event'
 import { matchEvent } from './TicketEvents';
 import { CustomFieldsClient } from '../CustomFields';
@@ -11,7 +11,7 @@ import { CustomFieldsClient } from '../CustomFields';
  * @class
  * @extends {Context}
  */
-export class TicketContext extends Context
+export class TicketContext extends TabContext
 {
   /**
    * @static
@@ -54,8 +54,7 @@ export class TicketContext extends Context
    */
   constructor({appId, ...rest})
   {
-    super(rest);
-    this.props = { ...this.props, appId };
+    super({appId, ...rest});
   }
 
   /**

@@ -1,11 +1,11 @@
-import { Context } from '../Core/Context';
+import { TabContext } from './TabContext';
 import { CustomFieldsClient } from '../CustomFields';
 
 /**
  * @class
  * @extends {Context}
  */
-export class PersonContext extends Context
+export class PersonContext extends TabContext
 {
   /**
    * @static
@@ -48,8 +48,7 @@ export class PersonContext extends Context
    */
   constructor({appId, ...rest})
   {
-    super(rest);
-    this.props = { ...this.props, appId };
+    super({appId, ...rest});
   }
 
   /**

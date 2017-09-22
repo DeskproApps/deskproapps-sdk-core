@@ -11,26 +11,17 @@ export class Context
    * @param {String} type
    * @param {String} entityId
    * @param {String} locationId
-   * @param {String} tabId
-   * @param {String} tabUrl
+   * @param rest
    */
-  constructor({ outgoingDispatcher, incomingDispatcher, type, entityId, locationId, tabId, tabUrl }) {
-    this.props = {
-      outgoingDispatcher,
-      incomingDispatcher,
-      type,
-      entityId,
-      locationId,
-      tabId,
-      tabUrl
-    };
+  constructor({ outgoingDispatcher, incomingDispatcher, type, entityId, locationId, ...rest }) {
+    this.props = { outgoingDispatcher, incomingDispatcher, type, entityId, locationId, ...rest }
   }
 
   /**
    * @public
    * @return {CustomFieldsClient}
    */
-  get customFields() { throw new Error('The current context does not support'); }
+  get customFields() { throw new Error('The current context does not support custom fields'); }
 
   /**
    * @public
@@ -51,58 +42,26 @@ export class Context
   get locationId() { return this.props.locationId.toString(); }
 
   /**
-   * @public
-   * @return {String}
-   */
-  get tabId() { return this.props.tabId.toString(); }
-
-  /**
-   * @public
-   * @return {String}
-   */
-  get tabUrl() { return this.props.tabUrl.toString(); }
-
-  /**
-   * @public
    * @method
-   * @async
-   * @return {Promise}
+   *
+   * @param {String} propName
+   * @return {boolean}
    */
-  async isTabActive()
-  {
-    return this.props.outgoingDispatcher.emitAsync(ContextEvents.EVENT_TAB_STATUS, this.props.tabId)
-      .then(status => status.active)
-    ;
+  hasProperty (propName) { return this.props.hasOwnProperty(propName) };
+
+  /**
+   * @method
+   *
+   * @param {String} propName
+   * @return {*}
+   */
+  getProperty(propName) {
+    if (this.props.hasOwnProperty(propName)) {
+      return this.props[propName];
+    }
+
+    return undefined;
   };
-
-  /**
-   * @public
-   * @method
-   * @async
-   * @return {Promise}
-   */
-  async activateTab()
-  {
-    return this.props.outgoingDispatcher.emitAsync(ContextEvents.EVENT_TAB_ACTIVATE, this.props.tabId);
-  }
-
-  /**
-   * @public
-   * @method
-   * @async
-   * @return {Promise}
-   */
-  async closeTab() {
-    return this.props.outgoingDispatcher.emitAsync(ContextEvents.EVENT_TAB_CLOSE, this.props.tabId);
-  }
-
-  /**
-   * @public
-   * @method
-   * @async
-   * @return {Promise}
-   */
-  async getTabData() { return this.props.outgoingDispatcher.emitAsync(ContextEvents.EVENT_TAB_DATA, this.props.tabId); }
 
   /**
    * @public
@@ -113,4 +72,11 @@ export class Context
   async getMe() {
     return this.props.outgoingDispatcher.emitAsync(ContextEvents.EVENT_ME_GET);
   }
+
+  /**
+   * @method
+   *
+   * @return {Object}
+   */
+  toJS() { return {...this.props}; }
 }
