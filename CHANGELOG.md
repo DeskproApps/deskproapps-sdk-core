@@ -1,3 +1,7 @@
+## Upcoming
+
+* [FEATURE] allow application to be instantiated with generic contexts
+
 ## v1.0.0-beta.17 - 2017-09-20
 
 * [FIXES] npm-shrinkwrap.json references optional dependencies
