@@ -42,10 +42,30 @@ export const emitAsync = (eventDispatcher) =>
 export class EventDispatcher extends EventEmitter
 {
   /**
+   *
+   * @param handler
+   */
+  onInvoke(handler)
+  {
+    this.on('invoke', handler);
+  }
+
+  /**
+   * @public
+   * @method
+   *
+   * @return {Promise}
+   */
+  emitInvokeAsync(...args)
+  {
+    return this.emitAsync.apply(this, ['invoke'].concat(args));
+  }
+
+  /**
    * @public
    * @method
    * @param {string} eventName
-   * @param args
+   * @param [args]
    * @return {Promise}
    */
   emitAsync = (eventName, ...args) => {

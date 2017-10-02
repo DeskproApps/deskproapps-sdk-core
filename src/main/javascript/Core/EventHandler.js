@@ -8,6 +8,54 @@ import { INVOCATION_REQUESTRESPONSE, INVOCATION_FIREANDFORGET } from './Event'
 
 // TODO this should form the basic for the driver for WidgetWindowBridge
 
+class EventHandler
+{
+  /**
+   * @param {WidgetWindowBridge} windowBridge
+   * @param {function} resolve
+   * @param {function} reject
+   * @param {string} event
+   * @param {*} data
+   * @param {string} invocationType
+   */
+  static handleOutgoingEvent(windowBridge, resolve, reject, {event, invocationType, data})
+  {
+    if (invocationType === INVOCATION_REQUESTRESPONSE) {
+      windowBridge.emitRequest(event, data)
+        .then(({request, emit}) => {
+          // resolve the promise when response comes
+          const responseExecutor = response => (response.status == 'success' ? resolve(response.body) : reject(response.body));
+          MessageBus.once(request.correlationId, responseExecutor);
+          return {request, emit};
+        })
+        .then(({emit}) => emit())
+      ;
+    } else if (invocationType === INVOCATION_FIREANDFORGET) {
+      windowBridge.emitRequest(event, data).then(({emit}) => emit()).then(() => resolve(data));
+    }
+  }
+
+  /**
+   * @param {WidgetWindowBridge} windowBridge
+   * @param {string} event
+   * @param {string} invocationType
+   * @param {WidgetRequest} request
+   */
+  static handleIncomingEvent(windowBridge, {event, invocationType}, request)
+  {
+    if (invocationType === INVOCATION_REQUESTRESPONSE) {
+      const cb = (error, data) => {
+        windowBridge.emitResponse(event, error, data, request)
+          .then(({response, emit}) => emit())
+      };
+
+      IncomingEventDispatcher.emit(event, cb, request.body);
+    } else if (invocationType === INVOCATION_FIREANDFORGET) {
+      IncomingEventDispatcher.emit(event, request.body)
+    }
+  }
+}
+
 /**
  * @param {WidgetWindowBridge} windowBridge
  * @param {String} eventName
@@ -32,14 +80,12 @@ const dispatchIncomingEvent = (windowBridge, eventName, eventProps, event) => {
 };
 
 /**
- * TODO: this should handle requests and response, not only requests
- *
  * @param {WidgetWindowBridge} windowBridge
- * @param {String} eventName
- * @param {WidgetRequest} request
+ * @param {App} app
  */
-const createDispatchOutgoingResponseEvent = (windowBridge, eventName, request) => (error, data) => {
-  windowBridge.emitResponse(eventName, error, data, request).then(({response, emit}) => emit());
+export const handleInvokeEvents = (windowBridge, app) =>
+{
+  OutgoingEventDispatcher.onInvoke(EventHandler.handleOutgoingEvent.bind(null, windowBridge));
 };
 
 /**
@@ -52,23 +98,14 @@ const createDispatchOutgoingResponseEvent = (windowBridge, eventName, request) =
  */
 export const handleIncomingEvent = (windowBridge, app, eventName, eventProps) =>
 {
-  let eventHandler;
+  const { invocationType, ...otherProps } = eventProps;
 
-  if (eventProps.invocationType === INVOCATION_REQUESTRESPONSE) {
-    eventHandler = request =>
-    {
-      const cb = createDispatchOutgoingResponseEvent(windowBridge, eventName, request);
-      IncomingEventDispatcher.emit(eventName, cb, request.body);
-    }
-  } else if (eventProps.invocationType === INVOCATION_FIREANDFORGET) {
-    eventHandler = request => IncomingEventDispatcher.emit(eventName, request.body);
-  }
+  if (-1 !== [INVOCATION_FIREANDFORGET, INVOCATION_REQUESTRESPONSE].indexOf(invocationType)) {
 
-  if (eventHandler) {
-    MessageBus.on(eventName, eventHandler);
+    const invocation = { event: eventName, invocationType, ...otherProps };
+    MessageBus.on(eventName, EventHandler.handleIncomingEvent.bind(windowBridge, invocation));
     windowBridge.on(eventName, dispatchIncomingEvent.bind(this, windowBridge, eventName, eventProps));
   }
-
 };
 
 /**
@@ -77,33 +114,20 @@ export const handleIncomingEvent = (windowBridge, app, eventName, eventProps) =>
  * @param {WidgetWindowBridge} windowBridge
  * @param {App} app
  * @param {string} eventName
- * @param {object} eventProps
+ * @param {{invocationType:String}} eventProps
  */
 export const handleOutgoingEvent = (windowBridge, app, eventName, eventProps) =>
 {
-  let eventHandler;
+  const { invocationType, ...otherProps } = eventProps;
 
-  if (eventProps.invocationType === INVOCATION_REQUESTRESPONSE) {
-    eventHandler = (resolve, reject, data) => {
+  if (-1 !== [INVOCATION_FIREANDFORGET, INVOCATION_REQUESTRESPONSE].indexOf(invocationType)) {
+    const handler = (resolve, reject, data) => EventHandler.handleOutgoingEvent(
+      windowBridge,
+      resolve, reject,
+      {event: eventName, data, invocationType, ...otherProps}
+    );
 
-      windowBridge.emitRequest(eventName, data)
-        .then(({request, emit}) => {
-        // resolve the promise when response comes
-        const responseExecutor = response => (response.status == 'success' ? resolve(response.body) : reject(response.body));
-        MessageBus.once(request.correlationId, responseExecutor);
-        return {request, emit};
-        })
-      .then(({emit}) => emit())
-      ;
-    }
-  } else if (eventProps.invocationType === INVOCATION_FIREANDFORGET) {
-    eventHandler = (resolve, reject, data) => {
-      windowBridge.emitRequest(eventName, data).then(({emit}) => emit()).then(() => resolve(data))
-    }
-  }
-
-  if (eventHandler) {
-    OutgoingEventDispatcher.on(eventName, eventHandler);
+    OutgoingEventDispatcher.on(eventName, handler);
     windowBridge.on(eventName, dispatchIncomingEvent.bind(this, windowBridge, eventName, eventProps));
   }
 

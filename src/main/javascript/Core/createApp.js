@@ -5,6 +5,7 @@
 import { WidgetFactories } from '../Widget';
 
 import { InternalEventDispatcher, IncomingEventDispatcher, OutgoingEventDispatcher } from './EventDispatcher';
+import { handleInvokeEvents } from './EventHandler';
 
 import { registerEventHandlers as registerStorageEventHandlers } from '../Storage';
 import { registerEventHandlers as registerSecurityEventHandlers } from '../Security';
@@ -22,7 +23,10 @@ import { InstanceProps, ContextProps } from './AppProps';
  * @param {WidgetWindowBridge} windowBridge
  * @param {App} app
  */
-const registerAppEventListeners = (windowBridge, app) => {
+const registerAppEventListeners = (windowBridge, app) =>
+{
+  handleInvokeEvents(windowBridge, app);
+
   [
     registerSecurityEventHandlers,
     registerStorageEventHandlers,

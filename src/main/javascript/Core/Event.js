@@ -93,6 +93,24 @@ export const matchEvent = (eventName, propsPattern, eventMap) => {
 };
 
 /**
+ * @param {{}} props
+ * @return {boolean}
+ */
+export const isInvocation = (props) => {
+  if (!props || typeof props !== 'object') {
+    return false;
+  }
+
+  const {event} = props;
+  if ( typeof event !== 'string') {
+    return false;
+  }
+
+  const {invocationType} = props;
+  return -1 !== Object.keys(invocations).reduce((acc, key) => acc.concat(invocations[key]), []).indexOf(invocationType);
+};
+
+/**
  *
  * @param {*} actualProps
  * @param {String} channelType

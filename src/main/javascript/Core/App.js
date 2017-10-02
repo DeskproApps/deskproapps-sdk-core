@@ -7,6 +7,7 @@ import { createDeskproApiClient } from '../WebAPI';
 import { createDeskproWindowFacade } from '../DeskproWindow';
 import { createOauthAPIClient } from '../Security';
 
+import * as Event from './Event'
 /**
  * @class
  */
@@ -68,7 +69,7 @@ class App
    * @param {function} listener
    */
   off = (eventName, listener) => {
-    // TODO need to check if eventName is an internal one, for now just assume everyything is
+    // TODO need to check if eventName is an internal one, for now just assume everything is
     this.eventDispatcher.removeListener(eventName, listener);
   };
 
@@ -79,21 +80,30 @@ class App
    * @param {function} listener
    */
   once = (eventName, listener) => {
-    // TODO need to check if eventName is an internal one, for now just assume everyything is
+    // TODO need to check if eventName is an internal one, for now just assume everything is
     this.eventDispatcher.once(eventName, listener);
   };
 
   /**
    * @public
    * @method
-   * @param eventName
+   * @param {string|{}} event
    * @param args
+   * @return {Promise.<*>}
    */
-  emit = (eventName, ...args) => {
-    // TODO need to check if eventName is an internal one, for now just assume everyything is
-    const { internalDispatcher: eventDispatcher } = this.props;
-    const dispatcherArgs = [eventName].concat(args);
-    eventDispatcher.emit.apply(eventDispatcher, dispatcherArgs);
+  async emit (event, ...args)
+  {
+    // invocation
+    if (Event.isInvocation(event) && args.length > 0) {
+      const { outgoingDispatcher } = this.props;
+      return outgoingDispatcher.emitInvokeAsync({ ...event, data: args[0] });
+    }
+
+    // internal event invocatino
+    const { internalDispatcher } = this.props;
+    const dispatcherArgs = [event].concat(args);
+    internalDispatcher.emit.apply(internalDispatcher, dispatcherArgs);
+    return Promise.resolve((args));
   };
 
   // Properties API
