@@ -55,7 +55,7 @@ export class FetchStorageAdapter extends StorageAdapter
         result[name] = response.headers['status-code'] === 200;
         return result;
       };
-      const { responses } = response.body;
+      const { responses } = batchResponse.body;
       return Object.keys(responses).reduce((result, name) => reducer(result, responses[name], name), {});
     };
 
