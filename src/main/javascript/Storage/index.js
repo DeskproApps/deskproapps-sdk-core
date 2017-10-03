@@ -53,7 +53,15 @@ const storageAdapterProps = (instanceProps, contextProps) =>
 export const createStorageAPIClient = (outgoingDispatcher, internalDispatcher, instanceProps, contextProps) => {
   const props = storageAdapterProps(instanceProps, contextProps);
   const env = contextProps.getProperty('appsEnvironment');
-  const storageAdapter = env === 'development' ? LocalStorageAdapter.fromGlobals() : new FetchStorageAdapter();
+  const adapter = contextProps.getProperty('appsStorageadapter');
+
+  let storageAdapter = new FetchStorageAdapter();
+  if (env === 'development') {
+    if (adapter !== 'fetch') {
+      storageAdapter = LocalStorageAdapter.fromGlobals();
+    }
+  }
+
   return new StorageApiFacade(outgoingDispatcher, internalDispatcher, storageAdapter, props);
 };
 
