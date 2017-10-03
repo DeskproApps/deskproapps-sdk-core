@@ -99,7 +99,7 @@ class App
       return outgoingDispatcher.emitInvokeAsync({ ...event, data: args[0] });
     }
 
-    // internal event invocatino
+    // internal event
     const { internalDispatcher } = this.props;
     const dispatcherArgs = [event].concat(args);
     internalDispatcher.emit.apply(internalDispatcher, dispatcherArgs);
