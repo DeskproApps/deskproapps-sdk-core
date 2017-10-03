@@ -47,18 +47,17 @@ export class FetchStorageAdapter extends StorageAdapter
     {
       /**
        * @param result
+       * @param response
        * @param name
        * @return {*}
        */
-      const reducer = (result, name) => {
-        const response = batchResponse.body[name];
-        result[name] = response.headers.response_code === 200;
+      const reducer = (result, response, name) => {
+        result[name] = response.headers['status-code'] === 200;
         return result;
       };
-
-      return Object.keys(batchResponse.body).reduce(reducer, {});
+      const { responses } = response.body;
+      return Object.keys(responses).reduce((result, name) => reducer(result, responses[name], name), {});
     };
-
 
     /**
      * @return {Array}
@@ -80,7 +79,7 @@ export class FetchStorageAdapter extends StorageAdapter
 
     return dispatchPromise.then((props) => {
       const url = `batch`;
-      const body = nameValuePairsList.reduce(buildRequestBody.bind(this, props.instanceId));
+      const requests = nameValuePairsList.reduce(buildRequestBody.bind(this, props.instanceId));
 
       const init = {
         method: 'POST',
@@ -88,7 +87,7 @@ export class FetchStorageAdapter extends StorageAdapter
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(body)
+        body: JSON.stringify({ requests })
       };
       return props.outgoingDispatcher.emitAsync(WebAPIEvents.EVENT_WEBAPI_REQUEST_FETCH, { url, init });
     }).then(parseSaveBatchStatus)
@@ -173,22 +172,18 @@ export class FetchStorageAdapter extends StorageAdapter
       return body;
     };
 
-    const parseBatchResponse = (batchResponse, result, name) => {
-      const response = batchResponse.body[name];
-
-      if (response.headers.response_code === 200) {
-        result[name] = response.data.value;
+    const parseBatchResponse = (response, result, name) => {
+      if (response.headers['status-code'] === 200) {
+        result[name] = response.value;
       } else {
         result[name] = defaultValue;
       }
-
       return result;
     };
 
-
     return dispatchPromise.then((props) => {
       const url = `batch`;
-      const body = nameList.reduce((body, name) => buildRequestBody(props.instanceId, body, name), {});
+      const requests = nameList.reduce((body, name) => buildRequestBody(props.instanceId, body, name), {});
 
       const init = {
         method: 'POST',
@@ -196,11 +191,12 @@ export class FetchStorageAdapter extends StorageAdapter
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(body)
+        body: JSON.stringify({ requests })
       };
       return props.outgoingDispatcher.emitAsync(WebAPIEvents.EVENT_WEBAPI_REQUEST_FETCH, { url, init });
     }).then((response) => {
-      return Object.keys(response.body).reduce((result, name) => parseBatchResponse(response, result, name), {});
+      const { responses } = response.body;
+      return Object.keys(responses).reduce((result, name) => parseBatchResponse(responses[name], result, name), {});
     })
   };
 }
