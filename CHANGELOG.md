@@ -1,3 +1,7 @@
+## v1.0.0-beta.19 - 2017-10-03
+
+* [FEATURE] allow the application to communicate with the helpdesk using custom events
+
 ## v1.0.0-beta.18 - 2017-09-22
 
 * [FEATURE] allow application to be instantiated with generic contexts
