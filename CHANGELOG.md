@@ -1,3 +1,8 @@
+## Upcoming
+
+* [FIX] failure to use storage batch operations due to incorrect handling of api request format
+* [FEATURE] allow specifying fetch storage adapter in dev mode
+
 ## v1.0.0-beta.19 - 2017-10-03
 
 * [FEATURE] allow the application to communicate with the helpdesk using custom events
