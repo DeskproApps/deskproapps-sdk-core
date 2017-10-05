@@ -1,3 +1,8 @@
+## Upcoming
+
+* [FIX] use instance id when reading from and writing to custom fields
+* [FEATURE] reduce log verbosity when app is running in production mode  
+
 ## v1.0.0-beta.20 - 2017-10-03
 
 * [FIX] failure to use storage batch operations due to incorrect handling of api request format
