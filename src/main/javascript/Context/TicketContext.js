@@ -38,7 +38,7 @@ export class TicketContext extends TabContext
         incomingDispatcher,
         ...contextProps.toJS(),
         type: contextProps.contextType,
-        appId: instanceProps.appId
+        instanceId: instanceProps.instanceId
       };
       return new TicketContext(props);
     }
@@ -49,12 +49,12 @@ export class TicketContext extends TabContext
   /**
    * @constructor
    *
-   * @param {string} appId
+   * @param {string} instanceId
    * @param {{}} rest
    */
-  constructor({appId, ...rest})
+  constructor({instanceId, ...rest})
   {
-    super({appId, ...rest});
+    super({instanceId, ...rest});
   }
 
   /**
@@ -76,10 +76,10 @@ export class TicketContext extends TabContext
    * @return {CustomFieldsClient}
    */
   get customFields() {
-    const { outgoingDispatcher, appId } = this.props;
+    const { outgoingDispatcher, instanceId } = this.props;
     return new CustomFieldsClient({
       outgoingDispatcher,
-      appId,
+      instanceId,
       endpoint: `tickets/${this.entityId}`
     });
   }
