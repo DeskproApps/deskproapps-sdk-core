@@ -1,4 +1,4 @@
-## Upcoming
+## v1.0.0-beta.21 - 2017-10-05
 
 * [FIX] use instance id when reading from and writing to custom fields
 * [FEATURE] reduce log verbosity when app is running in production mode  
