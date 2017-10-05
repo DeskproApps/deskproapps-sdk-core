@@ -28,12 +28,13 @@ export class CustomFieldsClient
 {
   /**
    * @param {EventDispatcher} outgoingDispatcher
-   * @param {string} appId
+   * @param {string} instanceId
    * @param {string} endpoint
    */
-  constructor({ outgoingDispatcher, appId, endpoint })
+  constructor({ outgoingDispatcher, instanceId, endpoint })
   {
-    this.props = { outgoingDispatcher, appId, endpoint };
+    console.log(' properties ', { outgoingDispatcher, instanceId, endpoint });
+    this.props = { outgoingDispatcher, instanceId, endpoint };
   }
 
   /**
@@ -91,7 +92,7 @@ export class CustomFieldsClient
    */
   async setAppField(alias, value)
   {
-    const fieldId = `app:${this.props.appId}:${alias}`;
+    const fieldId = `app:${this.props.instanceId}:${alias}`;
     return this.setField(fieldId, value);
   }
 
@@ -103,7 +104,7 @@ export class CustomFieldsClient
    */
   async getAppField(alias, defaultValue = null)
   {
-    const fieldId = `app:${this.props.appId}:${alias}`;
+    const fieldId = `app:${this.props.instanceId}:${alias}`;
     return this.getField(fieldId, defaultValue);
   }
 }
