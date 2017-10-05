@@ -33,7 +33,6 @@ export class CustomFieldsClient
    */
   constructor({ outgoingDispatcher, instanceId, endpoint })
   {
-    console.log(' properties ', { outgoingDispatcher, instanceId, endpoint });
     this.props = { outgoingDispatcher, instanceId, endpoint };
   }
 
