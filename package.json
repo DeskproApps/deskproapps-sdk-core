@@ -41,7 +41,7 @@
     "docdash": "^0.4.0"
   },
   "optionalDependencies": {
-    "@deskpro/apps-dpat": "^0.5.2",
+    "@deskpro/apps-dpat": "^0.9.1",
     "docdash": "^0.4.0",
     "jsdoc": "^3.5.4"
   }
