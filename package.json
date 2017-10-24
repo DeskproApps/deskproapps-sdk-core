@@ -1,5 +1,5 @@
 {
-  "name": "@deskproapps/deskproapps-sdk-core",
+  "name": "@deskpro/apps-sdk-core",
   "version": "1.0.0-beta.21",
   "description": "core component of deskpro apps sdk",
   "main": "lib/main/javascript/index.js",
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Deskpro/deskproapps-sdk-core.git"
+    "url": "git+https://github.com/deskpro/apps-sdk-core.git"
   },
   "keywords": [
     "deskpro",
@@ -23,9 +23,9 @@
   "author": "DeskPRO Ltd.",
   "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/Deskpro/deskproapps-sdk-core/issues"
+    "url": "https://github.com/deskpro/apps-sdk-core/issues"
   },
-  "homepage": "https://github.com/Deskpro/deskproapps-sdk-core#readme",
+  "homepage": "https://github.com/deskpro/apps-sdk-core#readme",
   "files": [
     "dist/",
     "lib/",
@@ -41,7 +41,7 @@
     "docdash": "^0.4.0"
   },
   "optionalDependencies": {
-    "@deskproapps/dpat": "^0.5.2",
+    "@deskpro/apps-dpat": "^0.5.2",
     "docdash": "^0.4.0",
     "jsdoc": "^3.5.4"
   }
