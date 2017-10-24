@@ -1,12 +1,11 @@
-# deskproapps-sdk-core
-
+# apps-sdk-core
 Core javascript SDK for building Deskpro Apps
 
 ## Contents
 - [Installation](#installation)
 - [Building](#building)
 - [Running tests](#running-tests)
-- [API reference](https://deskpro.github.io/deskproapps-sdk-core/reference)
+- [API reference](https://deskpro.github.io/apps-sdk-core/reference)
 
 ## Installation
     
@@ -16,18 +15,18 @@ To install, run:
     
 ## Building
 
-The recommended way to build this project is to use [Deskpro Apps Tool] (https://github.com/deskpro/deskproapps-dpat), known on the command line as *dpat*
+The recommended way to build this project is to use [Deskpro Apps Tool] (https://github.com/deskpro/apps-dpat), known on the command line as *dpat*
 
 Dpat is main tool to build and package apps at Deskpro and comes bundled with all the dependencies like Babel and Webpack and many more and it is constantly updated.
 
 Chances are, if you need to build this sdk project, that you would also need to build other sdk projects so it is 
 best to install it globally:
  
-    npm install -g @deskproapps/dpat 
+    npm install -g @deskpro/apps-dpat 
 
 If you want to have installed locally, run:
 
-    npm install -g @deskproapps/dpat 
+    npm install -g @deskpro/apps-dpat 
      
 If you have a previous version of dpat installed, it is **important** that you update to the lastest version     
 
@@ -41,7 +40,7 @@ To package the sdk run:
 
 ## Running tests
 
-You must have [Deskpro Apps Tool](https://github.com/deskpro/deskproapps-dpat) installed to run the tests. After you install it, run 
+You must have [Deskpro Apps Tool](https://github.com/deskpro/apps-dpat) installed to run the tests. After you install it, run 
  
     npm run test 
 

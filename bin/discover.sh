@@ -13,7 +13,7 @@ REALPATH
 }
 
 NPM_ROOT=$(npm root -g);
-DPAT='@deskproapps/dpat'
+DPAT='@deskpro/apps-dpat'
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
