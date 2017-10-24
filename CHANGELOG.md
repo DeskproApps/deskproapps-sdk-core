@@ -1,3 +1,7 @@
+## v1.0.0-beta.22 - 2017-10-24
+
+* [CHANGE] renames @deskproapps references to @deskpro
+
 ## v1.0.0-beta.21 - 2017-10-05
 
 * [FIX] use instance id when reading from and writing to custom fields
