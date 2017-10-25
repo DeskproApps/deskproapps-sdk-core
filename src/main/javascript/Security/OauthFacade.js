@@ -21,13 +21,26 @@ export class OauthFacade
   /**
    * @method
    *
-   * @param {String} provider
    * @return {Promise}
+   * @param {String} provider
+   * @param options
    */
-  async settings(provider)
+  async settings(provider, options)
   {
     const { eventDispatcher } = this.props;
-    return eventDispatcher.emitAsync(Events.EVENT_SECURITY_SETTINGS_OAUTH, { provider });
+    let eventOptions = null;
+
+   if (typeof options === 'object') {
+     eventOptions = { ...options, provider };
+    } else {
+     eventOptions = { provider, protocolVersion: '2.0' };
+    }
+
+    if (eventOptions) {
+      return eventDispatcher.emitAsync(Events.EVENT_SECURITY_SETTINGS_OAUTH, eventOptions);
+    }
+
+    return Promise.reject('invalid argument');
   };
 
   /**
@@ -57,7 +70,7 @@ export class OauthFacade
   {
     const { eventDispatcher } = this.props;
     return eventDispatcher
-      .emitAsync(Events.EVENT_SECURITY_AUTHENTICATE_OAUTH, { provider, options })
+      .emitAsync(Events.EVENT_SECURITY_AUTHENTICATE_OAUTH, { ...options, provider })
       .then(OauthToken.fromOauthProxyResponse)
       .then(oauthToken => oauthToken.toJS())
     ;
