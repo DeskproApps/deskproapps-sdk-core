@@ -1,4 +1,4 @@
-## Upcoming
+## v1.0.0-beta.23 - 2017-10-27
 
 * [FEATURE] allow specifying protocol related requirements when requesting the oauth settings for a provider 
 
