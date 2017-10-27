@@ -23,51 +23,25 @@ export class OauthToken extends PropertyBag
    */
   static fromOauthProxyResponse(response)
   {
+    const { oauthVersion } = response;
     const { token } = response.body;
-    const {
-      access_token: accessToken,
-      refresh_token: refreshToken,
-      expires,
-      resource_owner_id: resourceOwnerId
-    } = token;
 
-    const props = { accessToken, refreshToken, expires, resourceOwnerId, ...token };
+    const props = { oauthVersion, ...token };
     return new OauthToken(props);
   }
 
   /**
-   * @param {String} accessToken
-   * @param {String} refreshToken
-   * @param {String} expires
-   * @param {String} resourceOwnerId
+   * @param oauthVersion
    * @param {{}} otherProps
    */
-  constructor({ accessToken, refreshToken, expires, resourceOwnerId, ...otherProps })
+  constructor({ oauthVersion, ...otherProps })
   {
-    super({ accessToken, refreshToken, expires, resourceOwnerId, ...otherProps })
+    super({ oauthVersion, ...otherProps })
   }
 
   /**
    * @readonly
    * @type {string}
    */
-  get accessToken() { return this.props.accessToken; }
-
-  /**
-   * @readonly
-   * @type {string}
-   */
-  get refreshToken() { return this.props.refreshToken; }
-
-  /**
-   * @readonly
-   * @type {string}
-   */
-  get expires() { return this.props.expires; }
-
-  /**
-   * @readonly
-   * @type {string}
-   */
-  get resourceOwnerId() { return this.props.resourceOwnerId; }
+  get oauthVersion() { return this.props.oauthVersion; }
 }
