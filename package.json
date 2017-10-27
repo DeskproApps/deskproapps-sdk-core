@@ -1,6 +1,6 @@
 {
   "name": "@deskpro/apps-sdk-core",
-  "version": "1.0.0-beta.22",
+  "version": "1.0.0-beta.23",
   "description": "core component of deskpro apps sdk",
   "main": "lib/main/javascript/index.js",
   "scripts": {
