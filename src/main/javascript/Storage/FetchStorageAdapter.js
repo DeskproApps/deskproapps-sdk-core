@@ -79,7 +79,7 @@ export class FetchStorageAdapter extends StorageAdapter
 
     return dispatchPromise.then((props) => {
       const url = `batch`;
-      const requests = nameValuePairsList.reduce(buildRequestBody.bind(this, props.instanceId));
+      const requests = nameValuePairsList.reduce(buildRequestBody.bind(this, props.instanceId), {});
 
       const init = {
         method: 'POST',
