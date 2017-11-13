@@ -39,6 +39,5 @@ export const createOauthAPIClient = (outgoingDispatcher, internalDispatcher, ins
   const storageClient = createStorageAPIClient(outgoingDispatcher, internalDispatcher, instanceProps, contextProps);
   const setStorage = storageClient.setAppStorage.bind(storageClient);
 
-  const props = { ...instanceProps.toJS(), ...contextProps.toJS()};
-  return new OauthFacade(outgoingDispatcher, setStorage, props);
+  return new OauthFacade(outgoingDispatcher, setStorage);
 };

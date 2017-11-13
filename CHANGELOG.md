@@ -1,3 +1,11 @@
+## v1.0.0-beta.24 - 2017-11-13
+
+* [FIX] `app.storage.setAppStorage` fails when used in batch mode
+
+## v1.0.0-beta.23 - 2017-10-27
+
+* [FEATURE] allow specifying protocol related requirements when requesting the oauth settings for a provider 
+
 ## v1.0.0-beta.22 - 2017-10-24
 
 * [CHANGE] rename @deskproapps references to @deskpro
