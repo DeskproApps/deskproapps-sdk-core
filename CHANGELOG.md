@@ -1,4 +1,4 @@
-## Upcoming
+## v1.0.0-beta.24 - 2017-11-13
 
 * [FIX] `app.storage.setAppStorage` fails when used in batch mode
 
