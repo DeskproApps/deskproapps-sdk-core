@@ -36,7 +36,7 @@ export class FetchStorageAdapter extends StorageAdapter
             'Content-Type': 'application/json'
           },
           url: `apps/${instanceId}/state/${entityId}/${name}`,
-          body: JSON.stringify({value})
+          data: { value }
         };
       }
 
