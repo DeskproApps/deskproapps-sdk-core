@@ -1,3 +1,7 @@
+## Upcoming
+
+* [FEATURE] add a subscribe method that allows registering handlers for events coming from the helpdesk ui
+
 ## v1.0.0-beta.25 - 2017-11-14
 
 * [FIX] `FetchStorageAdapter` sends wrong request body when used in batch mode

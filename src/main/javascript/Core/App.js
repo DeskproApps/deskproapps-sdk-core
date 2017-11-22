@@ -14,16 +14,18 @@ import * as Event from './Event'
 class App
 {
   /**
+   * @param {function} registerEventHandlers
    * @param {EventDispatcher} outgoingDispatcher
    * @param {EventDispatcher} incomingDispatcher
    * @param {EventDispatcher} internalDispatcher
    * @param {InstanceProps} instanceProps
    * @param {ContextProps} contextProps
    */
-  constructor({ outgoingDispatcher, incomingDispatcher, internalDispatcher, instanceProps, contextProps })
+  constructor({ registerEventHandlers, outgoingDispatcher, incomingDispatcher, internalDispatcher, instanceProps, contextProps })
   {
     const context = createContext(outgoingDispatcher,incomingDispatcher, instanceProps, contextProps);
     this.props = {
+      registerEventHandlers,
       outgoingDispatcher,
       incomingDispatcher,
       internalDispatcher,
@@ -51,6 +53,21 @@ class App
    * @return {EventDispatcher}
    */
   get eventDispatcher() { return this.props.internalDispatcher; }
+
+  subscribe(eventName, handler)
+  {
+    const { outgoingDispatcher, registerEventHandlers } = this.props;
+
+    outgoingDispatcher.emitAsync('app.subscribe_to_event', { events: [eventName] })
+      .then(events => {
+        for (const event of events) {
+          const eventProps = {channelType: Event.CHANNEL_INCOMING, invocationType: event.invocationType};
+          registerEventHandlers(this, event.name, eventProps);
+          this.props.incomingDispatcher.on(event.name, handler)
+        }
+      })
+    ;
+  }
 
   /**
    * @public

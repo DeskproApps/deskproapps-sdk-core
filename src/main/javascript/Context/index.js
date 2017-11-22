@@ -2,12 +2,6 @@
  * @module Context
  */
 
-import { registerEventHandlers as registerTicketEventHandlers } from './TicketEventHandlers';
-export { registerTicketEventHandlers };
-
-import * as TicketEvents from './TicketEvents';
-export { TicketEvents };
-
 import {ContextFactory} from './ContextFactory';
 export {ContextFactory};
 
@@ -20,9 +14,23 @@ export {ContextFactory};
  * @param {ContextProps} contextProps
  * @return {Context}
  */
-export const createContext = (outgoingDispatcher, incomingDispatcher, instanceProps, contextProps) =>
+export function createContext(outgoingDispatcher, incomingDispatcher, instanceProps, contextProps)
 {
-  return ContextFactory.create(outgoingDispatcher, incomingDispatcher, instanceProps, contextProps);
-};
+  const context = ContextFactory.create(
+    outgoingDispatcher,
+    incomingDispatcher,
+    instanceProps,
+    contextProps
+  );
+
+  if (context) { return context; }
+
+  return ContextFactory.createDefaultContext(
+    outgoingDispatcher,
+    incomingDispatcher,
+    instanceProps,
+    contextProps
+  );
+}
 
 

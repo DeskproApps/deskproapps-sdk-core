@@ -100,12 +100,13 @@ class WidgetWindowBridge {
 
     return this.onLoadPromise
       .then(() => postRobot.send(postRobot.parent, `urn:deskpro:apps.widget.onready?widgetId=${widgetId}`, {}).then(event => event.data))
-      .then(createApp)
+      .then(o => createApp({ ...o, widgetWindow: this}))
       .then(app => {
         // reduce verbosity of post-robot logging
         if (app.environment === 'production') {
           postRobot.CONFIG.LOG_LEVEL = 'error';
         }
+        postRobot.CONFIG.LOG_LEVEL = 'error';
 
         const handler = mouseEventHandler.bind(null, this);
         mouseEvents.forEach(event => addWindowEventListener(event, handler, windowObject));

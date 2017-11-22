@@ -2,7 +2,7 @@
  * @module DeskproWindow/Events
  */
 
-import { CHANNEL_OUTGOING, INVOCATION_FIREANDFORGET, buildMap, matchEvent as match } from '../Core/Event'
+import { CHANNEL_OUTGOING, INVOCATION_FIREANDFORGET, INVOCATION_REQUESTRESPONSE, buildMap, matchEvent as match } from '../Core/Event'
 
 /**
  * @readonly
@@ -14,28 +14,35 @@ export const EVENT_DESKPROWINDOW_SHOW_NOTIFICATION = 'deskpro_window.show_notifi
  * @readonly
  * @type {string}
  */
-export const EVENT_DESKPROWINDOW_INSERT_MARKUP = 'deskpro_window.insert_markup';
+export const EVENT_DESKPROWINDOW_DOM_INSERT = 'deskpro_window.dom_insert';
+
+/**
+ * @readonly
+ * @type {string}
+ */
+export const EVENT_DESKPROWINDOW_DOM_QUERY = 'deskpro_window.dom_query';
 
 /**
  * @readonly
  * @enum
  *
- * @type {{EVENT_DESKPROWINDOW_INSERT_MARKUP: string, EVENT_DESKPROWINDOW_SHOW_NOTIFICATION: string}}
+ * @type {{EVENT_DESKPROWINDOW_SHOW_NOTIFICATION: string, EVENT_DESKPROWINDOW_DOM_INSERT: string, EVENT_DESKPROWINDOW_DOM_QUERY: string}}
  */
 export const events = {
-  EVENT_DESKPROWINDOW_INSERT_MARKUP,
-  EVENT_DESKPROWINDOW_SHOW_NOTIFICATION
+  EVENT_DESKPROWINDOW_SHOW_NOTIFICATION,
+  EVENT_DESKPROWINDOW_DOM_INSERT,
+  EVENT_DESKPROWINDOW_DOM_QUERY
 };
 
 /**
  * @readonly
  * @enum
- *
- * @type {{EVENT_DESKPROWINDOW_INSERT_MARKUP: {channelType: string, invocationType: string}, EVENT_DESKPROWINDOW_SHOW_NOTIFICATION: {channelType: string, invocationType: string}}}
+ * @type {{EVENT_DESKPROWINDOW_SHOW_NOTIFICATION: {channelType: string, invocationType: string}, EVENT_DESKPROWINDOW_DOM_INSERT: {channelType: string, invocationType: string}, EVENT_DESKPROWINDOW_DOM_QUERY: {channelType: string, invocationType: string}}}
  */
 export const props = {
-  EVENT_DESKPROWINDOW_INSERT_MARKUP: { channelType: CHANNEL_OUTGOING, invocationType: INVOCATION_FIREANDFORGET },
-  EVENT_DESKPROWINDOW_SHOW_NOTIFICATION: { channelType: CHANNEL_OUTGOING, invocationType: INVOCATION_FIREANDFORGET }
+  EVENT_DESKPROWINDOW_SHOW_NOTIFICATION: { channelType: CHANNEL_OUTGOING, invocationType: INVOCATION_FIREANDFORGET },
+  EVENT_DESKPROWINDOW_DOM_INSERT: { channelType: CHANNEL_OUTGOING, invocationType: INVOCATION_REQUESTRESPONSE },
+  EVENT_DESKPROWINDOW_DOM_QUERY: { channelType: CHANNEL_OUTGOING, invocationType: INVOCATION_REQUESTRESPONSE },
 };
 
 /**
