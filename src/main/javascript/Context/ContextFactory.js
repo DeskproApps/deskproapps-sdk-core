@@ -37,13 +37,13 @@ export class ContextFactory
    */
   static create(outgoingDispatcher, incomingDispatcher, instanceProps, contextProps)
   {
-    const props = {outgoingDispatcher, incomingDispatcher, instanceProps, contextProps};
+    const props = { outgoingDispatcher, incomingDispatcher, instanceProps, contextProps };
     for (const factory of factories) {
       let context = factory(props);
       if (context) { return context; }
     }
 
-    return ContextFactory.createDefaultContext(outgoingDispatcher, incomingDispatcher, instanceProps, contextProps);
+    return null;
   }
 
   /**

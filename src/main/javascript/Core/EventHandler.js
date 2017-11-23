@@ -4,7 +4,7 @@
 
 import { MessageBus, IncomingEventDispatcher, OutgoingEventDispatcher } from './EventDispatcher';
 import { WidgetRequest, WidgetResponse, WidgetFactories } from '../Widget';
-import { INVOCATION_REQUESTRESPONSE, INVOCATION_FIREANDFORGET } from './Event'
+import { INVOCATION_REQUESTRESPONSE, INVOCATION_FIREANDFORGET,  CHANNEL_INCOMING, CHANNEL_OUTGOING } from './Event'
 
 // TODO this should form the basic for the driver for WidgetWindowBridge
 
@@ -52,6 +52,8 @@ class EventHandler
       IncomingEventDispatcher.emit(event, cb, request.body);
     } else if (invocationType === INVOCATION_FIREANDFORGET) {
       IncomingEventDispatcher.emit(event, request.body)
+    } else {
+      throw new Error('can not handle incoming event: unknown invocation type')
     }
   }
 }
@@ -68,14 +70,17 @@ const dispatchIncomingEvent = (windowBridge, eventName, eventProps, event) => {
   const message = WidgetFactories.parseMessageFromJS(rawMessage);
   if (message instanceof WidgetRequest && eventProps.invocationType === INVOCATION_REQUESTRESPONSE) {
     MessageBus.emit(eventName, message);
+    return;
   }
 
   if (message instanceof WidgetRequest && eventProps.invocationType === INVOCATION_FIREANDFORGET) {
     MessageBus.emit(eventName, message);
+    return;
   }
 
   if (message instanceof WidgetResponse && eventProps.invocationType === INVOCATION_REQUESTRESPONSE) {
     MessageBus.emit(message.correlationId, message);
+    return;
   }
 };
 
@@ -87,6 +92,18 @@ export const handleInvokeEvents = (windowBridge, app) =>
 {
   OutgoingEventDispatcher.onInvoke(EventHandler.handleOutgoingEvent.bind(null, windowBridge));
 };
+
+export function handleAppEvents (windowBridge, app, eventName, eventProps)
+{
+  const { channelType } = eventProps;
+  if (channelType === CHANNEL_INCOMING) {
+    handleIncomingEvent(windowBridge, app, eventName, eventProps)
+  } else if (channelType === CHANNEL_OUTGOING) {
+    handleOutgoingEvent(windowBridge, app, eventName, eventProps)
+  } else {
+    throw new Error('unknown event channel');
+  }
+}
 
 /**
  * @method
@@ -103,8 +120,10 @@ export const handleIncomingEvent = (windowBridge, app, eventName, eventProps) =>
   if (-1 !== [INVOCATION_FIREANDFORGET, INVOCATION_REQUESTRESPONSE].indexOf(invocationType)) {
 
     const invocation = { event: eventName, invocationType, ...otherProps };
-    MessageBus.on(eventName, EventHandler.handleIncomingEvent.bind(windowBridge, invocation));
+    MessageBus.on(eventName, EventHandler.handleIncomingEvent.bind(this, windowBridge, invocation));
     windowBridge.on(eventName, dispatchIncomingEvent.bind(this, windowBridge, eventName, eventProps));
+  } else {
+    throw new Error('unknown invocation type');
   }
 };
 
@@ -129,6 +148,7 @@ export const handleOutgoingEvent = (windowBridge, app, eventName, eventProps) =>
 
     OutgoingEventDispatcher.on(eventName, handler);
     windowBridge.on(eventName, dispatchIncomingEvent.bind(this, windowBridge, eventName, eventProps));
+  } else {
+    throw new Error('unknown invocation type');
   }
-
 };
