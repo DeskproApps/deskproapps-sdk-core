@@ -1,4 +1,4 @@
-## Upcoming
+## v1.0.0-beta.26 - 2017-11-23
 
 * [FEATURE] add a subscribe method that allows registering handlers for events coming from the helpdesk ui
 
