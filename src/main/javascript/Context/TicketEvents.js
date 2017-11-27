@@ -2,7 +2,7 @@
  * @module Context/TicketEvents
  */
 
-import { CHANNEL_INCOMING, INVOCATION_REQUESTRESPONSE, buildMap, matchEvent as match } from '../Core/Event'
+import { buildMap, matchEvent as match } from '../Core/Event'
 
 /**
  * @type {string}
@@ -25,23 +25,15 @@ export const EVENT_TICKET_REPLY = 'context.ticket.reply';
  */
 export const events = {
   EVENT_MESSAGE_ADDED,
-  EVENT_BEFORE_MESSAGE_ADDED,
-  EVENT_TICKET_REPLY
+  EVENT_BEFORE_MESSAGE_ADDED
 };
 
-/**
- * @enum
- * @type {{EVENT_TICKET_REPLY: {channelType, invocationType}}}
- */
-export const props = {
-  EVENT_TICKET_REPLY: { channelType: CHANNEL_INCOMING, invocationType: INVOCATION_REQUESTRESPONSE }
-};
 
 /**
  * @constant
  * @type {EventMap}
  */
-export const eventMap = buildMap(events, props);
+export const eventMap = buildMap(events, {});
 
 /**
  * @method

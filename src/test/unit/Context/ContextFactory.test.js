@@ -50,9 +50,6 @@ test('can create a default context', done => {
   });
 
   const context = ContextFactory.create(outgoingDispatcher, incomingDispatcher, instanceProps, contextProps);
-  expect(context instanceof Context).toBe(true);
-  expect(context.hasProperty('manifest')).toBe(true);
-  expect(context.getProperty('manifest')).toEqual({ field: 'value' });
-
+  expect(context).toBeNull();
   done();
 });

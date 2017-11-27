@@ -29,8 +29,17 @@ export class DeskproWindowFacade
    * 
    * @param markupString
    */
-  async insertMarkup(markupString) {
-    return this.props.eventDispatcher.emitAsync(Events.EVENT_DESKPROWINDOW_INSERT_MARKUP, markupString);
+  async domInsert(markupString) {
+    return this.props.eventDispatcher.emitAsync(Events.EVENT_DESKPROWINDOW_DOM_INSERT, markupString);
+  }
+
+  /**
+   * @method
+   *
+   * @param query
+   */
+  async domQuery(query) {
+    return this.props.eventDispatcher.emitAsync(Events.EVENT_DESKPROWINDOW_DOM_QUERY, query);
   }
 
 }

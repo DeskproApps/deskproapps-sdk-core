@@ -53,7 +53,7 @@ describe('FetchStorageAdapter', () => {
                 "Content-Type": "application/json"
               },
               url: "apps/1/state/2/key1",
-              body: JSON.stringify({value: "value-1"})
+              data: {value: "value-1"}
             },
             key2: {
               method: "PUT",
@@ -62,7 +62,7 @@ describe('FetchStorageAdapter', () => {
                 "Content-Type": "application/json"
               },
               url: "apps/1/state/2/key2",
-              body: JSON.stringify({value: "value-2"})
+              data: {value: "value-2"}
             }
           }
         })

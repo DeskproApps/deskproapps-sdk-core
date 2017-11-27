@@ -23,7 +23,10 @@ test('successfully create an application', done => {
       tabId : 'tab-1' ,
       tabUrl: 'https://127.0.0.1'
     }),
-    appWindow: new WidgetWindowBridge({}, new InitProps({dpXconfTag: ''}))
+    appWindow: new WidgetWindowBridge({
+      addEventListener: () => ({}),
+      document: { readyState : 'ready' }
+    }, new InitProps({dpXconfTag: ''}))
   };
 
   const app = new App(params);
@@ -68,7 +71,10 @@ test('retrieve properties', done => {
     internalDispatcher:  new EventDispatcher(),
     instanceProps,
     contextProps,
-    appWindow: new WidgetWindowBridge({}, new InitProps({dpXconfTag: ''}))
+    appWindow: new WidgetWindowBridge({
+      addEventListener: () => ({}),
+      document: { readyState : 'ready' }
+    }, new InitProps({dpXconfTag: ''}))
   };
 
   const app = new App(params);
@@ -118,7 +124,10 @@ test('retrieve property', done => {
     internalDispatcher:  new EventDispatcher(),
     instanceProps,
     contextProps,
-    appWindow: new WidgetWindowBridge({}, new InitProps({dpXconfTag: ''}))
+    appWindow: new WidgetWindowBridge({
+      addEventListener: () => ({}),
+      document: { readyState : 'ready' }
+    }, new InitProps({dpXconfTag: ''}))
   };
 
   const app = new App(params);
