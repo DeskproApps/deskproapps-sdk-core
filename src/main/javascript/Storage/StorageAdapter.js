@@ -9,7 +9,7 @@ export class StorageAdapter
    * @virtual
    * @method
    *
-   * @param {Promise.<{eventDispatcher:EventDispatcher}>} dispatchPromise
+   * @param {Promise.<EventDispatcher, string>} dispatchPromise
    * @param {Array<Array>} nameValuePairsList
    * @param entityId
    * @return {Promise}

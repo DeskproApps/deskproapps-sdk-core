@@ -1,7 +1,7 @@
 import * as Events from './Events';
 
 /**
- * @param {EventDispatcher} eventDispatcher
+ * @param {AppEventEmitter} eventDispatcher
  * @return {DeskproWindowFacade}
  */
 export const create = eventDispatcher => { return new DeskproWindowFacade(eventDispatcher); };

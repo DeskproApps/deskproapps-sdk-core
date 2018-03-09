@@ -43,8 +43,8 @@ const storageAdapterProps = (instanceProps, contextProps) =>
 /**
  * @method
  *
- * @param {EventDispatcher} outgoingDispatcher
- * @param {EventDispatcher} internalDispatcher
+ * @param {AppEventEmitter} outgoingDispatcher
+ * @param {AppEventEmitter} internalDispatcher
  * @param {InstanceProps} instanceProps
  * @param {ContextProps} contextProps
  *

@@ -24,7 +24,7 @@ import { UIFacade } from './UIFacade';
 /**
  * @method
  *
- * @param {EventDispatcher} internalEventDispatcher
+ * @param {AppEventEmitter} internalEventDispatcher
  * @return {UIFacade}
  */
 export const create = (internalEventDispatcher) => { return new UIFacade(internalEventDispatcher); };

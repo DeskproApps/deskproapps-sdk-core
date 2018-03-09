@@ -2,6 +2,11 @@ import { WebAPIEvents } from '../WebAPI';
 import { StorageAdapter } from './StorageAdapter';
 
 /**
+ * Storage module.
+ * @module FetchStorageAdapter
+ */
+
+/**
  * @class
  */
 export class FetchStorageAdapter extends StorageAdapter
@@ -9,10 +14,10 @@ export class FetchStorageAdapter extends StorageAdapter
   /**
    * @method
    *
-   * @param {Promise.<{outgoingDispatcher:EventDispatcher}>} dispatchPromise
+   * @param {Promise<module:Core/EventDispatcher.EventDispatcher>} dispatchPromise
    * @param {Array<Array>} nameValuePairsList
    * @param entityId
-   * @return {Promise}
+   * @return {Promise<module:Core/EventDispatcher.EventDispatcher, string>}
    */
   async handleSetBatchStorage (dispatchPromise, nameValuePairsList, entityId)
   {
@@ -97,7 +102,7 @@ export class FetchStorageAdapter extends StorageAdapter
   /**
    * @method
    *
-   * @param {Promise.<{outgoingDispatcher:EventDispatcher}>} dispatchPromise
+   * @param {Promise<EventDispatcher>} dispatchPromise
    * @param name
    * @param value
    * @param entityId

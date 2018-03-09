@@ -1,17 +1,19 @@
+
 import * as ContextEvents from './ContextEvents';
 
 /**
  * @class
  */
-export class Context
+class Context
 {
   /**
-   * @param {EventDispatcher} outgoingDispatcher
-   * @param {EventDispatcher} incomingDispatcher
+   * @param {AppEventEmitter} outgoingDispatcher
+   * @param {AppEventEmitter} incomingDispatcher
    * @param {String} type
    * @param {String} entityId
    * @param {String} locationId
-   * @param rest
+   * @param {...*} rest
+   * @constructor
    */
   constructor({ outgoingDispatcher, incomingDispatcher, type, entityId, locationId, ...rest }) {
     this.props = { outgoingDispatcher, incomingDispatcher, type, entityId, locationId, ...rest }
@@ -80,3 +82,5 @@ export class Context
    */
   toJS() { return {...this.props}; }
 }
+
+export default Context;

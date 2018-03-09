@@ -1,5 +1,5 @@
 /**
- * @module Core/EventHandler
+ * @module Core\EventHandler
  */
 
 import { MessageBus, IncomingEventDispatcher, OutgoingEventDispatcher } from './EventDispatcher';

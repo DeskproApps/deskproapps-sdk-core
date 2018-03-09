@@ -1,15 +1,13 @@
-/**
- * @module Context/TicketContext
- */
-
-import { TabContext } from './TabContext';
+import UITabContext from './UITabContext';
 import { CustomFieldsClient } from '../CustomFields';
 
 /**
+ * Implementation of a Ticket Entity application context
+ *
  * @class
- * @extends {Context}
+ * @extends {UITabContext}
  */
-export class TicketContext extends TabContext
+export default class TicketContext extends UITabContext
 {
   /**
    * @static
@@ -19,13 +17,15 @@ export class TicketContext extends TabContext
   static get TYPE() { return 'ticket'; }
 
   /**
+   *
    * @method
    * @static
    *
-   * @param {EventDispatcher} outgoingDispatcher
-   * @param {EventDispatcher} incomingDispatcher
-   * @param {InstanceProps} instanceProps
+   * @param {AppEventEmitter} outgoingDispatcher the outgoing events dispatcher
+   * @param {AppEventEmitter} incomingDispatcher the incoming events dispatcher
+   * @param {InstanceProps} instanceProps the instance properties bag
    * @param {ContextProps} contextProps
+   *
    * @return {TicketContext|null}
    */
   static tryAndCreate({ outgoingDispatcher, incomingDispatcher, instanceProps, contextProps})
@@ -48,7 +48,7 @@ export class TicketContext extends TabContext
    * @constructor
    *
    * @param {string} instanceId
-   * @param {{}} rest
+   * @param {...*} rest
    */
   constructor({instanceId, ...rest})
   {
@@ -56,6 +56,8 @@ export class TicketContext extends TabContext
   }
 
   /**
+   * Returns an API client object that can perform operations on the custom fields belonging to the current Ticket
+   *
    * @public
    * @return {CustomFieldsClient}
    */

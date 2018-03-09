@@ -41,8 +41,8 @@ const validateNameValuePairsList = (batch) => {
 class StorageApiFacade
 {
   /**
-   * @param {EventDispatcher} outgoingDispatcher
-   * @param {EventDispatcher} internalDispatcher
+   * @param {AppEventEmitter} outgoingDispatcher
+   * @param {AppEventEmitter} internalDispatcher
    * @param {StorageAdapter} storageAdapter
    * @param {String} instanceId
    * @param {String} contextEntityType

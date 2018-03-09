@@ -8,16 +8,20 @@ import { createDeskproWindowFacade } from '../DeskproWindow';
 import { createOauthAPIClient } from '../Security';
 
 import * as Event from './Event'
+
 /**
+ * Implementation of a Deskpro Application, a thin client exposing all the underlying services need by an application
+ *
+ *
  * @class
  */
 class App
 {
   /**
    * @param {function} registerEventHandlers
-   * @param {EventDispatcher} outgoingDispatcher
-   * @param {EventDispatcher} incomingDispatcher
-   * @param {EventDispatcher} internalDispatcher
+   * @param {AppEventEmitter} outgoingDispatcher
+   * @param {AppEventEmitter} incomingDispatcher
+   * @param {AppEventEmitter} internalDispatcher
    * @param {InstanceProps} instanceProps
    * @param {ContextProps} contextProps
    */
@@ -50,10 +54,14 @@ class App
 
   /**
    * @public
-   * @return {EventDispatcher}
+   * @return {AppEventEmitter}
    */
   get eventDispatcher() { return this.props.internalDispatcher; }
 
+  /**
+   * @param {string} eventName
+   * @param {function}  handler
+   */
   subscribe(eventName, handler)
   {
     const { outgoingDispatcher, registerEventHandlers } = this.props;

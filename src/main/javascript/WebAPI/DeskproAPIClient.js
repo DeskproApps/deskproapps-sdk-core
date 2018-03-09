@@ -1,7 +1,7 @@
 import * as Events from './Events';
 
 /**
- * @param {EventDispatcher} eventDispatcher
+ * @param {AppEventEmitter} eventDispatcher
  * @return {DeskproAPIClient}
  */
 export const create = (eventDispatcher) => new DeskproAPIClient(eventDispatcher);
@@ -12,7 +12,7 @@ export const create = (eventDispatcher) => new DeskproAPIClient(eventDispatcher)
 export class DeskproAPIClient
 {
   /**
-   * @param {EventDispatcher} eventDispatcher
+   * @param {AppEventEmitter} eventDispatcher
    */
   constructor(eventDispatcher) {
     this.props = { eventDispatcher };
