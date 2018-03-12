@@ -1,4 +1,6 @@
 /**
+ * This modules handles events which are closely related to the application
+ *
  * @module Core/AppEvents
  */
 
@@ -68,3 +70,17 @@ export const eventNames = Object.keys(events).map(key => events[key]);
  * @return boolean
  */
 export const isEventName = name => eventNames.indexOf(name) !== -1;
+
+import { handleOutgoingEvent } from './EventHandler';
+
+/**
+ * Registers
+ *
+ * @function
+ * @param {WidgetWindowBridge} windowBridge
+ * @param {App} app
+ */
+export const registerEventHandlers = (windowBridge, app) => {
+  handleOutgoingEvent(windowBridge, app, EVENT_RESET_SIZE, events.EVENT_RESET_SIZE);
+  handleOutgoingEvent(windowBridge, app, EVENT_SUBSCRIBE, events.EVENT_SUBSCRIBE);
+};

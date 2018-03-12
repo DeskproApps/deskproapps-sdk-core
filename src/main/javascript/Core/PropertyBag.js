@@ -1,10 +1,12 @@
 /**
+ * A simple class very similar to a map or a plain object that acts as an indexed container for a group of values
+ *
  * @class
  */
-export class PropertyBag
+class PropertyBag
 {
   /**
-   * @param {{}} props
+   * @param {...*} props
    */
   constructor({ ...props })
   {
@@ -12,10 +14,12 @@ export class PropertyBag
   }
 
   /**
+   * Returns a value from the bag
+   *
    * @method
    *
    * @param {String} propName
-   * @return {{}}
+   * @return {*}
    */
   getProperty = (propName) => {
     if (this.props.hasOwnProperty(propName)) {
@@ -26,18 +30,22 @@ export class PropertyBag
   };
 
   /**
-   * @method
+   * Alias for `toJS`
    *
+   * @method
    * @return {Object}
    */
   toJSON = () => this.toJS();
 
   /**
-   * @method
+   * Returns a deep clone of this object
    *
+   * @method
    * @return {Object}
    */
   toJS = () => {
     return JSON.parse(JSON.stringify(this.props));
   };
 }
+
+export default PropertyBag

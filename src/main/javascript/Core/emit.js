@@ -1,11 +1,15 @@
 /**
- * @module Core/EventDispatcher
+ * This module exports {@link AppEventEmitter} objects which are used to handle the app communications
+ * @module Core/emit
  */
 
 import AppEventEmitter from './AppEventEmitter';
 
 /**
- * @param {EventDispatcher} eventDispatcher
+ * @ignore
+ * @internal
+ *
+ * @param {AppEventEmitter} eventDispatcher
  * @param {String} eventName
  * @param {Array} args
  *
@@ -22,9 +26,10 @@ const dispatch = (eventDispatcher, eventName, ...args) => {
   return new Promise(executor);
 };
 
-
-
 /**
+ * A substitute for `AppEventEmitter.emit`
+ *
+ * @function
  * @param {AppEventEmitter} eventDispatcher
  * @return {Promise}
  */

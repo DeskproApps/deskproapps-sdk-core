@@ -1,8 +1,10 @@
 /**
+ * This module export constants and utilities functions that apply to Event objects
+ *
  * @module Core/Event
  */
 
-import { EventMap } from './EventMap';
+import EventMap from './EventMap';
 
 /**
  * @type {string}
@@ -20,6 +22,8 @@ export const CHANNEL_INCOMING = 'event.channel_incoming';
 export const CHANNEL_OUTGOING = 'event.channel_outgoing';
 
 /**
+ * The list of event channels
+ *
  * @enum
  * @type {{CHANNEL_INCOMING: string, CHANNEL_INTERNAL: string, CHANNEL_OUTGOING: string}}
  */

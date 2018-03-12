@@ -1,13 +1,15 @@
 /**
- * @module Core\EventHandler
+ * @module Core/EventHandler
  */
 
 import { MessageBus, IncomingEventDispatcher, OutgoingEventDispatcher } from './EventDispatcher';
 import { WidgetRequest, WidgetResponse, WidgetFactories } from '../Widget';
 import { INVOCATION_REQUESTRESPONSE, INVOCATION_FIREANDFORGET,  CHANNEL_INCOMING, CHANNEL_OUTGOING } from './Event'
 
-// TODO this should form the basic for the driver for WidgetWindowBridge
-
+/**
+ * @TODO this should form the basic for the driver for WidgetWindowBridge
+ * @internal
+ */
 class EventHandler
 {
   /**
@@ -85,6 +87,8 @@ const dispatchIncomingEvent = (windowBridge, eventName, eventProps, event) => {
 };
 
 /**
+ * @function
+ *
  * @param {WidgetWindowBridge} windowBridge
  * @param {App} app
  */
@@ -93,6 +97,15 @@ export const handleInvokeEvents = (windowBridge, app) =>
   OutgoingEventDispatcher.onInvoke(EventHandler.handleOutgoingEvent.bind(null, windowBridge));
 };
 
+/**
+ * @function
+ *
+ * @param {WidgetWindowBridge} windowBridge
+ * @param {App} app
+ * @param {String} eventName
+ * @param {{invocationType:String}} eventProps
+ * @return null
+ */
 export function handleAppEvents (windowBridge, app, eventName, eventProps)
 {
   const { channelType } = eventProps;
@@ -106,12 +119,13 @@ export function handleAppEvents (windowBridge, app, eventName, eventProps)
 }
 
 /**
- * @method
+ * @function
  *
  * @param {WidgetWindowBridge} windowBridge
  * @param {App} app
  * @param {String} eventName
  * @param {Object} eventProps
+ * @return null
  */
 export const handleIncomingEvent = (windowBridge, app, eventName, eventProps) =>
 {
@@ -128,7 +142,7 @@ export const handleIncomingEvent = (windowBridge, app, eventName, eventProps) =>
 };
 
 /**
- * @method
+ * @function
  *
  * @param {WidgetWindowBridge} windowBridge
  * @param {App} app

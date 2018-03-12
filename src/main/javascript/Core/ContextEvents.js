@@ -1,8 +1,11 @@
 /**
+ * This modules handles events which are closely related to an application's context
+ *
  * @module Core/ContextEvents
  */
 
 import { CHANNEL_INTERNAL, CHANNEL_INCOMING, CHANNEL_OUTGOING, INVOCATION_FIREANDFORGET, INVOCATION_REQUESTRESPONSE } from './Event'
+import { handleOutgoingEvent } from './EventHandler';
 
 /**
  * @readonly
@@ -29,6 +32,9 @@ export const EVENT_TAB_DATA = 'context.tab_data';
 export const EVENT_TAB_ACTIVATE = 'context.tab_activate';
 
 /**
+ * This is not used at the moment
+ *
+ * @ignore
  * @readonly
  * @type {string}
  */
@@ -41,6 +47,9 @@ export const EVENT_BEFORE_TAB_DEACTIVATED = 'context.before_tab_deactivated';
 export const EVENT_TAB_CLOSE = 'context.tab_close';
 
 /**
+ * This is not used at the moment
+ *
+ * @ignore
  * @readonly
  * @type {string}
  */
@@ -77,3 +86,15 @@ export const eventNames = Object.keys(events).map(key => events[key]);
  * @return {boolean}
  */
 export const isEventName = name => eventNames.indexOf(name) !== -1;
+
+/**
+ * @method
+ * @param {WidgetWindowBridge} windowBridge
+ * @param {App} app
+ */
+export const registerEventHandlers = (windowBridge, app) => {
+  handleOutgoingEvent(windowBridge, app, EVENT_ME_GET, events.EVENT_ME_GET);
+  handleOutgoingEvent(windowBridge, app, EVENT_TAB_DATA, events.EVENT_TAB_DATA);
+  handleOutgoingEvent(windowBridge, app, EVENT_TAB_ACTIVATE, events.EVENT_TAB_ACTIVATE);
+  handleOutgoingEvent(windowBridge, app, EVENT_TAB_CLOSE, events.EVENT_TAB_CLOSE);
+};

@@ -10,8 +10,7 @@ import { createOauthAPIClient } from '../Security';
 import * as Event from './Event'
 
 /**
- * Implementation of a Deskpro Application, a thin client exposing all the underlying services need by an application
- *
+ * Implementation of a Deskpro Application, a facade exposing all the underlying services needed by an application
  *
  * @class
  */
@@ -19,11 +18,11 @@ class App
 {
   /**
    * @param {function} registerEventHandlers
-   * @param {AppEventEmitter} outgoingDispatcher
-   * @param {AppEventEmitter} incomingDispatcher
-   * @param {AppEventEmitter} internalDispatcher
-   * @param {InstanceProps} instanceProps
-   * @param {ContextProps} contextProps
+   * @param {AppEventEmitter} outgoingDispatcher the outgoing events dispatcher
+   * @param {AppEventEmitter} incomingDispatcher the outgoing events dispatcher
+   * @param {AppEventEmitter} internalDispatcher the internal events dispatcher
+   * @param {InstanceProps} instanceProps the property bag containing instance props
+   * @param {ContextProps} contextProps the property bag containing context props
    */
   constructor({ registerEventHandlers, outgoingDispatcher, incomingDispatcher, internalDispatcher, instanceProps, contextProps })
   {
@@ -53,6 +52,8 @@ class App
   // EVENT EMITTER API
 
   /**
+   * Returns an instance of the internal event dispatcher
+   *
    * @public
    * @return {AppEventEmitter}
    */
@@ -78,6 +79,8 @@ class App
   }
 
   /**
+   * Registers an event listener for an event. For the moment, only internal events are supported
+   *
    * @public
    * @param {String} eventName
    * @param {function} listener
@@ -88,6 +91,8 @@ class App
   };
 
   /**
+   * Removes an event listener for an event. For the moment, only internal events are supported
+   *
    * @public
    * @method
    * @param {String} eventName
@@ -99,6 +104,8 @@ class App
   };
 
   /**
+   * Adds a one time event listener. For the moment, only internal events are supported
+   *
    * @public
    * @method
    * @param {String} eventName
@@ -110,10 +117,12 @@ class App
   };
 
   /**
+   * Triggers an outgoing or an internal event
+   *
    * @public
    * @method
    * @param {string|{}} event
-   * @param args
+   * @param {...*} args
    * @return {Promise.<*>}
    */
   async emit (event, ...args)
@@ -134,6 +143,8 @@ class App
   // Properties API
 
   /**
+   * Returns the value of a property by looking up in the instance properties bag then in the context properties bag
+   *
    * @public
    * @method
    * @param {String} propertyName
@@ -151,6 +162,8 @@ class App
   };
 
   /**
+   * Returns a map of all the instance and context properties
+   *
    * @public
    * @return {Object}
    */
@@ -164,6 +177,8 @@ class App
   }
 
   /**
+   * Returns the name of the current application environment
+   *
    * @public
    * @return {'production'|'development'}
    */
@@ -176,19 +191,33 @@ class App
   }
 
   /**
+   * The id of the application this instance belongs to
+   *
    * @public
+   * @readonly
    * @return {String}
    */
   get appId() { return this.props.instanceProps.appId; }
 
   /**
+   * The id of this instance
+   *
+   * @public
+   * @readonly
+   * @return {String}
+   */
+  get instanceId() { return this.props.instanceProps.instanceId; }
+
+  /**
+   * The display title of this application
+   *
    * @public
    * @return {String}
    */
   get appTitle() { return this._state.appTitle; }
 
   /**
-   * @public
+   * @ignore
    * @param {String} newTitle
    */
   set appTitle(newTitle) {
@@ -202,32 +231,28 @@ class App
     }
   }
 
+  /**
+   * Resets the display title of this application
+   *
+   * @public
+   * @method
+   */
   resetAppTitle = () => { this.appTitle = this.props.instanceProps.appTitle; };
 
   /**
-   * public
+   * The package name (from package.json) of this application
+   *
+   * @public
+   * @readonly
    * @return {String}
    */
   get packageName() { return this.props.instanceProps.appPackageName; }
-
-  /**
-   * public
-   * @return {String}
-   */
-  get instanceId() { return this.props.instanceProps.instanceId; }
-
-  // OAUTH API
-
-  /**
-   * @public
-   * @return {OauthFacade}
-   */
-  get oauth() { return this.props.oauth; }
 
   // Settings API
 
   /**
    * @public
+   * @readonly
    * @return {Array}
    */
   get settings() { return []; }
@@ -235,6 +260,9 @@ class App
   // Misc API
 
   /**
+   * Emits an internal event that signals its handlers the application needs to refresh. When the application has
+   * an UI then it will re-render
+   *
    * @public
    * @method
    */
@@ -244,7 +272,9 @@ class App
   };
 
   /**
-   * @public
+   * Emits an internal event that signals its handlers the application initiated the unload process
+   *
+   * @internal
    * @method
    */
   unload = () => {
@@ -255,13 +285,28 @@ class App
   // CLIENTS
 
   /**
+   * The oauth client
+   *
    * @public
+   * @readonly
+   * @return {OauthFacade}
+   */
+  get oauth() { return this.props.oauth; }
+
+  /**
+   * The UI client of the application, which provides a standard way to invoke UI behaviour
+   *
+   * @public
+   * @readonly
    * @return {UIFacade}
    */
   get ui() { return this.props.ui; }
 
   /**
+   * The Deskpro UI client, which allows to trigger UI behaviour in the helpdesk window hosting the application
+   *
    * @public
+   * @readonly
    * @return {DeskproWindowFacade}
    */
   get deskproWindow() {
@@ -269,7 +314,10 @@ class App
   };
 
   /**
+   * An API client for the Deskpro API
+   *
    * @public
+   * @readonly
    * @return {DeskproAPIClient}
    */
   get restApi() { return this.props.restApi; };
@@ -277,19 +325,25 @@ class App
   /**
    * @deprecated
    * 
-   * @public
+   * @internal
    * @return {StorageApiFacade}
    */
   get state() { return this.props.storageApi; };
 
   /**
+   * A client for accessing the storage APIs in a simple manner
+   *
    * @public
+   * @readonly
    * @return {StorageApiFacade}
    */
   get storage() { return this.props.storageApi; };
 
   /**
+   * The context in which this application runs
+   *
    * @public
+   * @readonly
    * @return {Context}
    */
   get context() { return this.props.context; };

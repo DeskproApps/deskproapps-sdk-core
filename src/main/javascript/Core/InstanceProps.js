@@ -1,21 +1,19 @@
-/**
- * This modules manages the application properties
- * @module Core/AppProps
- */
-import {PropertyBag} from './PropertyBag'
+import PropertyBag from './PropertyBag'
 
 /**
+ * A simple property bag that exposes accessors for the most common properties of this application instance
+ *
  * @class
  * @extends {PropertyBag}
  */
-export default class InstanceProps extends PropertyBag
+class InstanceProps extends PropertyBag
 {
   /**
-   * @param {String} appId
-   * @param {String} appTitle
-   * @param {String} appPackageName
+   * @param {String} appId the id of this instance's application
+   * @param {String} appTitle the title of this instance's application
+   * @param {String} appPackageName the package name (from package.json) f
    * @param {String} instanceId
-   * @param {{}} otherProps
+   * @param {...*} [otherProps] experimental or undocumented props
    */
   constructor({ appId, appTitle, appPackageName, instanceId, ...otherProps })
   {
@@ -54,3 +52,5 @@ export default class InstanceProps extends PropertyBag
    */
   get instanceId() { return this.props.instanceId; }
 }
+
+export default InstanceProps
