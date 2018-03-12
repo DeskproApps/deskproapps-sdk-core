@@ -2,7 +2,7 @@ import UITabContext from './UITabContext';
 import { CustomFieldsClient } from '../CustomFields';
 
 /**
- * Implementation of a Organization Entity application context
+ * Implementation of an Organization Entity application context
  *
  * @class
  * @extends {UITabContext}

@@ -2,6 +2,11 @@ import Context from '../Core/Context';
 import * as ContextEvents from '../Core/ContextEvents';
 
 /**
+ * The data stored by the Deskpro UITab
+ * @typedef {Object} UITabContext~TabData
+ */
+
+/**
  * This abstract class provides common implementations used by specific contexts which run inside a tab in the Deskpro UI
  *
  * @class
@@ -93,7 +98,7 @@ class UITabContext extends Context
    * @public
    * @method
    * @async
-   * @return {Promise.<null, Error>}
+   * @return {Promise.<UITabContext~TabData, Error>}
    */
   async getTabData() { return this.props.outgoingDispatcher.emitAsync(ContextEvents.EVENT_TAB_DATA, this.props.tabId); }
 }
