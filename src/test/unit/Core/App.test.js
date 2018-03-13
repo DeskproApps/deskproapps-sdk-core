@@ -2,7 +2,7 @@ import App from '../../../main/javascript/Core/App';
 import { EventDispatcher } from '../../../main/javascript/Core/EventDispatcher'
 import { InstanceProps, ContextProps } from '../../../main/javascript/Core/AppProps';
 import { WidgetWindowBridge } from '../../../main/javascript/Widget/WidgetWindowBridge';
-import { InitProps } from "../../../main/javascript/Widget/InitProps";
+import { InitPropertiesBag } from "../../../main/javascript/Widget/InitProps";
 
 test('successfully create an application', done => {
 
@@ -26,7 +26,7 @@ test('successfully create an application', done => {
     appWindow: new WidgetWindowBridge({
       addEventListener: () => ({}),
       document: { readyState : 'ready' }
-    }, new InitProps({dpXconfTag: ''}))
+    }, new InitPropertiesBag({dpXconfTag: ''}))
   };
 
   const app = new App(params);
@@ -74,7 +74,7 @@ test('retrieve properties', done => {
     appWindow: new WidgetWindowBridge({
       addEventListener: () => ({}),
       document: { readyState : 'ready' }
-    }, new InitProps({dpXconfTag: ''}))
+    }, new InitPropertiesBag({dpXconfTag: ''}))
   };
 
   const app = new App(params);
@@ -127,7 +127,7 @@ test('retrieve property', done => {
     appWindow: new WidgetWindowBridge({
       addEventListener: () => ({}),
       document: { readyState : 'ready' }
-    }, new InitProps({dpXconfTag: ''}))
+    }, new InitPropertiesBag({dpXconfTag: ''}))
   };
 
   const app = new App(params);

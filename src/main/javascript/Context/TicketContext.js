@@ -7,7 +7,7 @@ import { CustomFieldsClient } from '../CustomFields';
  * @class
  * @extends {UITabContext}
  */
-export default class TicketContext extends UITabContext
+class TicketContext extends UITabContext
 {
   /**
    * @static
@@ -70,3 +70,5 @@ export default class TicketContext extends UITabContext
     });
   }
 }
+
+export default TicketContext;

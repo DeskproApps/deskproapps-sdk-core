@@ -4,24 +4,20 @@
  */
 
 import * as StorageEvents from './Events';
-import {StorageApiFacade} from './StorageApiFacade';
-import {FetchStorageAdapter} from './FetchStorageAdapter';
-import {LocalStorageAdapter} from './LocalStorageAdapter';
+import StorageApiFacade from './StorageApiFacade';
+import FetchStorageAdapter from './FetchStorageAdapter';
+import LocalStorageAdapter from './LocalStorageAdapter';
 
 export {
   /**
-   * @type {module:Storage/Events}
+   * @type {module:Storage/events}
    * @constant
    */
   StorageEvents
 };
 
-export {
-  /**
-   * @method
-   */
-  registerEventHandlers
-} from './EventHandlers';
+
+export const registerEventHandlers = () => {};
 
 export {
   /**

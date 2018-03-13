@@ -1,5 +1,5 @@
 /**
- * @module UI/Constants
+ * @module UI/constants
  */
 
 /**

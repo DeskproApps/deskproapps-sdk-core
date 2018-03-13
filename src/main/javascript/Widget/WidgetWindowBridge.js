@@ -1,8 +1,8 @@
 import getSize from "get-size";
 import elementResizeDetectorMaker from "element-resize-detector";
 import * as postRobot from "post-robot";
-import {WidgetFactories} from "./WidgetFactories";
-import {EVENT_WINDOW_MOUSEEVENT, EVENT_WINDOW_RESIZE} from "./Events";
+import WidgetFactories from "./WidgetFactories";
+import {EVENT_WINDOW_MOUSEEVENT, EVENT_WINDOW_RESIZE} from "./events";
 
 /**
  * @ignore
@@ -61,13 +61,18 @@ const windowSizeChangeHandler = (windowBridge) => {
 const mouseEvents = ['mousedown', 'mouseup'];
 
 /**
+ * A representation of a widget/application `Window`, conceptually similar to the browser window object
+ *
+ * It is also communication bridge between the widget/application Window object and the helpdesk Window. In most of the cases the helpdesk Window
+ * is hosting the widget window in an iframe
+ *
  * @class
  */
 class WidgetWindowBridge {
 
   /**
    * @param {Window} windowObject
-   * @param {InitProps} initProps
+   * @param {InitPropertiesBag} initProps
    */
   constructor(windowObject, initProps) {
     this.props = { windowObject, initProps };
@@ -82,6 +87,8 @@ class WidgetWindowBridge {
   }
 
   /**
+   * The id of the widget
+   *
    * @type {String}
    */
   get widgetId () {
@@ -90,8 +97,10 @@ class WidgetWindowBridge {
   }
 
   /**
-   * @param {function} createApp
-   * @return {Promise.<App>}
+   * Connects the widget/application window and the helpdesk window. The `createApp` function will be invoked on a successful connection
+   *
+   * @param {function} createApp an application factory
+   * @return {Promise.<App, Error>}
    */
   connect(createApp)
   {
@@ -102,11 +111,13 @@ class WidgetWindowBridge {
       .then(() => postRobot.send(postRobot.parent, `urn:deskpro:apps.widget.onready?widgetId=${widgetId}`, {}).then(event => event.data))
       .then(o => createApp({ ...o, widgetWindow: this}))
       .then(app => {
+
+        postRobot.CONFIG.LOG_LEVEL = 'error';
+
         // reduce verbosity of post-robot logging
         if (app.environment === 'production') {
-          postRobot.CONFIG.LOG_LEVEL = 'error';
+          postRobot.CONFIG.LOG_LEVEL = 'info';
         }
-        postRobot.CONFIG.LOG_LEVEL = 'error';
 
         const handler = mouseEventHandler.bind(null, this);
         mouseEvents.forEach(event => addWindowEventListener(event, handler, windowObject));
@@ -121,6 +132,8 @@ class WidgetWindowBridge {
   }
 
   /**
+   * Dispatches an event to the helpdesk `Window`
+   *
    * @param {String} eventName
    * @param {function} handler
    */
@@ -130,6 +143,8 @@ class WidgetWindowBridge {
   }
 
   /**
+   * Sends a response message back to the helpdesk `Window`
+   *
    * @param {String} eventName
    * @param {Error|null} error
    * @param {{}} data
@@ -151,6 +166,8 @@ class WidgetWindowBridge {
   }
 
   /**
+   * Sends a request message back to the helpdesk `Window`
+   *
    * @param {String} eventName
    * @param {*} data
    * @return {Promise.<{request: WidgetRequest, emit: (function())}>}
@@ -171,10 +188,12 @@ class WidgetWindowBridge {
   }
 
   /**
+   * The size of the widget window
+   *
    * @public
    * @constant
    *
-   * @type {WidgetWindowBridge~GetSize}
+   * @type {WidgetWindowSize}
    */
   get bodySize() {
     const { windowObject } = this.props;
@@ -183,12 +202,12 @@ class WidgetWindowBridge {
 
 }
 
-export { WidgetWindowBridge };
+export default WidgetWindowBridge;
 
 /**
  * GetSize Type.
  *
- * @typedef {Object} WindowProxy~GetSize
+ * @typedef {Object} WidgetWindowSize
  * @property {number} width - Size in pixels.
  * @property {number} height - Size in pixels.
  * @property {number} innerWidth - Size in pixels.

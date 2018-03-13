@@ -152,7 +152,8 @@ class Event
   get args() { return JSON.parse(JSON.stringify(this.props.args)); }
 
   /**
-   * @param {boolean} flag
+   * @ignore
+   * @type {boolean}
    */
   set enabled(flag) {
     this.props.enabled = flag;

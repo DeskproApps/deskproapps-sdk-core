@@ -43,7 +43,7 @@ class EventMap
    * @public
    *
    * @param eventName
-   * @return {*|null}
+   * @return {object|null}
    */
   getEventProps = eventName => {
     const eventKey = this.getEventKey(eventName);

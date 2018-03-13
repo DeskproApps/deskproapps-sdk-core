@@ -103,7 +103,7 @@ class Context
 export default Context;
 
 /**
- * Event emitter function
+ * Representation of the currently signed-in user
  *
  * @typedef {Object} Context~Me
  * @property {number} id

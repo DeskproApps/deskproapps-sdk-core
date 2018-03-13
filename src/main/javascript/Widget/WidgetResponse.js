@@ -1,16 +1,20 @@
-import { WidgetMessage } from './WidgetMessage'
+import WidgetMessage from './WidgetMessage'
 
 /**
+ * Representation of a response message
+ *
  * @class
  * @extends {WidgetMessage}
  */
-export class WidgetResponse extends WidgetMessage
+class WidgetResponse extends WidgetMessage
 {
   /**
+   * Parse an object literal or a JSON encoded string into a {@link WidgetResponse}
+   *
    * @static
    * @method
    *
-   * @param {*} raw
+   * @param {{}|string} raw
    * @return {WidgetResponse}
    */
   static parse(raw)
@@ -22,11 +26,11 @@ export class WidgetResponse extends WidgetMessage
   };
 
   /**
-   * @param {String} id
-   * @param {String} widgetId
-   * @param {String} correlationId
-   * @param {*} body
-   * @param {String} status
+   * @param {String} id the message id
+   * @param {String} widgetId the widget it
+   * @param {String} correlationId the conversation id
+   * @param {*} body the message body
+   * @param {String} status the response status
    */
   constructor({ id, widgetId, correlationId, body, status })
   {
@@ -54,3 +58,5 @@ export class WidgetResponse extends WidgetMessage
    */
   get body() { return this.props.body };
 }
+
+export default WidgetResponse

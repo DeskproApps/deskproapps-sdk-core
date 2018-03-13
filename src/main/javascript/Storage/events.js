@@ -1,6 +1,6 @@
 /**
  * Storage/Events module.
- * @module Storage/Events
+ * @module Storage/events
  */
 
 /**

@@ -3,23 +3,23 @@
  * @module UI
  */
 
-import * as UIEvents from './Events';
+import * as UIEvents from './events';
 export {
   /**
-   * @type {module:UI/Events}
+   * @type {module:UI/events}
    */
   UIEvents
 }
 
-import * as UIConstants from './Constants';
+import * as UIConstants from './constants';
 export {
   /**
-   * @type {module:UI/Constants}
+   * @type {module:UI/constants}
    */
   UIConstants
 }
 
-import { UIFacade } from './UIFacade';
+import UIFacade from './UIFacade';
 
 /**
  * @method

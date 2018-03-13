@@ -1,13 +1,14 @@
 /**
- * Security module.
+ * This module exports the interface of the Security package
+ *
  * @module Security
  */
 
-import * as SecurityEvents from './Events';
-import { OauthFacade } from './OauthFacade';
+import * as SecurityEvents from './events';
+import OauthFacade from './OauthFacade';
 export {
   /**
-   * @type {module:Security/Events}
+   * @type {module:Security/events}
    */
   SecurityEvents
 };
@@ -17,17 +18,18 @@ export {
    */
   OauthToken
 }  from './OauthToken';
+
 export {
   /**
-   * @method
+   * @function
    */
   registerEventHandlers
-} from './EventHandlers';
+} from './events';
 
 import { createStorageAPIClient } from '../Storage';
 
 /**
- * @method
+ * @function
  *
  * @param {AppEventEmitter} outgoingDispatcher
  * @param {AppEventEmitter} internalDispatcher

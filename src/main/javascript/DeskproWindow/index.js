@@ -1,11 +1,25 @@
 /**
+ * This module exports the interface of the DeskproWindow package
+ *
  * @module DeskproWindow
  */
 
-import * as DeskproWindowEvents from './Events';
+import * as DeskproWindowEvents from './events';
+import DeskproWindowFacade from './DeskproWindowFacade'
+
+/**
+ * @function
+ * @param {AppEventEmitter} eventDispatcher
+ * @returns {DeskproWindowFacade}
+ */
+function createDeskproWindowFacade(eventDispatcher) {
+  "use strict";
+  return new DeskproWindowFacade(eventDispatcher);
+}
+
 export {
   /**
-   * @type {module:DeskproWindow/Events}
+   * @type {module:DeskproWindow/events}
    */
   DeskproWindowEvents
 };
@@ -15,13 +29,10 @@ export {
    * @method
    */
   registerEventHandlers
-} from './EventHandlers';
+} from './events';
 
 export {
-  /**
-   * @method
-   */
-  create as createDeskproWindowFacade,
+  createDeskproWindowFacade,
 
   /**
    * @type {DeskproWindowFacade}

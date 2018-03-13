@@ -1,5 +1,11 @@
 import { WebAPIEvents } from '../WebAPI';
 
+/**
+ * @param {Object} fields
+ * @param {string} alias
+ * @param {*} defaultValue
+ * @returns {*}
+ */
 const findFieldValue = ({ data: { fields }}, alias, defaultValue) =>
 {
   if (!fields || typeof fields !== 'object') {
@@ -27,9 +33,9 @@ const findFieldValue = ({ data: { fields }}, alias, defaultValue) =>
 export class CustomFieldsClient
 {
   /**
-   * @param {EventDispatcher} outgoingDispatcher
-   * @param {string} instanceId
-   * @param {string} endpoint
+   * @param {AppEventEmitter} outgoingDispatcher the outgoing events dispatcher
+   * @param {string} instanceId this application's instance id
+   * @param {string} endpoint Deskpro API endpoint for the custom fields resource
    */
   constructor({ outgoingDispatcher, instanceId, endpoint })
   {
@@ -40,9 +46,9 @@ export class CustomFieldsClient
    * @method
    *
    * @param {string} id
-   * @param {*} value
+   * @param {String|Number|Array<String|Number>} value
    *
-   * @return {Promise.<*>}
+   * @return {Promise.<DeskproAPIResponse, Error>}
    */
   async setField(id, value)
   {
@@ -68,7 +74,7 @@ export class CustomFieldsClient
   /**
    * @param {String} id
    * @param {*} defaultValue
-   * @return {Promise.<*>}
+   * @return {Promise.<String|null|Array<String|null>, Error>}
    */
   async getField(id, defaultValue = null)
   {
@@ -85,9 +91,11 @@ export class CustomFieldsClient
   }
 
   /**
+   * Sets the value of a field which is referenced by this application
+   *
    * @param {string} alias
    * @param {*} value
-   * @return {Promise.<*>}
+   * @return {Promise.<DeskproAPIResponse, Error>}
    */
   async setAppField(alias, value)
   {
@@ -96,10 +104,12 @@ export class CustomFieldsClient
   }
 
   /**
+   * Returns the value of a field which is referenced by this application
+   *
    * @param {string} alias
    * @param {*} defaultValue
    *
-   * @return {Promise.<*>}
+   * @return {Promise.<String|null|Array<String|null>, Error>}
    */
   async getAppField(alias, defaultValue = null)
   {

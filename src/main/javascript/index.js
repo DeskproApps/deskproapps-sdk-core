@@ -24,7 +24,7 @@ export {
 
 export {
   /**
-   * @type {module:UI/Events}
+   * @type {events}
    */
   UIEvents,
   /**
@@ -52,7 +52,7 @@ export { TicketEvents } from './Context';
 import * as DeskproWindowEvents from './DeskproWindow/Events';
 export {
   /**
-   * @type {module:DeskproWindow/Events}
+   * @type {module:DeskproWindow/events}
    */
   DeskproWindowEvents
 };
@@ -65,7 +65,7 @@ export {
   OauthToken,
 
   /**
-   * @type {module:Security/Events}
+   * @type {module:Security/events}
    */
   SecurityEvents
 };

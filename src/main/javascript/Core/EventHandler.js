@@ -147,7 +147,7 @@ export const handleIncomingEvent = (windowBridge, app, eventName, eventProps) =>
  * @param {WidgetWindowBridge} windowBridge
  * @param {App} app
  * @param {string} eventName
- * @param {{invocationType:String}} eventProps
+ * @param {{invocationType:String, ...other}} eventProps
  */
 export const handleOutgoingEvent = (windowBridge, app, eventName, eventProps) =>
 {
