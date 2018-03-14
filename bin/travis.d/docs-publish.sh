@@ -18,7 +18,7 @@ git config core.safecrlf false
 # Commit the "changes", i.e. the new version.
 git add reference
 
-CHANGES=$(git status --short docs/reference | head -n 1)
+CHANGES=$(git status --short reference | head -n 1)
 # If there are no changes to the compiled out (e.g. this is a README update) then just bail.
 if [ -z "${CHANGES}" ]; then
     echo "No changes to the output on this push; exiting."
