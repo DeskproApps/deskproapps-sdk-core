@@ -16,7 +16,7 @@ git config core.autocrlf false
 git config core.safecrlf false
 
 # Commit the "changes", i.e. the new version.
-git add docs/reference
+git add reference
 
 CHANGES=$(git status --short docs/reference | head -n 1)
 # If there are no changes to the compiled out (e.g. this is a README update) then just bail.
@@ -32,12 +32,12 @@ ENCRYPTED_KEY_VAR="encrypted_${DEPLOY_KEY_LABEL}_key"
 ENCRYPTED_IV_VAR="encrypted_${DEPLOY_KEY_LABEL}_iv"
 ENCRYPTED_KEY=${!ENCRYPTED_KEY_VAR}
 ENCRYPTED_IV=${!ENCRYPTED_IV_VAR}
-openssl aes-256-cbc -K ${ENCRYPTED_KEY} -iv ${ENCRYPTED_IV} -in src/travis/deploy-key.enc -out src/travis/deploy-key -d
+openssl aes-256-cbc -K ${ENCRYPTED_KEY} -iv ${ENCRYPTED_IV} -in src/travis/deploy-key.enc -out target/travis/deploy-key -d
 ## openssl aes-256-cbc -K $encrypted_3778a32db008_key -iv $encrypted_3778a32db008_iv -in deploy-key.enc -out ${DEPLOY_KEY_ROOT}/deploy-key -d
 
-chmod 600 src/travis/deploy-key
+chmod 600 target/travis/deploy-key
 eval `ssh-agent -s`
-ssh-add src/travis/deploy-key
+ssh-add target/travis/deploy-key
 
 # Now that we're all set up, we can push.
-git push ${SSH_REPO} HEAD:${TRAVIS_BRANCH}
+git push ${SSH_REPO} HEAD:gh-pages
