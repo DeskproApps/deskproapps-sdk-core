@@ -51,15 +51,13 @@ export {
 }
 export { TicketEvents } from './Context';
 
-import * as DeskproWindowEvents from './DeskproWindow/Events';
 export {
   /**
    * @type {module:DeskproWindow/events}
    */
   DeskproWindowEvents
-};
+} from './DeskproWindow';
 
-import { OauthToken, SecurityEvents } from './Security';
 export {
   /**
    * @type {OauthToken}
@@ -70,4 +68,4 @@ export {
    * @type {module:Security/events}
    */
   SecurityEvents
-};
+} from './Security';
