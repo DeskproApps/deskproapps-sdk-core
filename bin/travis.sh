@@ -21,6 +21,13 @@ while (( "$#" )); do
 
       shift 1
       ;;
+    --checkout)
+      if [ "${COMMAND}" = "gh-pages" ] && [ -z "${SCRIPT}" ]; then
+        SCRIPT="${COMMAND} ${1}"
+      fi
+
+      shift 1
+      ;;
     --) # end argument parsing
       shift
       break
@@ -53,6 +60,8 @@ if [  "docs --should-publish" == "${SCRIPT}" ]; then
    bin/travis.d/docs-should-publish.sh
 elif [  "docs --publish" == "${SCRIPT}" ]; then
   bin/travis.d/docs-publish.sh
+elif [  "gh-pages --checkout" == "${SCRIPT}" ]; then
+  bin/travis.d/gh-pages.sh
 fi
 
 if [ -n "${SCRIPT}" ] && [ $? -eq 0 ]; then
