@@ -12,9 +12,12 @@ import { Event } from './Event';
 class AppEventEmitter extends EventEmitter
 {
   /**
-   * Shortcut for on('invoke', handler)
+   * Shortcut for on('invoke', handler). Registers an outgoing event handler.
    *
-   * @param {function}  handler
+   * The `invoke` event delivers information about an outgoing event that needs dispatching to a 3rd party and as such
+   * its arguments consists of the outgoing event name and its arguments.
+   *
+   * @param {OutgoingEventListener}  handler
    */
   onInvoke(handler)
   {
@@ -22,17 +25,18 @@ class AppEventEmitter extends EventEmitter
   }
 
   /**
-   * Shortcut for emitAsync('invoke', ...args)
+   * Shortcut for emitAsync('invoke', ...args). Notifies the `invoke` listeners to handle the outgoing event `eventName`
    *
    * @public
    * @method
    *
-   * @param {...*} args
+   * @param {String} eventName an outgoing event name
+   * @param {...*} args the arguments for the outgoing event name
    * @returns {Promise.<*, Error>}
    */
-  emitInvokeAsync(...args)
+  emitInvokeAsync(eventName, ...args)
   {
-    return this.emitAsync.apply(this, ['invoke'].concat(args));
+    return this.emitAsync.apply(this, ['invoke', eventName].concat(args));
   }
 
   /**
@@ -43,7 +47,7 @@ class AppEventEmitter extends EventEmitter
    * @method
    * @param {string} eventName
    * @param [args]
-   * @return {Promise.<*, *>}
+   * @return {Promise.<*, Error>}
    */
   emitAsync = (eventName, ...args) => {
     const executor = (resolve, reject) => {
@@ -83,4 +87,14 @@ export default AppEventEmitter;
  * @callback AppEventEmitter~emit
  * @param {String} eventName
  * @param {...args} args
+ */
+
+/**
+ * An outgoing event handler
+ *
+ * @callback OutgoingEventListener
+ * @property {function} resolve a function which is called if the event's response is a success response
+ * @property {function} reject a function which is called if the event's response is an error response
+ * @property {string} event the event name
+ * @property {*} data the event data
  */

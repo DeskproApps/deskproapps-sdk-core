@@ -1,10 +1,10 @@
 import { create, UIEvents, UIConstants } from '../../../main/javascript/UI'
-import {EventDispatcher} from '../../../main/javascript/Core/EventDispatcher'
+import AppEventEmitter from '../../../main/javascript/Core/AppEventEmitter'
 
 test('badgeCount property is stored after setting', done => {
   "use strict";
 
-  const eventDispatcher = new EventDispatcher();
+  const eventDispatcher = new AppEventEmitter();
 
   const ui = create(eventDispatcher);
   ui.badgeCount = 5;
@@ -15,7 +15,7 @@ test('badgeCount property is stored after setting', done => {
 test('badge_countchanged event fires only if count actually changes', done =>
 {
   const emitMock = jest.fn();
-  const eventDispatcher = new EventDispatcher();
+  const eventDispatcher = new AppEventEmitter();
   eventDispatcher.emit = emitMock;
 
   const ui = create(eventDispatcher);
@@ -30,7 +30,7 @@ test('badge_countchanged event fires only if count actually changes', done =>
 test('badge_countchanged event fires everytime there is a change', done =>
 {
   const emitMock = jest.fn();
-  const eventDispatcher = new EventDispatcher();
+  const eventDispatcher = new AppEventEmitter();
   eventDispatcher.emit = emitMock;
 
   const ui = create(eventDispatcher);
@@ -53,7 +53,7 @@ test('badge_countchanged event fires everytime there is a change', done =>
 test('badge_visibilitychanged event fires everytime badge visibility changes', done =>
 {
   const emitMock = jest.fn();
-  const eventDispatcher = new EventDispatcher();
+  const eventDispatcher = new AppEventEmitter();
   eventDispatcher.emit = emitMock;
 
   const ui = create(eventDispatcher);
@@ -76,7 +76,7 @@ test('badge_visibilitychanged event fires everytime badge visibility changes', d
 test('menu visibility change event fires everytime menu visibility changes', done =>
 {
   const emitMock = jest.fn();
-  const eventDispatcher = new EventDispatcher();
+  const eventDispatcher = new AppEventEmitter();
   eventDispatcher.emit = emitMock;
 
   const ui = create(eventDispatcher);
@@ -100,7 +100,7 @@ test('menu visibility change event fires everytime menu visibility changes', don
 test('showLoading does not emit event if ui is in loading state ', done => {
   "use strict";
   const emitMock = jest.fn();
-  const eventDispatcher = new EventDispatcher();
+  const eventDispatcher = new AppEventEmitter();
   eventDispatcher.emit = emitMock;
 
   const ui = create(eventDispatcher);
@@ -114,7 +114,7 @@ test('showLoading does not emit event if ui is in loading state ', done => {
 test('hide does not emit event if ui is in not loading state ', done => {
   "use strict";
   const emitMock = jest.fn();
-  const eventDispatcher = new EventDispatcher();
+  const eventDispatcher = new AppEventEmitter();
   eventDispatcher.emit = emitMock;
 
   const ui = create(eventDispatcher);

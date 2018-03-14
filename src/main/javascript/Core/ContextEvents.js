@@ -1,5 +1,5 @@
 /**
- * This modules handles events which are closely related to an application's context
+ * Defines events and event related functionality which are closely related to an application's context
  *
  * @module Core/ContextEvents
  */

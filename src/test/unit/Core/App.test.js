@@ -1,15 +1,16 @@
 import App from '../../../main/javascript/Core/App';
-import { EventDispatcher } from '../../../main/javascript/Core/EventDispatcher'
-import { InstanceProps, ContextProps } from '../../../main/javascript/Core/AppProps';
-import { WidgetWindowBridge } from '../../../main/javascript/Widget/WidgetWindowBridge';
-import { InitPropertiesBag } from "../../../main/javascript/Widget/InitProps";
+import AppEventEmitter from '../../../main/javascript/Core/AppEventEmitter'
+import ContextProps from '../../../main/javascript/Core/ContextProps';
+import InstanceProps from '../../../main/javascript/Core/InstanceProps';
+import WidgetWindowBridge from '../../../main/javascript/Widget/WidgetWindowBridge';
+import InitPropertiesBag from "../../../main/javascript/Widget/InitPropertiesBag";
 
 test('successfully create an application', done => {
 
   const params = {
-    outgoingDispatcher: new EventDispatcher(),
-    incomingDispatcher:  new EventDispatcher(),
-    internalDispatcher:  new EventDispatcher(),
+    outgoingDispatcher: new AppEventEmitter(),
+    incomingDispatcher:  new AppEventEmitter(),
+    internalDispatcher:  new AppEventEmitter(),
     instanceProps: new InstanceProps({
       appId: '1',
       appTitle: "title",
@@ -66,9 +67,9 @@ test('retrieve properties', done => {
 
 
   const params = {
-    outgoingDispatcher: new EventDispatcher(),
-    incomingDispatcher:  new EventDispatcher(),
-    internalDispatcher:  new EventDispatcher(),
+    outgoingDispatcher: new AppEventEmitter(),
+    incomingDispatcher:  new AppEventEmitter(),
+    internalDispatcher:  new AppEventEmitter(),
     instanceProps,
     contextProps,
     appWindow: new WidgetWindowBridge({
@@ -119,9 +120,9 @@ test('retrieve property', done => {
 
 
   const params = {
-    outgoingDispatcher: new EventDispatcher(),
-    incomingDispatcher:  new EventDispatcher(),
-    internalDispatcher:  new EventDispatcher(),
+    outgoingDispatcher: new AppEventEmitter(),
+    incomingDispatcher:  new AppEventEmitter(),
+    internalDispatcher:  new AppEventEmitter(),
     instanceProps,
     contextProps,
     appWindow: new WidgetWindowBridge({

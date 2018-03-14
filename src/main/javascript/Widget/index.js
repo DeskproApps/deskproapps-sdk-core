@@ -1,4 +1,5 @@
 /**
+ * This module exports the interface of the Widget package
  * @module Widget
  */
 

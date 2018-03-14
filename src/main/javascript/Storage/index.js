@@ -1,9 +1,9 @@
 /**
- * Storage module.
+ * This module exports the interface of the Storage package
  * @module Storage
  */
 
-import * as StorageEvents from './Events';
+import * as StorageEvents from './events';
 import StorageApiFacade from './StorageApiFacade';
 import FetchStorageAdapter from './FetchStorageAdapter';
 import LocalStorageAdapter from './LocalStorageAdapter';
@@ -13,20 +13,18 @@ export {
    * @type {module:Storage/events}
    * @constant
    */
-  StorageEvents
+  StorageEvents,
+
+  /**
+   * @type {StorageApiFacade}
+   */
+  StorageApiFacade
 };
 
 
 export const registerEventHandlers = () => {};
 
-export {
-  /**
-   * @type {StorageApiFacade}
-   */
-  StorageApiFacade
-} from './StorageApiFacade';
-
-const storageAdapterProps = (instanceProps, contextProps) =>
+function storageAdapterProps(instanceProps, contextProps)
 {
   return {
     appId: instanceProps.appId,
@@ -34,7 +32,7 @@ const storageAdapterProps = (instanceProps, contextProps) =>
     contextEntityType: contextProps.contextType,
     contextEntityId: contextProps.entityId
   };
-};
+}
 
 /**
  * @method
@@ -60,5 +58,3 @@ export const createStorageAPIClient = (outgoingDispatcher, internalDispatcher, i
 
   return new StorageApiFacade(outgoingDispatcher, internalDispatcher, storageAdapter, props);
 };
-
-

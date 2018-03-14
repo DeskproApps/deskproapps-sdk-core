@@ -1,12 +1,12 @@
-
 import * as ContextEvents from './ContextEvents';
 
 /**
+ * Representation of an application's runtime context. This class is meant to be extended to create concrete context implementations
+ *
  * @class
  */
 class Context
 {
-
   /**
    * @param {AppEventEmitter} outgoingDispatcher the outgoing events dispatcher
    * @param {AppEventEmitter} incomingDispatcher the incoming events dispatcher

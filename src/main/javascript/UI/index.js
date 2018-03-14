@@ -1,25 +1,23 @@
 /**
- * UI module.
+ * This module exports the interface of the UI package
  * @module UI
  */
 
 import * as UIEvents from './events';
+import * as UIConstants from './constants';
+import UIFacade from './UIFacade';
+
 export {
   /**
    * @type {module:UI/events}
    */
-  UIEvents
-}
+  UIEvents,
 
-import * as UIConstants from './constants';
-export {
   /**
    * @type {module:UI/constants}
    */
   UIConstants
 }
-
-import UIFacade from './UIFacade';
 
 /**
  * @method

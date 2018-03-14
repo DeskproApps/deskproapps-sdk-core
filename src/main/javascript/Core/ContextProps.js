@@ -11,7 +11,7 @@ class ContextProps extends PropertyBag
   /**
    * @param {String} type alias for contextType
    * @param {String} contextType the context type
-   * @param {String} entityId the id of the Deskpro Entity referenced by this UITab
+   * @param {String} entityId the id of the Deskpro Entity referenced by the context
    * @param {String} locationId the id of the specific location within the UITab where the app is mounted
    * @param {String} tabId the id of this tab
    * @param {String} tabUrl the Deskpro URL of this tab

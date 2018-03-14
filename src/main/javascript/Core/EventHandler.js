@@ -1,9 +1,14 @@
 /**
+ * Handles the delivery of outgoing events (those originating in the application) and the receipt of incoming events
+ * (those originating in a 3rd party, like the help desk application)
+ *
  * @module Core/EventHandler
  */
 
-import { MessageBus, IncomingEventDispatcher, OutgoingEventDispatcher } from './EventDispatcher';
-import { WidgetRequest, WidgetResponse, WidgetFactories } from '../Widget';
+import { MessageBus, IncomingEventDispatcher, OutgoingEventDispatcher } from './emit';
+import WidgetFactories from '../Widget/WidgetFactories';
+import WidgetRequest from '../Widget/WidgetRequest';
+import WidgetResponse from '../Widget/WidgetResponse';
 import { INVOCATION_REQUESTRESPONSE, INVOCATION_FIREANDFORGET,  CHANNEL_INCOMING, CHANNEL_OUTGOING } from './Event'
 
 /**
@@ -30,7 +35,7 @@ class EventHandler
           MessageBus.once(request.correlationId, responseExecutor);
           return {request, emit};
         })
-        .then(({emit}) => emit())
+        .then(({emit}) => emit()) // finally after registering a response listener send the request
       ;
     } else if (invocationType === INVOCATION_FIREANDFORGET) {
       windowBridge.emitRequest(event, data).then(({emit}) => emit()).then(() => resolve(data));
@@ -87,6 +92,8 @@ const dispatchIncomingEvent = (windowBridge, eventName, eventProps, event) => {
 };
 
 /**
+ * Registers an outgoing event listener
+ *
  * @function
  *
  * @param {WidgetWindowBridge} windowBridge
@@ -98,6 +105,8 @@ export const handleInvokeEvents = (windowBridge, app) =>
 };
 
 /**
+ * Handles an incoming or outgoing event
+ *
  * @function
  *
  * @param {WidgetWindowBridge} windowBridge
@@ -119,6 +128,8 @@ export function handleAppEvents (windowBridge, app, eventName, eventProps)
 }
 
 /**
+ * Handles an incoming event
+ *
  * @function
  *
  * @param {WidgetWindowBridge} windowBridge
@@ -142,6 +153,8 @@ export const handleIncomingEvent = (windowBridge, app, eventName, eventProps) =>
 };
 
 /**
+ * Handles an outgoing event
+ *
  * @function
  *
  * @param {WidgetWindowBridge} windowBridge

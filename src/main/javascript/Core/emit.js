@@ -1,5 +1,5 @@
 /**
- * This module exports {@link AppEventEmitter} objects which are used to handle the app communications
+ * This module exports {@link AppEventEmitter} objects which are used as event buses to handle application message
  * @module Core/emit
  */
 

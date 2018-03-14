@@ -1,6 +1,6 @@
 import * as Events from './events';
 import OauthToken from './OauthToken';
-import OauthConnection from './OauthConnection';
+// import OauthConnection from './OauthConnection';
 
 const defaultProtocolVersion = '2.0';
 

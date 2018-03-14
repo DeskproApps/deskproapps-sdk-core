@@ -1,4 +1,4 @@
-import { ContextProps } from '../../../main/javascript/Core/AppProps';
+import ContextProps from '../../../main/javascript/Core/ContextProps';
 
 test('contextType property takes precedence over type property', done =>
 {

@@ -5,10 +5,12 @@
  */
 
 import ContextFactory from './ContextFactory';
-export {ContextFactory};
+import * as TicketEvents from './eventsTicket';
+
+export { ContextFactory, TicketEvents };
 
 /**
- * @method
+ * @function
  *
  * @param {AppEventEmitter} outgoingDispatcher
  * @param {AppEventEmitter} incomingDispatcher

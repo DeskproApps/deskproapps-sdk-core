@@ -1,4 +1,4 @@
-import { PropertyBag } from '../Core';
+import PropertyBag from '../Core/PropertyBag';
 
 /**
  * Represents a message that is exchanged between an application and a third party

@@ -1,4 +1,4 @@
-import { PropertyBag } from '../Core'
+import PropertyBag  from '../Core/PropertyBag'
 
 /**
  * @ignore
@@ -115,7 +115,7 @@ class InitPropertiesBag extends PropertyBag
   }
 
   /**
-   * @type {string} queryString
+   * @param {string} queryString
    * @return {InitPropertiesBag|null}
    */
   static fromQueryString(queryString)

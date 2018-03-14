@@ -1,7 +1,7 @@
 import getSize from "get-size";
 import elementResizeDetectorMaker from "element-resize-detector";
 import * as postRobot from "post-robot";
-import WidgetFactories from "./WidgetFactories";
+// import WidgetFactories from "./WidgetFactories";
 import {EVENT_WINDOW_MOUSEEVENT, EVENT_WINDOW_RESIZE} from "./events";
 
 /**

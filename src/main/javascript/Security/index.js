@@ -4,29 +4,37 @@
  * @module Security
  */
 
+import { createStorageAPIClient } from '../Storage';
+import { handleOutgoingEvent } from '../Core/EventHandler';
+
 import * as SecurityEvents from './events';
 import OauthFacade from './OauthFacade';
+import OauthToken from './OauthToken';
+
 export {
   /**
    * @type {module:Security/events}
    */
-  SecurityEvents
-};
-export {
+  SecurityEvents,
+
   /**
    * @type {OauthToken}
    */
   OauthToken
-}  from './OauthToken';
+};
 
-export {
-  /**
-   * @function
-   */
-  registerEventHandlers
-} from './events';
-
-import { createStorageAPIClient } from '../Storage';
+/**
+ * Registers the Security events with the event dispatching system
+ *
+ * @function
+ *
+ * @param {WidgetWindowBridge} windowBridge
+ * @param {App} app
+ */
+export function registerEventHandlers(windowBridge, app) {
+  handleOutgoingEvent(windowBridge, app, SecurityEvents.EVENT_SECURITY_AUTHENTICATE_OAUTH, SecurityEvents.props.EVENT_SECURITY_AUTHENTICATE_OAUTH);
+  handleOutgoingEvent(windowBridge, app, SecurityEvents.EVENT_SECURITY_SETTINGS_OAUTH, SecurityEvents.props.EVENT_SECURITY_SETTINGS_OAUTH);
+}
 
 /**
  * @function
@@ -37,9 +45,9 @@ import { createStorageAPIClient } from '../Storage';
  * @param {ContextProps} contextProps
  * @return {OauthFacade}
  */
-export const createOauthAPIClient = (outgoingDispatcher, internalDispatcher, instanceProps, contextProps) => {
+export function createOauthAPIClient (outgoingDispatcher, internalDispatcher, instanceProps, contextProps) {
   const storageClient = createStorageAPIClient(outgoingDispatcher, internalDispatcher, instanceProps, contextProps);
   const setStorage = storageClient.setAppStorage.bind(storageClient);
 
   return new OauthFacade(outgoingDispatcher, setStorage);
-};
+}

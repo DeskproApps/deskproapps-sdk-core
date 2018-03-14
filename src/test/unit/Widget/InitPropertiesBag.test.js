@@ -1,4 +1,4 @@
-import {InitPropertiesBag} from '../../../main/javascript/Widget/InitProps'
+import InitPropertiesBag from '../../../main/javascript/Widget/InitPropertiesBag'
 
 test('fromQueryString returns null when called with an empty string', done => {
   const props = InitPropertiesBag.fromQueryString('');

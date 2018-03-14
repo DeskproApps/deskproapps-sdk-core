@@ -1,4 +1,4 @@
-import * as Events from './Events';
+import * as Events from './events';
 import StorageAdapter from './StorageAdapter';
 
 const APP_TYPE = 'app';

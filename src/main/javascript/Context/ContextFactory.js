@@ -1,17 +1,11 @@
-/**
- * This module exports a factory that creates the various context implementations
- * @module Context/ContextFactory
- */
-
 import Context from '../Core/Context';
 
 import TicketContext from './TicketContext';
 import PersonContext from './PersonContext';
 import OrganizationContext from './OrganizationContext';
 
-
 /**
- * @readonly
+ * @ignore
  * @type {Array.<function(*):Context>}
  */
 const factories = [
@@ -28,7 +22,13 @@ const factories = [
 class ContextFactory
 {
   /**
-   * Returns a list of the all context types it can create
+   * Returns a list of all the context type it can create:
+   *
+   *  - ticket ( see {@link TicketContext} )
+   *  - organization ( see {@link OrganizationContext} )
+   *  - person ( see {@link PersonContext} )
+   *
+   * @method
    *
    * @returns {Array.<string>}
    */
@@ -42,11 +42,15 @@ class ContextFactory
   }
 
   /**
+   * Creates a specific type of application context. {@link ContextFactory.contextTypes} returns the list of contexts type names this factory can create
+   *
+   * @method
+   *
    * @param {AppEventEmitter} outgoingDispatcher the outgoing events dispatcher
    * @param {AppEventEmitter} incomingDispatcher the incoming events dispatcher
    * @param {InstanceProps} instanceProps the instance properties bag
    * @param {ContextProps} contextProps the context properties bag
-   * @return Context {module:Core/Context.Context}
+   * @return {Context}
    */
   static create(outgoingDispatcher, incomingDispatcher, instanceProps, contextProps)
   {
@@ -60,17 +64,27 @@ class ContextFactory
   }
 
   /**
+   * Creates a generic application context
+   *
    * @param {AppEventEmitter} outgoingDispatcher the outgoing events dispatcher
    * @param {AppEventEmitter} incomingDispatcher the incoming events dispatcher
    * @param {InstanceProps} instanceProps the instance properties bag
    * @param {ContextProps} contextProps the context properties bag
-   * @return Context {module:Core/Context.Context}
+   * @return {Context}
    */
   static createDefaultContext(outgoingDispatcher, incomingDispatcher, instanceProps, contextProps)
   {
     const {
-      /** @var {String} */ entityId,
-      /** @var {String} */ locationId,
+      /**
+       * @ignore
+       * @type {string}
+       */
+      entityId,
+      /**
+       * @ignore
+       * @type {string}
+       */
+      locationId,
       ...rest
     } = contextProps.toJS();
     const props = { outgoingDispatcher, incomingDispatcher, entityId, locationId, ...rest, type: contextProps.contextType };

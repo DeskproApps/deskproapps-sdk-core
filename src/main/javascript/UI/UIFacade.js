@@ -1,5 +1,5 @@
-import * as Events from './Events';
-import * as Constants from './Constants';
+import * as Events from './events';
+import * as Constants from './constants';
 
 /**
  * A facade which allows application code to interact with the UI Container

@@ -1,6 +1,7 @@
 import { WebAPIEvents } from '../WebAPI';
 
 /**
+ * @ignore
  * @param {Object} fields
  * @param {string} alias
  * @param {*} defaultValue
@@ -28,9 +29,11 @@ const findFieldValue = ({ data: { fields }}, alias, defaultValue) =>
 };
 
 /**
+ * An API client that enables reading or writing the values of custom fields
+ *
  * @class
  */
-export class CustomFieldsClient
+class CustomFieldsClient
 {
   /**
    * @param {AppEventEmitter} outgoingDispatcher the outgoing events dispatcher
@@ -43,6 +46,8 @@ export class CustomFieldsClient
   }
 
   /**
+   * Set the value of a field
+   *
    * @method
    *
    * @param {string} id
@@ -72,6 +77,8 @@ export class CustomFieldsClient
   }
 
   /**
+   * Retrieves the value of a field
+   *
    * @param {String} id
    * @param {*} defaultValue
    * @return {Promise.<String|null|Array<String|null>, Error>}
@@ -91,7 +98,8 @@ export class CustomFieldsClient
   }
 
   /**
-   * Sets the value of a field which is referenced by this application
+   * Sets the value of a field which is specifically linked to this application. Such fields include those created
+   * when the application was installed
    *
    * @param {string} alias
    * @param {*} value
@@ -104,7 +112,8 @@ export class CustomFieldsClient
   }
 
   /**
-   * Returns the value of a field which is referenced by this application
+   * Returns the value of a field which is referenced by this application. Such fields include those created
+   * when the application was installed
    *
    * @param {string} alias
    * @param {*} defaultValue
@@ -117,3 +126,5 @@ export class CustomFieldsClient
     return this.getField(fieldId, defaultValue);
   }
 }
+
+export default CustomFieldsClient;

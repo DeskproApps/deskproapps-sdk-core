@@ -10,7 +10,7 @@ import { createOauthAPIClient } from '../Security';
 import * as Event from './Event'
 
 /**
- * Implementation of a Deskpro Application, a facade exposing all the underlying services needed by an application
+ * A facade exposing all the underlying services needed by an application
  *
  * @class
  */
@@ -60,6 +60,9 @@ class App
   get eventDispatcher() { return this.props.internalDispatcher; }
 
   /**
+   * Get notified when the app receives an incoming event, such as one sent from the helpdesk window.
+   * An example of such an event is the `context.ticket.reply`event which is sent when the agent replies to a ticket
+   *
    * @param {string} eventName
    * @param {function}  handler
    */
@@ -79,7 +82,7 @@ class App
   }
 
   /**
-   * Registers an event listener for an event. For the moment, only internal events are supported
+   * Registers an event listener. For the moment, you can only listen to internal events via this method
    *
    * @public
    * @param {String} eventName
@@ -91,7 +94,7 @@ class App
   };
 
   /**
-   * Removes an event listener for an event. For the moment, only internal events are supported
+   * Removes an event listener. For the moment, only internal events are supported
    *
    * @public
    * @method
@@ -104,7 +107,7 @@ class App
   };
 
   /**
-   * Adds a one time event listener. For the moment, only internal events are supported
+   * Adds a one time event listener for an internal event
    *
    * @public
    * @method
@@ -117,7 +120,7 @@ class App
   };
 
   /**
-   * Triggers an outgoing or an internal event
+   * Triggers the listeners of an outgoing or internal event
    *
    * @public
    * @method
@@ -303,7 +306,7 @@ class App
   get ui() { return this.props.ui; }
 
   /**
-   * The Deskpro UI client, which allows to trigger UI behaviour in the helpdesk window hosting the application
+   * The help desk UI client, which enables interaction with the UI of the helpdesk window hosting the application
    *
    * @public
    * @readonly
@@ -314,7 +317,7 @@ class App
   };
 
   /**
-   * An API client for the Deskpro API
+   * A client for the Deskpro REST API
    *
    * @public
    * @readonly
@@ -326,6 +329,7 @@ class App
    * @deprecated
    * 
    * @internal
+   * @ignore
    * @return {StorageApiFacade}
    */
   get state() { return this.props.storageApi; };
@@ -340,7 +344,7 @@ class App
   get storage() { return this.props.storageApi; };
 
   /**
-   * The context in which this application runs
+   * The context in which the application runs
    *
    * @public
    * @readonly

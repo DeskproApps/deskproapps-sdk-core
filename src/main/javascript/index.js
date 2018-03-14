@@ -1,10 +1,12 @@
-/**
- * @method
- */
-export createApp from './Core/createApp';
 export {
+
   /**
-   * @method
+   * @function
+   */
+  createApp,
+
+  /**
+   * @function
    */
   createAppFromProps
 } from './Core/createApp';
@@ -24,18 +26,18 @@ export {
 
 export {
   /**
-   * @type {events}
+   * @type {module:UI/events}
    */
   UIEvents,
   /**
-   * @type {module:UI/Constants}
+   * @type {module:UI/constants}
    */
   UIConstants
 } from './UI';
 
 export {
   /**
-   * @type {module:Storage/Events}
+   * @type {module:Storage/events}
    */
   StorageEvents
 } from './Storage';

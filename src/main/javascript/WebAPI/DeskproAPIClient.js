@@ -1,17 +1,11 @@
 import * as Events from './events';
 
 /**
- * @param {AppEventEmitter} eventDispatcher
- * @return {DeskproAPIClient}
- */
-export const create = (eventDispatcher) => new DeskproAPIClient(eventDispatcher);
-
-/**
  * An API client for the Deskpro API. Application code can use it to interact with the Deskpro instance hosting the app
  *
  * @class
  */
-export class DeskproAPIClient
+class DeskproAPIClient
 {
   /**
    * @param {AppEventEmitter} eventDispatcher the outgoing event dispatcher
@@ -115,6 +109,8 @@ export class DeskproAPIClient
   ['delete'] = (path) => this.props.eventDispatcher.emitAsync(Events.EVENT_WEBAPI_REQUEST_DESKPRO, { method: 'delete', path });
 
 }
+
+export default DeskproAPIClient
 
 /**
  * Represents the result of applying a DOM Query Pattern with a `exists` type

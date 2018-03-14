@@ -1,4 +1,6 @@
 /**
+ * Exports application factories
+ *
  * @module Core/createApp
  */
 

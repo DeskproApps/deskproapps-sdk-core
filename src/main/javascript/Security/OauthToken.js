@@ -1,4 +1,4 @@
-import { PropertyBag } from '../Core'
+import PropertyBag from '../Core/PropertyBag'
 
 /**
  * Representation of an OauthToken
