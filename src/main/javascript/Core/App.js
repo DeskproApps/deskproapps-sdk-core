@@ -17,7 +17,7 @@ import * as Event from './Event'
 class App
 {
   /**
-   * @param {function} registerEventHandlers
+   * @param {function} registerEventHandlers registers on demand event handlers via the {@link App.subscribe} method
    * @param {AppEventEmitter} outgoingDispatcher the outgoing events dispatcher
    * @param {AppEventEmitter} incomingDispatcher the outgoing events dispatcher
    * @param {AppEventEmitter} internalDispatcher the internal events dispatcher
@@ -70,7 +70,8 @@ class App
   {
     const { outgoingDispatcher, registerEventHandlers } = this.props;
 
-    outgoingDispatcher.emitAsync('app.subscribe_to_event', { events: [eventName] })
+    // will
+    outgoingDispatcher.emitAsync(AppEvents.EVENT_SUBSCRIBE, { events: [eventName] })
       .then(events => {
         for (const event of events) {
           const eventProps = {channelType: Event.CHANNEL_INCOMING, invocationType: event.invocationType};
