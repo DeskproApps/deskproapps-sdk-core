@@ -1,4 +1,4 @@
-import App from '../../../main/javascript/Core/App';
+import AppClient from '../../../main/javascript/Core/AppClient';
 import AppEventEmitter from '../../../main/javascript/Core/AppEventEmitter'
 import ContextProps from '../../../main/javascript/Core/ContextProps';
 import InstanceProps from '../../../main/javascript/Core/InstanceProps';
@@ -30,7 +30,7 @@ test('successfully create an application', done => {
     }, new InitPropertiesBag({dpXconfTag: ''}))
   };
 
-  const app = new App(params);
+  const app = new AppClient(params);
 
   expect(app).toBeTruthy();
   done();
@@ -78,7 +78,7 @@ test('retrieve properties', done => {
     }, new InitPropertiesBag({dpXconfTag: ''}))
   };
 
-  const app = new App(params);
+  const app = new AppClient(params);
 
   expect(app.getProperty('appId')).toEqual('1');
   expect(app.getProperty('contextType')).toEqual('ticket');
@@ -131,7 +131,7 @@ test('retrieve property', done => {
     }, new InitPropertiesBag({dpXconfTag: ''}))
   };
 
-  const app = new App(params);
+  const app = new AppClient(params);
 
   expect(app.properties).toEqual(Object.assign({}, instanceProps.toJS(), contextProps.toJS()));
   done();

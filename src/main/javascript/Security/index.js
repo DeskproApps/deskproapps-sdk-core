@@ -29,7 +29,7 @@ export {
  * @function
  *
  * @param {WidgetWindowBridge} windowBridge
- * @param {App} app
+ * @param {AppClient} app
  */
 export function registerEventHandlers(windowBridge, app) {
   handleOutgoingEvent(windowBridge, app, SecurityEvents.EVENT_SECURITY_AUTHENTICATE_OAUTH, SecurityEvents.props.EVENT_SECURITY_AUTHENTICATE_OAUTH);

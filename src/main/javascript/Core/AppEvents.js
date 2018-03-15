@@ -69,7 +69,7 @@ import { handleOutgoingEvent } from './EventHandler';
  *
  * @function
  * @param {WidgetWindowBridge} windowBridge
- * @param {App} app
+ * @param {AppClient} app
  */
 export const registerEventHandlers = (windowBridge, app) => {
   handleOutgoingEvent(windowBridge, app, EVENT_SUBSCRIBE, events.EVENT_SUBSCRIBE);

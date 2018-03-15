@@ -16,7 +16,7 @@ import { registerEventHandlers as registerContextEventHandlers } from './Context
 import { registerEventHandlers as registerWebAPIEventHandlers } from '../WebAPI';
 import { registerEventHandlers as registerDeskproWindowEventHandlers } from '../DeskproWindow';
 
-import App from './App';
+import AppClient from './AppClient';
 
 import InstanceProps from './InstanceProps';
 import ContextProps from './ContextProps';
@@ -26,7 +26,7 @@ import ContextProps from './ContextProps';
  * @internal
  *
  * @param {WidgetWindowBridge} windowBridge
- * @param {App} app
+ * @param {AppClient} app
  */
 const registerAppEventListeners = (windowBridge, app) =>
 {
@@ -51,7 +51,7 @@ const registerAppEventListeners = (windowBridge, app) =>
  * @param {WidgetWindowBridge} widgetWindow
  * @param {Object} instanceProps
  * @param {Object} contextProps
- * @return {App}
+ * @return {AppClient}
  */
 export const createAppFromProps = ({widgetWindow, instanceProps, contextProps}) =>
 {
@@ -64,7 +64,7 @@ export const createAppFromProps = ({widgetWindow, instanceProps, contextProps}) 
     contextProps: new ContextProps(contextProps)
   };
 
-  return new App(appProps);
+  return new AppClient(appProps);
 };
 
 /**

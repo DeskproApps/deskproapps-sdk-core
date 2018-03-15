@@ -97,7 +97,7 @@ const dispatchIncomingEvent = (windowBridge, eventName, eventProps, event) => {
  * @function
  *
  * @param {WidgetWindowBridge} windowBridge
- * @param {App} app
+ * @param {AppClient} app
  */
 export const handleInvokeEvents = (windowBridge, app) =>
 {
@@ -110,7 +110,7 @@ export const handleInvokeEvents = (windowBridge, app) =>
  * @function
  *
  * @param {WidgetWindowBridge} windowBridge
- * @param {App} app
+ * @param {AppClient} app
  * @param {String} eventName
  * @param {{invocationType:String}} eventProps
  * @return null
@@ -133,7 +133,7 @@ export function handleAppEvents (windowBridge, app, eventName, eventProps)
  * @function
  *
  * @param {WidgetWindowBridge} windowBridge
- * @param {App} app
+ * @param {AppClient} app
  * @param {String} eventName
  * @param {Object} eventProps
  * @return null
@@ -158,7 +158,7 @@ export const handleIncomingEvent = (windowBridge, app, eventName, eventProps) =>
  * @function
  *
  * @param {WidgetWindowBridge} windowBridge
- * @param {App} app
+ * @param {AppClient} app
  * @param {string} eventName
  * @param {{invocationType:String, ...other}} eventProps
  */

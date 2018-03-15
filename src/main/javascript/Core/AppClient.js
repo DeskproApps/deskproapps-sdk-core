@@ -10,14 +10,14 @@ import { createOauthAPIClient } from '../Security';
 import * as Event from './Event'
 
 /**
- * A facade exposing all the underlying services needed by an application
+ * A facade exposing all the underlying services required by an application
  *
  * @class
  */
-class App
+class AppClient
 {
   /**
-   * @param {function} registerEventHandlers registers on demand event handlers via the {@link App.subscribe} method
+   * @param {function} registerEventHandlers registers on demand event handlers via the {@link AppClient.subscribe} method
    * @param {AppEventEmitter} outgoingDispatcher the outgoing events dispatcher
    * @param {AppEventEmitter} incomingDispatcher the outgoing events dispatcher
    * @param {AppEventEmitter} internalDispatcher the internal events dispatcher
@@ -358,4 +358,4 @@ class App
   };
 }
 
-export default App;
+export default AppClient;

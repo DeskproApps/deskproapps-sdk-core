@@ -11,7 +11,7 @@ import { handleOutgoingEvent } from '../Core/EventHandler';
  * Registers the WebAPI events with the event dispatching system
  *
  * @param {WidgetWindowBridge} windowBridge
- * @param {App} app
+ * @param {AppClient} app
  */
 function registerEventHandlers(windowBridge, app)
 {

@@ -100,7 +100,7 @@ class WidgetWindowBridge {
    * Connects the widget/application window and the helpdesk window. The `createApp` function will be invoked on a successful connection
    *
    * @param {function} createApp an application factory
-   * @return {Promise.<App, Error>}
+   * @return {Promise.<AppClient, Error>}
    */
   connect(createApp)
   {

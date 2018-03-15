@@ -12,7 +12,7 @@ export {
 } from './Core/createApp';
 
 /**
- * @type {App}
+ * @type {AppClient}
  */
 export App from './Core/App';
 

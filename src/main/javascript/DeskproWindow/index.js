@@ -24,7 +24,7 @@ export function createDeskproWindowFacade(eventDispatcher) {
  * @function
  *
  * @param {WidgetWindowBridge} windowBridge
- * @param {App} app
+ * @param {AppClient} app
  */
 export function registerEventHandlers(windowBridge, app) {
   handleOutgoingEvent(windowBridge, app, DeskproWindowEvents.EVENT_DESKPROWINDOW_SHOW_NOTIFICATION, DeskproWindowEvents.props.EVENT_DESKPROWINDOW_SHOW_NOTIFICATION);
