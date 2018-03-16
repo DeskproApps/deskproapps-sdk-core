@@ -248,7 +248,7 @@ class AppClient
    *
    * @public
    * @readonly
-   * @return {String}
+   * @type {String}
    */
   get packageName() { return this.props.instanceProps.appPackageName; }
 
@@ -257,7 +257,7 @@ class AppClient
   /**
    * @public
    * @readonly
-   * @return {Array}
+   * @type {Array}
    */
   get settings() { return []; }
 
@@ -293,7 +293,7 @@ class AppClient
    *
    * @public
    * @readonly
-   * @return {OauthFacade}
+   * @type {OauthFacade}
    */
   get oauth() { return this.props.oauth; }
 
@@ -302,7 +302,7 @@ class AppClient
    *
    * @public
    * @readonly
-   * @return {UIFacade}
+   * @type {UIFacade}
    */
   get ui() { return this.props.ui; }
 
@@ -311,7 +311,7 @@ class AppClient
    *
    * @public
    * @readonly
-   * @return {DeskproWindowFacade}
+   * @type {DeskproWindowFacade}
    */
   get deskproWindow() {
     return this.props.deskproWindow;
@@ -322,7 +322,7 @@ class AppClient
    *
    * @public
    * @readonly
-   * @return {DeskproAPIClient}
+   * @type {DeskproAPIClient}
    */
   get restApi() { return this.props.restApi; };
   
@@ -331,7 +331,7 @@ class AppClient
    * 
    * @internal
    * @ignore
-   * @return {StorageApiFacade}
+   * @type {StorageApiFacade}
    */
   get state() { return this.props.storageApi; };
 
@@ -340,7 +340,7 @@ class AppClient
    *
    * @public
    * @readonly
-   * @return {StorageApiFacade}
+   * @type {StorageApiFacade}
    */
   get storage() { return this.props.storageApi; };
 
@@ -349,7 +349,7 @@ class AppClient
    *
    * @public
    * @readonly
-   * @return {Context}
+   * @type {Context}
    */
   get context() { return this.props.context; };
 

@@ -14,7 +14,7 @@ export {
 /**
  * @type {AppClient}
  */
-export App from './Core/App';
+export App from './Core/AppClient';
 
 import * as AppEvents from './Core/AppEvents';
 export {
