@@ -8,7 +8,7 @@
     "make-clean": "rm -rf dist/*;  rm -rf lib/*",
     "make-lib": "BABEL='./bin/babel-dpat.sh'; ${BABEL} src/main/javascript -d lib/main/javascript",
     "make-dist": "WEBPACK='./bin/webpack-dpat.sh'; DPA_PACKAGE=${DPA_PACKAGE} ${WEBPACK} --config src/webpack/webpack.config-dist.js",
-    "make-docs": "DOCS='./docs/reference'; rm -rf ${DOCS}/* && jsdoc --configure ./.jsdoc --destination ${DOCS} --verbose",
+    "make-docs": "DOCS='./target/docs/reference'; rm -rf ${DOCS}/* && jsdoc --configure ./.jsdoc --destination ${DOCS} --verbose",
     "test": "JEST='./bin/jest-dpat.sh'; ${JEST} src/test"
   },
   "repository": {
