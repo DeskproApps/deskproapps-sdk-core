@@ -22,7 +22,10 @@ export {
 /**
  * @method
  *
+ * @param {EventDispatcher} outgoingDispatcher
  * @param {AppEventEmitter} internalEventDispatcher
  * @return {UIFacade}
  */
-export const create = (internalEventDispatcher) => { return new UIFacade(internalEventDispatcher); };
+export const create = (outgoingDispatcher, internalEventDispatcher) => {
+  return new UIFacade(outgoingDispatcher, internalEventDispatcher);
+};
