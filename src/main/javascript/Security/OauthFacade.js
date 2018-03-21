@@ -118,4 +118,5 @@ export default OauthFacade
  * @property {string} [urlResourceOwnerDetails]
  * @property {String} clientId the id of the client registered with the oauth provider
  * @property {string} [clientSecret] an optional client secret
+ * @property {Array<string>} [scopes] an optional list of scopes
  */
