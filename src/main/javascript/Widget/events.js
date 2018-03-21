@@ -1,5 +1,5 @@
 /**
- * @module Core/ContextEvents
+ * @module Core/events
  */
 
 import { CHANNEL_INTERNAL, CHANNEL_INCOMING, CHANNEL_OUTGOING, INVOCATION_FIREANDFORGET, INVOCATION_REQUESTRESPONSE } from '../Core/Event'

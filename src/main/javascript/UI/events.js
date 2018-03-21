@@ -1,5 +1,5 @@
 /**
- * @module UI/Events
+ * @module UI/events
  */
 
 /**

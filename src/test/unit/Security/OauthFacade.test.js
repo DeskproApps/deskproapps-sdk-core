@@ -1,9 +1,9 @@
-import { OauthFacade } from '../../../main/javascript/Security/OauthFacade'
-import { EVENT_SECURITY_AUTHENTICATE_OAUTH, EVENT_SECURITY_SETTINGS_OAUTH } from '../../../main/javascript/Security/Events'
+import OauthFacade from '../../../main/javascript/Security/OauthFacade'
+import { EVENT_SECURITY_AUTHENTICATE_OAUTH, EVENT_SECURITY_SETTINGS_OAUTH } from '../../../main/javascript/Security/events'
 
-import { LocalStorageAdapter } from '../../../main/javascript/Storage/LocalStorageAdapter'
-import { StorageApiFacade } from '../../../main/javascript/Storage/StorageApiFacade'
-import { EventDispatcher } from '../../../main/javascript/Core/EventDispatcher'
+import LocalStorageAdapter from '../../../main/javascript/Storage/LocalStorageAdapter'
+import StorageApiFacade from '../../../main/javascript/Storage/StorageApiFacade'
+import AppEventEmitter from '../../../main/javascript/Core/AppEventEmitter'
 
 
 const localStorageMock = {
@@ -34,8 +34,8 @@ describe('OauthFacade', () => {
   const localStorage       = new LocalStorageAdapter(localStorageMock);
 
   test('settings: default oauth version is 2.0', done => {
-    const internalDispatcher = new EventDispatcher();
-    const outgoingDispatcher = new EventDispatcher();
+    const internalDispatcher = new AppEventEmitter();
+    const outgoingDispatcher = new AppEventEmitter();
     outgoingDispatcher.on(EVENT_SECURITY_SETTINGS_OAUTH, (resolve, reject, {provider, protocolVersion}) => {
 
       try {
@@ -64,8 +64,8 @@ describe('OauthFacade', () => {
   });
 
   test('settings: custom oauth version is used', done => {
-    const internalDispatcher = new EventDispatcher();
-    const outgoingDispatcher = new EventDispatcher();
+    const internalDispatcher = new AppEventEmitter();
+    const outgoingDispatcher = new AppEventEmitter();
     outgoingDispatcher.on(EVENT_SECURITY_SETTINGS_OAUTH, (resolve, reject, {provider, protocolVersion}) => {
 
       try {

@@ -1,30 +1,28 @@
 /**
- * UI module.
+ * This module exports the interface of the UI package
  * @module UI
  */
 
-import * as UIEvents from './Events';
-export {
-  /**
-   * @type {module:UI/Events}
-   */
-  UIEvents
-}
+import * as UIEvents from './events';
+import * as UIConstants from './constants';
+import UIFacade from './UIFacade';
 
-import * as UIConstants from './Constants';
 export {
   /**
-   * @type {module:UI/Constants}
+   * @type {module:UI/events}
+   */
+  UIEvents,
+
+  /**
+   * @type {module:UI/constants}
    */
   UIConstants
 }
 
-import { UIFacade } from './UIFacade';
-
 /**
  * @method
  *
- * @param {EventDispatcher} internalEventDispatcher
+ * @param {AppEventEmitter} internalEventDispatcher
  * @return {UIFacade}
  */
 export const create = (internalEventDispatcher) => { return new UIFacade(internalEventDispatcher); };

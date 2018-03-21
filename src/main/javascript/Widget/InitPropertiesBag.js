@@ -1,4 +1,4 @@
-import { PropertyBag } from '../Core/PropertyBag'
+import PropertyBag  from '../Core/PropertyBag'
 
 /**
  * @ignore
@@ -52,7 +52,7 @@ const toParamName = str =>
 const parseQueryString = (qs) => {
   "use strict";
   const props = {};
-  
+
   const queryParams = qs.split('&').map(nameAndValue => nameAndValue.split('='));
   for (const param of queryParams) {
     const [name, value] = param;
@@ -88,7 +88,7 @@ const encodeAsQueryString = (props) => {
 /**
  * @class
  */
-class InitProps extends PropertyBag
+class InitPropertiesBag extends PropertyBag
 {
   /**
    * @type {string}
@@ -100,7 +100,7 @@ class InitProps extends PropertyBag
    */
   static get PROP_NAMES() { return propNamesMap; } ;
   /**
-   * @param {*|InitProps} propsOrInstance
+   * @param {*|InitPropertiesBag} propsOrInstance
    * @return {boolean}
    */
   static validate(propsOrInstance)
@@ -115,14 +115,14 @@ class InitProps extends PropertyBag
   }
 
   /**
-   * @type {string} queryString
-   * @return {InitProps|null}
+   * @param {string} queryString
+   * @return {InitPropertiesBag|null}
    */
   static fromQueryString(queryString)
   {
     const initParams = parseQueryString(queryString);
-    if (InitProps.validate(initParams)) {
-      return new InitProps(initParams);
+    if (InitPropertiesBag.validate(initParams)) {
+      return new InitPropertiesBag(initParams);
     }
 
     return null;
@@ -130,7 +130,7 @@ class InitProps extends PropertyBag
 
   /**
    * @param {Window} windowObject
-   * @return {InitProps}
+   * @return {InitPropertiesBag}
    */
   static fromWindow(windowObject)
   {
@@ -152,7 +152,7 @@ class InitProps extends PropertyBag
     if (paramsQueryStrings.length === 0) { return null; }
 
     for (const queryString of paramsQueryStrings) {
-      const initParams = InitProps.fromQueryString(queryString);
+      const initParams = InitPropertiesBag.fromQueryString(queryString);
       if (initParams) {
         return initParams;
       }
@@ -190,4 +190,4 @@ class InitProps extends PropertyBag
   toQueryString() { return encodeAsQueryString(this.props); }
 }
 
-export { InitProps }
+export default InitPropertiesBag

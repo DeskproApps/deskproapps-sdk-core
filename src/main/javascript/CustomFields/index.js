@@ -1,6 +1,8 @@
 /**
- * CustomFields module.
+ * This module exports the interface of the CustomFields package
+ *
  * @module CustomFields
  */
 
-export { CustomFieldsClient } from './CustomFieldsClient';
+import CustomFieldsClient from './CustomFieldsClient';
+export { CustomFieldsClient };

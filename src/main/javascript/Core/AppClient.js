@@ -8,18 +8,21 @@ import { createDeskproWindowFacade } from '../DeskproWindow';
 import { createOauthAPIClient } from '../Security';
 
 import * as Event from './Event'
+
 /**
+ * A facade exposing all the underlying services required by an application
+ *
  * @class
  */
-class App
+class AppClient
 {
   /**
-   * @param {function} registerEventHandlers
-   * @param {EventDispatcher} outgoingDispatcher
-   * @param {EventDispatcher} incomingDispatcher
-   * @param {EventDispatcher} internalDispatcher
-   * @param {InstanceProps} instanceProps
-   * @param {ContextProps} contextProps
+   * @param {function} registerEventHandlers registers on demand event handlers via the {@link AppClient.subscribe} method
+   * @param {AppEventEmitter} outgoingDispatcher the outgoing events dispatcher
+   * @param {AppEventEmitter} incomingDispatcher the outgoing events dispatcher
+   * @param {AppEventEmitter} internalDispatcher the internal events dispatcher
+   * @param {InstanceProps} instanceProps the property bag containing instance props
+   * @param {ContextProps} contextProps the property bag containing context props
    */
   constructor({ registerEventHandlers, outgoingDispatcher, incomingDispatcher, internalDispatcher, instanceProps, contextProps })
   {
@@ -49,16 +52,26 @@ class App
   // EVENT EMITTER API
 
   /**
+   * Returns an instance of the internal event dispatcher
+   *
    * @public
-   * @return {EventDispatcher}
+   * @return {AppEventEmitter}
    */
   get eventDispatcher() { return this.props.internalDispatcher; }
 
+  /**
+   * Get notified when the app receives an incoming event, such as one sent from the helpdesk window.
+   * An example of such an event is the `context.ticket.reply`event which is sent when the agent replies to a ticket
+   *
+   * @param {string} eventName
+   * @param {function}  handler
+   */
   subscribe(eventName, handler)
   {
     const { outgoingDispatcher, registerEventHandlers } = this.props;
 
-    outgoingDispatcher.emitAsync('app.subscribe_to_event', { events: [eventName] })
+    // will
+    outgoingDispatcher.emitAsync(AppEvents.EVENT_SUBSCRIBE, { events: [eventName] })
       .then(events => {
         for (const event of events) {
           const eventProps = {channelType: Event.CHANNEL_INCOMING, invocationType: event.invocationType};
@@ -70,6 +83,8 @@ class App
   }
 
   /**
+   * Registers an event listener. For the moment, you can only listen to internal events via this method
+   *
    * @public
    * @param {String} eventName
    * @param {function} listener
@@ -80,6 +95,8 @@ class App
   };
 
   /**
+   * Removes an event listener. For the moment, only internal events are supported
+   *
    * @public
    * @method
    * @param {String} eventName
@@ -91,6 +108,8 @@ class App
   };
 
   /**
+   * Adds a one time event listener for an internal event
+   *
    * @public
    * @method
    * @param {String} eventName
@@ -102,10 +121,12 @@ class App
   };
 
   /**
+   * Triggers the listeners of an outgoing or internal event
+   *
    * @public
    * @method
    * @param {string|{}} event
-   * @param args
+   * @param {...*} args
    * @return {Promise.<*>}
    */
   async emit (event, ...args)
@@ -126,6 +147,8 @@ class App
   // Properties API
 
   /**
+   * Returns the value of a property by looking up in the instance properties bag then in the context properties bag
+   *
    * @public
    * @method
    * @param {String} propertyName
@@ -143,6 +166,8 @@ class App
   };
 
   /**
+   * Returns a map of all the instance and context properties
+   *
    * @public
    * @return {Object}
    */
@@ -156,6 +181,8 @@ class App
   }
 
   /**
+   * Returns the name of the current application environment
+   *
    * @public
    * @return {'production'|'development'}
    */
@@ -168,19 +195,33 @@ class App
   }
 
   /**
+   * The id of the application this instance belongs to
+   *
    * @public
+   * @readonly
    * @return {String}
    */
   get appId() { return this.props.instanceProps.appId; }
 
   /**
+   * The id of this instance
+   *
+   * @public
+   * @readonly
+   * @return {String}
+   */
+  get instanceId() { return this.props.instanceProps.instanceId; }
+
+  /**
+   * The display title of this application
+   *
    * @public
    * @return {String}
    */
   get appTitle() { return this._state.appTitle; }
 
   /**
-   * @public
+   * @ignore
    * @param {String} newTitle
    */
   set appTitle(newTitle) {
@@ -194,39 +235,38 @@ class App
     }
   }
 
+  /**
+   * Resets the display title of this application
+   *
+   * @public
+   * @method
+   */
   resetAppTitle = () => { this.appTitle = this.props.instanceProps.appTitle; };
 
   /**
-   * public
-   * @return {String}
+   * The package name (from package.json) of this application
+   *
+   * @public
+   * @readonly
+   * @type {String}
    */
   get packageName() { return this.props.instanceProps.appPackageName; }
-
-  /**
-   * public
-   * @return {String}
-   */
-  get instanceId() { return this.props.instanceProps.instanceId; }
-
-  // OAUTH API
-
-  /**
-   * @public
-   * @return {OauthFacade}
-   */
-  get oauth() { return this.props.oauth; }
 
   // Settings API
 
   /**
    * @public
-   * @return {Array}
+   * @readonly
+   * @type {Array}
    */
   get settings() { return []; }
 
   // Misc API
 
   /**
+   * Emits an internal event that signals its handlers the application needs to refresh. When the application has
+   * an UI then it will re-render
+   *
    * @public
    * @method
    */
@@ -236,7 +276,9 @@ class App
   };
 
   /**
-   * @public
+   * Emits an internal event that signals its handlers the application initiated the unload process
+   *
+   * @internal
    * @method
    */
   unload = () => {
@@ -247,42 +289,67 @@ class App
   // CLIENTS
 
   /**
+   * The oauth client
+   *
    * @public
-   * @return {UIFacade}
+   * @readonly
+   * @type {OauthFacade}
+   */
+  get oauth() { return this.props.oauth; }
+
+  /**
+   * The UI client of the application, which provides a standard way to invoke UI behaviour
+   *
+   * @public
+   * @readonly
+   * @type {UIFacade}
    */
   get ui() { return this.props.ui; }
 
   /**
+   * The help desk UI client, which enables interaction with the UI of the helpdesk window hosting the application
+   *
    * @public
-   * @return {DeskproWindowFacade}
+   * @readonly
+   * @type {DeskproWindowFacade}
    */
   get deskproWindow() {
     return this.props.deskproWindow;
   };
 
   /**
+   * A client for the Deskpro REST API
+   *
    * @public
-   * @return {DeskproAPIClient}
+   * @readonly
+   * @type {DeskproAPIClient}
    */
   get restApi() { return this.props.restApi; };
   
   /**
    * @deprecated
    * 
-   * @public
-   * @return {StorageApiFacade}
+   * @internal
+   * @ignore
+   * @type {StorageApiFacade}
    */
   get state() { return this.props.storageApi; };
 
   /**
+   * A client for accessing the storage APIs in a simple manner
+   *
    * @public
-   * @return {StorageApiFacade}
+   * @readonly
+   * @type {StorageApiFacade}
    */
   get storage() { return this.props.storageApi; };
 
   /**
+   * The context in which the application runs
+   *
    * @public
-   * @return {Context}
+   * @readonly
+   * @type {Context}
    */
   get context() { return this.props.context; };
 
@@ -291,4 +358,4 @@ class App
   };
 }
 
-export default App;
+export default AppClient;

@@ -1,6 +1,6 @@
-import {WidgetFactories} from '../../../main/javascript/Widget/WidgetFactories';
-import {WidgetResponse} from '../../../main/javascript/Widget/WidgetResponse';
-import {WidgetRequest} from '../../../main/javascript/Widget/WidgetRequest';
+import WidgetFactories from '../../../main/javascript/Widget/WidgetFactories';
+import WidgetResponse from '../../../main/javascript/Widget/WidgetResponse';
+import WidgetRequest from '../../../main/javascript/Widget/WidgetRequest';
 
 test('parseMessageFromJS parses response', done => {
   const expectedValue = WidgetResponse.parse({

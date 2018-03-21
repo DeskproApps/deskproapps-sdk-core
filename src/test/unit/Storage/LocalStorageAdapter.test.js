@@ -1,6 +1,6 @@
-import { StorageApiFacade } from '../../../main/javascript/Storage/StorageApiFacade';
-import { LocalStorageAdapter } from '../../../main/javascript/Storage/LocalStorageAdapter';
-import { EventDispatcher } from '../../../main/javascript/Core/EventDispatcher'
+import StorageApiFacade from '../../../main/javascript/Storage/StorageApiFacade';
+import LocalStorageAdapter from '../../../main/javascript/Storage/LocalStorageAdapter';
+import AppEventEmitter from '../../../main/javascript/Core/AppEventEmitter'
 
 const localStorageMock = {
   store: {},
@@ -33,8 +33,8 @@ describe('LocalStorageAdapter', () => {
     contextEntityId:    '2'
   };
   
-  const outgoingDispatcher = new EventDispatcher();
-  const internalDispatcher = new EventDispatcher();
+  const outgoingDispatcher = new AppEventEmitter();
+  const internalDispatcher = new AppEventEmitter();
   const localStorage       = new LocalStorageAdapter(localStorageMock);
   const storage            = new StorageApiFacade(outgoingDispatcher, internalDispatcher, localStorage, params);
   

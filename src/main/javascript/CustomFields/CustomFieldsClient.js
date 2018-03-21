@@ -1,5 +1,12 @@
 import { WebAPIEvents } from '../WebAPI';
 
+/**
+ * @ignore
+ * @param {Object} fields
+ * @param {string} alias
+ * @param {*} defaultValue
+ * @returns {*}
+ */
 const findFieldValue = ({ data: { fields }}, alias, defaultValue) =>
 {
   if (!fields || typeof fields !== 'object') {
@@ -22,14 +29,16 @@ const findFieldValue = ({ data: { fields }}, alias, defaultValue) =>
 };
 
 /**
+ * An API client that enables reading or writing the values of custom fields
+ *
  * @class
  */
-export class CustomFieldsClient
+class CustomFieldsClient
 {
   /**
-   * @param {EventDispatcher} outgoingDispatcher
-   * @param {string} instanceId
-   * @param {string} endpoint
+   * @param {AppEventEmitter} outgoingDispatcher the outgoing events dispatcher
+   * @param {string} instanceId this application's instance id
+   * @param {string} endpoint Deskpro API endpoint for the custom fields resource
    */
   constructor({ outgoingDispatcher, instanceId, endpoint })
   {
@@ -37,12 +46,14 @@ export class CustomFieldsClient
   }
 
   /**
+   * Set the value of a field
+   *
    * @method
    *
    * @param {string} id
-   * @param {*} value
+   * @param {String|Number|Array<String|Number>} value
    *
-   * @return {Promise.<*>}
+   * @return {Promise.<DeskproAPIResponse, Error>}
    */
   async setField(id, value)
   {
@@ -66,9 +77,11 @@ export class CustomFieldsClient
   }
 
   /**
+   * Retrieves the value of a field
+   *
    * @param {String} id
    * @param {*} defaultValue
-   * @return {Promise.<*>}
+   * @return {Promise.<String|null|Array<String|null>, Error>}
    */
   async getField(id, defaultValue = null)
   {
@@ -85,9 +98,12 @@ export class CustomFieldsClient
   }
 
   /**
+   * Sets the value of a field which is specifically linked to this application. Such fields include those created
+   * when the application was installed
+   *
    * @param {string} alias
    * @param {*} value
-   * @return {Promise.<*>}
+   * @return {Promise.<DeskproAPIResponse, Error>}
    */
   async setAppField(alias, value)
   {
@@ -96,10 +112,13 @@ export class CustomFieldsClient
   }
 
   /**
+   * Returns the value of a field which is referenced by this application. Such fields include those created
+   * when the application was installed
+   *
    * @param {string} alias
    * @param {*} defaultValue
    *
-   * @return {Promise.<*>}
+   * @return {Promise.<String|null|Array<String|null>, Error>}
    */
   async getAppField(alias, defaultValue = null)
   {
@@ -107,3 +126,5 @@ export class CustomFieldsClient
     return this.getField(fieldId, defaultValue);
   }
 }
+
+export default CustomFieldsClient;
