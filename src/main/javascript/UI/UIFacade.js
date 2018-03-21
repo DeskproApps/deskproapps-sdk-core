@@ -10,7 +10,7 @@ import * as Constants from './constants';
 class UIFacade
 {
   /**
-   * @param {EventDispatcher} outgoingDispatcher
+   * @param {AppEventEmitter} outgoingDispatcher
    * @param {AppEventEmitter} UIEventsDispatcher
    */
   constructor(outgoingDispatcher, UIEventsDispatcher) {

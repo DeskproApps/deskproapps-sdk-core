@@ -22,7 +22,7 @@ export {
 /**
  * @method
  *
- * @param {EventDispatcher} outgoingDispatcher
+ * @param {AppEventEmitter} outgoingDispatcher
  * @param {AppEventEmitter} internalEventDispatcher
  * @return {UIFacade}
  */
