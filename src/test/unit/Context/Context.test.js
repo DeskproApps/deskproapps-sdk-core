@@ -1,11 +1,11 @@
-import {Context} from '../../../main/javascript/Core/Context';
-import { EventDispatcher } from '../../../main/javascript/Core/EventDispatcher'
+import Context from '../../../main/javascript/Core/Context';
+import AppEventEmitter from '../../../main/javascript/Core/AppEventEmitter'
 
 test('getProperty returns undefined for unknown property', done => {
 
   const context = new Context({
-    outgoingDispatcher: new EventDispatcher(),
-    incomingDispatcher: new EventDispatcher(),
+    outgoingDispatcher: new AppEventEmitter(),
+    incomingDispatcher: new AppEventEmitter(),
     type: 'not-important',
     entityId: '1',
     locationId: 'not-important'
@@ -18,8 +18,8 @@ test('getProperty returns undefined for unknown property', done => {
 test('hasProperty returns false for unknown property', done => {
 
   const context = new Context({
-    outgoingDispatcher: new EventDispatcher(),
-    incomingDispatcher: new EventDispatcher(),
+    outgoingDispatcher: new AppEventEmitter(),
+    incomingDispatcher: new AppEventEmitter(),
     type: 'not-important',
     entityId: '1',
     locationId: 'not-important'

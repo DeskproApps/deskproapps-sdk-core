@@ -1,30 +1,45 @@
 /**
+ * This module exports the interface of the DeskproWindow package
+ *
  * @module DeskproWindow
  */
 
-import * as DeskproWindowEvents from './Events';
-export {
-  /**
-   * @type {module:DeskproWindow/Events}
-   */
-  DeskproWindowEvents
-};
+import { handleOutgoingEvent } from '../Core/EventHandler';
+import * as DeskproWindowEvents from './events';
+import DeskproWindowFacade from './DeskproWindowFacade'
+
+/**
+ * @function
+ * @param {AppEventEmitter} eventDispatcher
+ * @returns {DeskproWindowFacade}
+ */
+export function createDeskproWindowFacade(eventDispatcher) {
+  "use strict";
+  return new DeskproWindowFacade(eventDispatcher);
+}
+
+/**
+ * Registers helpdesk window events with the event dispatching system
+ *
+ * @function
+ *
+ * @param {WidgetWindowBridge} windowBridge
+ * @param {AppClient} app
+ */
+export function registerEventHandlers(windowBridge, app) {
+  handleOutgoingEvent(windowBridge, app, DeskproWindowEvents.EVENT_DESKPROWINDOW_SHOW_NOTIFICATION, DeskproWindowEvents.props.EVENT_DESKPROWINDOW_SHOW_NOTIFICATION);
+  handleOutgoingEvent(windowBridge, app, DeskproWindowEvents.EVENT_DESKPROWINDOW_DOM_INSERT, DeskproWindowEvents.props.EVENT_DESKPROWINDOW_DOM_INSERT);
+  handleOutgoingEvent(windowBridge, app, DeskproWindowEvents.EVENT_DESKPROWINDOW_DOM_QUERY, DeskproWindowEvents.props.EVENT_DESKPROWINDOW_DOM_QUERY);
+}
 
 export {
   /**
-   * @method
+   * @type {module:DeskproWindow/events}
    */
-  registerEventHandlers
-} from './EventHandlers';
-
-export {
-  /**
-   * @method
-   */
-  create as createDeskproWindowFacade,
+  DeskproWindowEvents,
 
   /**
    * @type {DeskproWindowFacade}
    */
   DeskproWindowFacade
-} from './DeskproWindowFacade';
+};

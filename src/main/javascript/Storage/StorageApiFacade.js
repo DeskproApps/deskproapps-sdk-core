@@ -1,5 +1,5 @@
-import * as Events from './Events';
-import { StorageAdapter } from './StorageAdapter';
+import * as Events from './events';
+import StorageAdapter from './StorageAdapter';
 
 const APP_TYPE = 'app';
 
@@ -41,16 +41,16 @@ const validateNameValuePairsList = (batch) => {
 class StorageApiFacade
 {
   /**
-   * @param {EventDispatcher} outgoingDispatcher
-   * @param {EventDispatcher} internalDispatcher
-   * @param {StorageAdapter} storageAdapter
-   * @param {String} instanceId
-   * @param {String} contextEntityType
-   * @param {String} contextEntityId
-   * @param {String} appId
-   * @param other
+   * @param {AppEventEmitter} outgoingDispatcher the outgoing event dispatcher
+   * @param {AppEventEmitter} internalDispatcher the interval event dispatcher
+   * @param {StorageAdapter} storageAdapter a storage adapter
+   * @param {String} instanceId the id of this application's instance
+   * @param {String} appId the id of this application
+   * @param {String} contextEntityType the type of the context entity
+   * @param {String} contextEntityId the id of the context entity
+   * @param {...*} [other]
    */
-  constructor(outgoingDispatcher, internalDispatcher, storageAdapter, { instanceId, contextEntityType, contextEntityId, appId, ...other }) {
+  constructor(outgoingDispatcher, internalDispatcher, storageAdapter, { instanceId, appId, contextEntityType, contextEntityId, ...other }) {
     if (! storageAdapter instanceof StorageAdapter) {
       throw new Error('param storageAdapter must be an instance of StorageAdapter');
     }
@@ -58,11 +58,30 @@ class StorageApiFacade
   }
 
   /**
+   * Stores a value or a list of values. This method supports the following signatures:
+   *
+   * - Single item mode
+   * ```
+   *  setStorage(name:String, value:*, entityId:String): Promise<*,Error>
+   * ```
+   *
+   * - Batch mode
+   * ```
+   *  setStorage(batch:Array<{name:String, value:*}>, entityId:String): Promise<Array<{name:String, value:*}>,Error>
+   * ```
+   *
+   * See the list of parameters for a description of each one
+   *
    * @public
    * @method
    *
-   * @param args
-   * @return {Promise}
+   * @param {...*} args
+   * @param {string} [args.name] the name under which to store the value
+   * @param {string} [args.value] the value to be stored. Will be `JSON serialized`
+   * @param {Array<{name:String, value:*}>} [args.batch] a list of name-value pairs for batch processing
+   * @param {string} args.entityId the id of the entity to link the values to
+   *
+   * @return {Promise<Array<{name:String, value:*}>|String,Error>} the list of values which were not saved in batch mode or the saved value in single mode
    */
   async setStorage(...args) {
     const { storageAdapter } = this.props;
@@ -109,11 +128,28 @@ class StorageApiFacade
   }
 
   /**
+   * Stores a value or a set of values attaching every value to the application. This method supports the following signatures:
+   *
+   * - Single item mode
+   * ```
+   *  setAppStorage(name:String, value:*): Promise<*,Error>
+   * ```
+   *
+   * - Batch mode
+   * ```
+   *  setAppStorage(batch:Array<{name:String, value:*}>): Promise<Array<{name:String, value:*}>,Error>
+   * ```
+   *
+   * See the list of parameters for a description of each one
+   *
    * @public
    * @method
    *
-   * @param args
-   * @return {Promise}
+   * @param {...*} args
+   * @param {string} [args.name] the name under which to store the value
+   * @param {string} [args.value] the value to be stored. Will be `JSON serialized`
+   * @param {Array<{name:String, value:*}>} [args.batch] a list of name-value pairs for batch processing
+   * @return {Promise<Array<{name:String, value:*}>|*,Error>} the list of values which were not saved in batch mode or the saved value in single mode
    */
   async setAppStorage(...args) {
     const entityId = `${APP_TYPE}:${this.props.appId}`;
@@ -131,22 +167,28 @@ class StorageApiFacade
   }
   
   /**
-   * @deprecated
+   * Stores a value or a set of values attaching every value to the application's context entity. This method supports the following signatures:
+   *
+   * - Single item mode
+   * ```
+   *  setEntityStorage(name:String, value:*): Promise<*,Error>
+   * ```
+   *
+   * - Batch mode
+   * ```
+   *  setEntityStorage(batch:Array<{name:String, value:*}>): Promise<Array<{name:String, value:*}>,Error>
+   * ```
+   *
+   * See the list of parameters for a description of each one
+   *
    * @public
    * @method
    *
-   * @param args
-   * @return {Promise}
-   */
-  async setAppState(...args) {
-    return this.setAppStorage(...args);
-  }
-
-  /**
-   * @public
-   * @method
-   *
-   * @return {Promise}
+   * @param {...*} args
+   * @param {string} [args.name] the name under which to store the value
+   * @param {string} [args.value] the value to be stored. Will be `JSON serialized`
+   * @param {Array<{name:String, value:*}>} [args.batch] a list of name-value pairs for batch processing
+   * @return {Promise<Array<{name:String, value:*}>|String,Error>} the list of values which were not saved in batch mode or the saved value in single mode
    */
   async setEntityStorage(...args) {
     const entityId = `${this.props.contextEntityType}:${this.props.contextEntityId}`;
@@ -162,26 +204,17 @@ class StorageApiFacade
 
     throw new Error(`Bad method call: unknown number of args: ${args.length}`);
   }
-  
-  /**
-   * @deprecated
-   * @public
-   * @method
-   *
-   * @return {Promise}
-   */
-  async setEntityState(...args) {
-    return this.setEntityStorage(...args);
-  }
 
   /**
+   * Retrieves a generic storage item or a list
+   *
    * @public
    * @method
    *
-   * @param {string|Array<string>}name
-   * @param {string} entityId
-   * @param {*} defaultValue
-   * @return {Promise}
+   * @param {string|Array<string>} name either one storage item id or a list of ids
+   * @param {string} entityId the id of the entity to which the storage item is attached
+   * @param {*} [defaultValue=null] the value to return if one the the storage items was not found
+   * @return {Promise<*|Array<*>, Error>}
    */
   async getStorage(name, entityId, defaultValue = null) {
     const { storageAdapter } = this.props;
@@ -227,19 +260,60 @@ class StorageApiFacade
   }
 
   /**
+   * Retrieves a storage item attached to the application's context entity
+   *
    * @public
    * @method
    *
-   * @param name
-   * @param defaultValue
-   * @return {Promise}
+   * @param {string|Array<string>} name
+   * @param {*} [defaultValue=null] the value to return if one the the storage items was not found
+   * @return {Promise<String|Number|Boolean|Object|null, Error>}
    */
   async getEntityStorage(name, defaultValue = null) {
     const entityId = `${this.props.contextEntityType}:${this.props.contextEntityId}`;
     return this.getStorage(name, entityId, defaultValue);
   }
-  
+
   /**
+   * Retrieves a storage item attached to the application
+   *
+   * @public
+   * @method
+   *
+   * @param {string|Array<string>} name
+   * @param {*} [defaultValue=null] the value to return if one the the storage items was not found
+   * @return {Promise}
+   */
+  async getAppStorage(name, defaultValue = null) {
+    const entityId = `app:${this.props.appId}`;
+    return this.getStorage(name, entityId, defaultValue);
+  }
+
+  /**
+   * @deprecated
+   * @public
+   * @method
+   *
+   * @param args
+   * @return {Promise}
+   */
+  async setAppState(...args) {
+    return this.setAppStorage(...args);
+  }
+
+  /**
+   * @deprecated
+   * @public
+   * @method
+   *
+   * @return {Promise}
+   */
+  async setEntityState(...args) {
+    return this.setEntityStorage(...args);
+  }
+
+  /**
+   * @ignore
    * @deprecated
    * @public
    * @method
@@ -251,21 +325,9 @@ class StorageApiFacade
   async getEntityState(name, defaultValue = null) {
     return this.getEntityStorage(name, defaultValue);
   }
-
-  /**
-   * @public
-   * @method
-   *
-   * @param name
-   * @param defaultValue
-   * @return {Promise}
-   */
-  async getAppStorage(name, defaultValue = null) {
-    const entityId = `app:${this.props.appId}`;
-    return this.getStorage(name, entityId, defaultValue);
-  }
   
   /**
+   * @ignore
    * @deprecated
    * @public
    * @method
@@ -279,6 +341,4 @@ class StorageApiFacade
   }
 }
 
-export {
-  StorageApiFacade
-};
+export default StorageApiFacade;

@@ -1,7 +1,9 @@
 /**
+ * This class provides a way of retrieving and indexing events
+ *
  * @class
  */
-export class EventMap
+class EventMap
 {
   constructor ({ map, names, props }) {
     this.props = { map, names, props };
@@ -24,6 +26,8 @@ export class EventMap
   get eventNames() { return [].concat(this.props.names); }
 
   /**
+   * Returns the event key given an event name
+   *
    * @method
    * @public
    *
@@ -33,11 +37,13 @@ export class EventMap
   getEventKey = (eventName) => this.props.map.hasOwnProperty(eventName) ? this.props.map[eventName] : null;
 
   /**
+   * Returns the event properties
+   *
    * @method
    * @public
    *
    * @param eventName
-   * @return {*|null}
+   * @return {object|null}
    */
   getEventProps = eventName => {
     const eventKey = this.getEventKey(eventName);
@@ -45,5 +51,6 @@ export class EventMap
       return this.props.props[eventKey];
     }
   }
-
 }
+
+export default EventMap

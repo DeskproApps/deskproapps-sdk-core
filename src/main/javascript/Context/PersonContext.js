@@ -1,11 +1,13 @@
-import { TabContext } from './TabContext';
+import UITabContext from './UITabContext';
 import { CustomFieldsClient } from '../CustomFields';
 
 /**
+ * Implementation of a Person Entity application context
+ *
  * @class
- * @extends {Context}
+ * @extends {UITabContext}
  */
-export class PersonContext extends TabContext
+class PersonContext extends UITabContext
 {
   /**
    * @static
@@ -18,10 +20,11 @@ export class PersonContext extends TabContext
    * @method
    * @static
    *
-   * @param {EventDispatcher} outgoingDispatcher
-   * @param {EventDispatcher} incomingDispatcher
-   * @param {InstanceProps} instanceProps
-   * @param {ContextProps} contextProps
+   * @param {AppEventEmitter} outgoingDispatcher the outgoing events dispatcher
+   * @param {AppEventEmitter} incomingDispatcher the incoming events dispatcher
+   * @param {InstanceProps} instanceProps the instance properties bag
+   * @param {ContextProps} contextProps the context properties bag
+   *
    * @return {PersonContext|null}
    */
   static tryAndCreate({outgoingDispatcher, incomingDispatcher, instanceProps, contextProps})
@@ -44,7 +47,7 @@ export class PersonContext extends TabContext
    * @constructor
    *
    * @param {string} instanceId
-   * @param {{}} rest
+   * @param {...*} rest
    */
   constructor({instanceId, ...rest})
   {
@@ -52,6 +55,8 @@ export class PersonContext extends TabContext
   }
 
   /**
+   * Returns an API client object that can perform operations on the custom fields belonging to the current Person
+   *
    * @public
    * @return {CustomFieldsClient}
    */
@@ -64,3 +69,5 @@ export class PersonContext extends TabContext
     });
   }
 }
+
+export default PersonContext;

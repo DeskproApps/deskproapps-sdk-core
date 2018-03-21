@@ -1,15 +1,19 @@
 /**
+ * This modules handles the creation of specific application contexts
+ *
  * @module Context
  */
 
-import {ContextFactory} from './ContextFactory';
-export {ContextFactory};
+import ContextFactory from './ContextFactory';
+import * as TicketEvents from './eventsTicket';
+
+export { ContextFactory, TicketEvents };
 
 /**
- * @method
+ * @function
  *
- * @param {EventDispatcher} outgoingDispatcher
- * @param {EventDispatcher} incomingDispatcher
+ * @param {AppEventEmitter} outgoingDispatcher
+ * @param {AppEventEmitter} incomingDispatcher
  * @param {InstanceProps} instanceProps
  * @param {ContextProps} contextProps
  * @return {Context}

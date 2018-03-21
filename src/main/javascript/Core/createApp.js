@@ -1,26 +1,32 @@
 /**
+ * Exports application factories
+ *
  * @module Core/createApp
  */
 
 import { WidgetFactories } from '../Widget';
 
-import { InternalEventDispatcher, IncomingEventDispatcher, OutgoingEventDispatcher } from './EventDispatcher';
+import { InternalEventDispatcher, IncomingEventDispatcher, OutgoingEventDispatcher } from './emit';
 import { handleInvokeEvents, handleAppEvents } from './EventHandler';
 
 import { registerEventHandlers as registerStorageEventHandlers } from '../Storage';
 import { registerEventHandlers as registerSecurityEventHandlers } from '../Security';
-import { registerEventHandlers as registerAppEventHandlers } from './AppEventHandlers';
-import { registerEventHandlers as registerContextEventHandlers } from './ContextEventHandlers';
+import { registerEventHandlers as registerAppEventHandlers } from './AppEvents';
+import { registerEventHandlers as registerContextEventHandlers } from './ContextEvents';
 import { registerEventHandlers as registerWebAPIEventHandlers } from '../WebAPI';
 import { registerEventHandlers as registerDeskproWindowEventHandlers } from '../DeskproWindow';
 
-import App from './App';
+import AppClient from './AppClient';
 
-import { InstanceProps, ContextProps } from './AppProps';
+import InstanceProps from './InstanceProps';
+import ContextProps from './ContextProps';
 
 /**
+ * @ignore
+ * @internal
+ *
  * @param {WidgetWindowBridge} windowBridge
- * @param {App} app
+ * @param {AppClient} app
  */
 const registerAppEventListeners = (windowBridge, app) =>
 {
@@ -45,7 +51,7 @@ const registerAppEventListeners = (windowBridge, app) =>
  * @param {WidgetWindowBridge} widgetWindow
  * @param {Object} instanceProps
  * @param {Object} contextProps
- * @return {App}
+ * @return {AppClient}
  */
 export const createAppFromProps = ({widgetWindow, instanceProps, contextProps}) =>
 {
@@ -58,14 +64,14 @@ export const createAppFromProps = ({widgetWindow, instanceProps, contextProps}) 
     contextProps: new ContextProps(contextProps)
   };
 
-  return new App(appProps);
+  return new AppClient(appProps);
 };
 
 /**
- * @method
- * @param {function} cb
+ * @function
+ * @param {createAppCallback} cb a callback to be invoked after the app is ready
  */
-const createApp = (cb) => {
+export const createApp = (cb) => {
   const WidgetWindow = WidgetFactories.windowBridgeFromWindow(window);
 
   WidgetWindow
@@ -76,3 +82,10 @@ const createApp = (cb) => {
 };
 
 export default createApp;
+
+/**
+ * Event emitter function
+ *
+ * @callback createAppCallback
+ * @param {Error|null} error
+ */

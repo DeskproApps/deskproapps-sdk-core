@@ -1,13 +1,20 @@
 /**
+ * Handles the delivery of outgoing events (those originating in the application) and the receipt of incoming events
+ * (those originating in a 3rd party, like the help desk application)
+ *
  * @module Core/EventHandler
  */
 
-import { MessageBus, IncomingEventDispatcher, OutgoingEventDispatcher } from './EventDispatcher';
-import { WidgetRequest, WidgetResponse, WidgetFactories } from '../Widget';
+import { MessageBus, IncomingEventDispatcher, OutgoingEventDispatcher } from './emit';
+import WidgetFactories from '../Widget/WidgetFactories';
+import WidgetRequest from '../Widget/WidgetRequest';
+import WidgetResponse from '../Widget/WidgetResponse';
 import { INVOCATION_REQUESTRESPONSE, INVOCATION_FIREANDFORGET,  CHANNEL_INCOMING, CHANNEL_OUTGOING } from './Event'
 
-// TODO this should form the basic for the driver for WidgetWindowBridge
-
+/**
+ * @TODO this should form the basic for the driver for WidgetWindowBridge
+ * @internal
+ */
 class EventHandler
 {
   /**
@@ -28,7 +35,7 @@ class EventHandler
           MessageBus.once(request.correlationId, responseExecutor);
           return {request, emit};
         })
-        .then(({emit}) => emit())
+        .then(({emit}) => emit()) // finally after registering a response listener send the request
       ;
     } else if (invocationType === INVOCATION_FIREANDFORGET) {
       windowBridge.emitRequest(event, data).then(({emit}) => emit()).then(() => resolve(data));
@@ -85,14 +92,29 @@ const dispatchIncomingEvent = (windowBridge, eventName, eventProps, event) => {
 };
 
 /**
+ * Registers an outgoing event listener
+ *
+ * @function
+ *
  * @param {WidgetWindowBridge} windowBridge
- * @param {App} app
+ * @param {AppClient} app
  */
 export const handleInvokeEvents = (windowBridge, app) =>
 {
   OutgoingEventDispatcher.onInvoke(EventHandler.handleOutgoingEvent.bind(null, windowBridge));
 };
 
+/**
+ * Handles an incoming or outgoing event
+ *
+ * @function
+ *
+ * @param {WidgetWindowBridge} windowBridge
+ * @param {AppClient} app
+ * @param {String} eventName
+ * @param {{invocationType:String}} eventProps
+ * @return null
+ */
 export function handleAppEvents (windowBridge, app, eventName, eventProps)
 {
   const { channelType } = eventProps;
@@ -106,12 +128,15 @@ export function handleAppEvents (windowBridge, app, eventName, eventProps)
 }
 
 /**
- * @method
+ * Handles an incoming event
+ *
+ * @function
  *
  * @param {WidgetWindowBridge} windowBridge
- * @param {App} app
+ * @param {AppClient} app
  * @param {String} eventName
  * @param {Object} eventProps
+ * @return null
  */
 export const handleIncomingEvent = (windowBridge, app, eventName, eventProps) =>
 {
@@ -128,12 +153,14 @@ export const handleIncomingEvent = (windowBridge, app, eventName, eventProps) =>
 };
 
 /**
- * @method
+ * Handles an outgoing event
+ *
+ * @function
  *
  * @param {WidgetWindowBridge} windowBridge
- * @param {App} app
+ * @param {AppClient} app
  * @param {string} eventName
- * @param {{invocationType:String}} eventProps
+ * @param {{invocationType:String, ...other}} eventProps
  */
 export const handleOutgoingEvent = (windowBridge, app, eventName, eventProps) =>
 {

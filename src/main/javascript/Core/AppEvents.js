@@ -1,4 +1,6 @@
 /**
+ * Defines events and event related functionality which are related to the application
+ *
  * @module Core/AppEvents
  */
 
@@ -27,16 +29,6 @@ export const EVENT_TITLE_CHANGED = 'app.title_changed';
 /**
  * @type {string}
  */
-export const EVENT_ICON_CHANGED = 'app.icon_changed';
-
-/**
- * @type {string}
- */
-export const EVENT_RESET_SIZE = 'app.reset_size';
-
-/**
- * @type {string}
- */
 export const EVENT_SUBSCRIBE = 'app.subscribe_to_event';
 
 const events = {
@@ -45,7 +37,8 @@ const events = {
   EVENT_REFRESH,
   EVENT_UNLOAD,
 
-  EVENT_RESET_SIZE: { channelType: CHANNEL_OUTGOING, invocationType: INVOCATION_REQUESTRESPONSE },
+  EVENT_TITLE_CHANGED,
+
   EVENT_SUBSCRIBE: { channelType: CHANNEL_OUTGOING, invocationType: INVOCATION_REQUESTRESPONSE },
 };
 /**
@@ -68,3 +61,16 @@ export const eventNames = Object.keys(events).map(key => events[key]);
  * @return boolean
  */
 export const isEventName = name => eventNames.indexOf(name) !== -1;
+
+import { handleOutgoingEvent } from './EventHandler';
+
+/**
+ * Registers
+ *
+ * @function
+ * @param {WidgetWindowBridge} windowBridge
+ * @param {AppClient} app
+ */
+export const registerEventHandlers = (windowBridge, app) => {
+  handleOutgoingEvent(windowBridge, app, EVENT_SUBSCRIBE, events.EVENT_SUBSCRIBE);
+};

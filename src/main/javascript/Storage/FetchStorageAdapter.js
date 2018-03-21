@@ -1,18 +1,20 @@
 import { WebAPIEvents } from '../WebAPI';
-import { StorageAdapter } from './StorageAdapter';
+import StorageAdapter from './StorageAdapter';
 
 /**
+ * Implementation of a storage adapter which uses the Deskpro API to retrieve items from the storage
+ *
  * @class
  */
-export class FetchStorageAdapter extends StorageAdapter
+class FetchStorageAdapter extends StorageAdapter
 {
   /**
    * @method
    *
-   * @param {Promise.<{outgoingDispatcher:EventDispatcher}>} dispatchPromise
-   * @param {Array<Array>} nameValuePairsList
-   * @param entityId
-   * @return {Promise}
+   * @param {Promise.<AppEventEmitter, Error>} dispatchPromise  a promise which resolve with an event dispatcher
+   * @param {Array<{name:String, value:*}>} nameValuePairsList
+   * @param {String} entityId the id of the entity to link the values to
+   * @return {Promise<Array<{name:String, value:*}>, Error>}
    */
   async handleSetBatchStorage (dispatchPromise, nameValuePairsList, entityId)
   {
@@ -97,11 +99,11 @@ export class FetchStorageAdapter extends StorageAdapter
   /**
    * @method
    *
-   * @param {Promise.<{outgoingDispatcher:EventDispatcher}>} dispatchPromise
-   * @param name
-   * @param value
-   * @param entityId
-   * @return {Promise}
+   * @param {Promise<AppEventEmitter, Error>} dispatchPromise a promise which resolve with an event dispatcher
+   * @param {String} name the name under which to store the value
+   * @param {*} value the value to store, will be `JSON serialized`
+   * @param {String} entityId the id of the entity to link the values to
+   * @return {Promise<*, Error>}
    */
   async handleSetStorage (dispatchPromise, name, value, entityId)
   {
@@ -132,11 +134,11 @@ export class FetchStorageAdapter extends StorageAdapter
   /**
    * @method
    *
-   * @param {Promise.<{outgoingDispatcher:EventDispatcher}>} dispatchPromise
-   * @param name
-   * @param entityId
-   * @param defaultValue
-   * @return {Promise.<*>}
+   * @param {Promise<AppEventEmitter, Error>} dispatchPromise  a promise which resolve with an event dispatcher
+   * @param {String} name the name under which to store the value
+   * @param {String} entityId the id of the entity which the value is linked to
+   * @param {*} [defaultValue=null] the value to return if one the the storage items was not found
+   * @return {Promise.<*, Error>}
    */
   async handleGetStorage (dispatchPromise, name, entityId, defaultValue = null)
   {
@@ -159,11 +161,11 @@ export class FetchStorageAdapter extends StorageAdapter
   /**
    * @method
    *
-   * @param {Promise.<{outgoingDispatcher:EventDispatcher}>} dispatchPromise
-   * @param {Array<String>} nameList
-   * @param {String} entityId
-   * @param {*} defaultValue
-   * @return {Promise.<{}>}
+   * @param {Promise<AppEventEmitter, Error>} dispatchPromise a promise which resolve with an event dispatcher
+   * @param {Array<String>} nameList the list of value names to retrieve
+   * @param {String} entityId the id of the entity which the values are linked to
+   * @param {*} [defaultValue=null] the value to return if one the the storage items was not found
+   * @return {Promise.<Array<*>, Error>}
    */
   async handleGetBatchStorage (dispatchPromise, nameList, entityId, defaultValue = null)
   {
@@ -200,3 +202,5 @@ export class FetchStorageAdapter extends StorageAdapter
     })
   };
 }
+
+export default FetchStorageAdapter;

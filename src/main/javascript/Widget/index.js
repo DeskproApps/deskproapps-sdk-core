@@ -1,11 +1,12 @@
 /**
+ * This module exports the interface of the Widget package
  * @module Widget
  */
 
-import {WidgetWindowBridge} from './WidgetWindowBridge'
-import {WidgetRequest} from './WidgetRequest'
-import {WidgetResponse} from './WidgetResponse'
-import {WidgetFactories} from './WidgetFactories'
+import WidgetWindowBridge from './WidgetWindowBridge'
+import WidgetRequest from './WidgetRequest'
+import WidgetResponse from './WidgetResponse'
+import WidgetFactories from './WidgetFactories'
 
 export {
   /**

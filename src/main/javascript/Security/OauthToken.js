@@ -1,9 +1,10 @@
-import { PropertyBag } from '../Core/PropertyBag'
+import PropertyBag from '../Core/PropertyBag'
 
 /**
+ * Representation of an OauthToken
  * @class
  */
-export class OauthToken extends PropertyBag
+class OauthToken extends PropertyBag
 {
   /**
    * @static
@@ -12,7 +13,10 @@ export class OauthToken extends PropertyBag
    * @param {{}} js
    * @return {OauthToken}
    */
-  static fromJS(js) { return new OauthToken(js); }
+  static fromJS(js) {
+    const { oauthVersion, ...otherProps } = js;
+    return new OauthToken({ oauthVersion, ...otherProps })
+  }
 
   /**
    * @static
@@ -31,8 +35,8 @@ export class OauthToken extends PropertyBag
   }
 
   /**
-   * @param oauthVersion
-   * @param {{}} otherProps
+   * @param {String} oauthVersion
+   * @param {...*} otherProps
    */
   constructor({ oauthVersion, ...otherProps })
   {
@@ -40,8 +44,13 @@ export class OauthToken extends PropertyBag
   }
 
   /**
+   * The oauth version for which this token was issued
+   *
    * @readonly
    * @type {string}
    */
   get oauthVersion() { return this.props.oauthVersion; }
 }
+
+export default OauthToken;
+

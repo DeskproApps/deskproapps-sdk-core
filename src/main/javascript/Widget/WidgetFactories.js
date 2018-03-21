@@ -1,17 +1,21 @@
-import { WidgetRequest } from './WidgetRequest'
-import { WidgetResponse } from './WidgetResponse'
-import { WidgetWindowBridge } from './WidgetWindowBridge'
-import { InitProps } from './InitProps'
+import WidgetRequest from './WidgetRequest'
+import WidgetResponse from './WidgetResponse'
+import WidgetWindowBridge from './WidgetWindowBridge'
+import InitPropertiesBag from './InitPropertiesBag'
 
 let nextMessageId = 0;
 let nextCorrelationId = 0;
 
 /**
+ * Various factory methods
+ *
  * @class
  */
-export class WidgetFactories
+class WidgetFactories
 {
   /**
+   * Creates a communication bridge between the a widget and the `window` object if in a browser environment
+   *
    * @static
    * @method
    *
@@ -19,10 +23,16 @@ export class WidgetFactories
    */
   static windowBridgeFromGlobals()
   {
-    return new WidgetFactories.windowBridgeFromWindow(window);
+    if (window) {
+      return new WidgetFactories.windowBridgeFromWindow(window);
+    }
+
+    throw new Error('could not find a global window object')
   }
 
   /**
+   * Creates a communication bridge between the a widget and the `window` object
+   *
    * @static
    * @method
    *
@@ -32,8 +42,8 @@ export class WidgetFactories
    */
   static windowBridgeFromWindow(windowObject)
   {
-    const initProps = InitProps.fromWindow(windowObject);
-    if (InitProps.validate(initProps)) {
+    const initProps = InitPropertiesBag.fromWindow(windowObject);
+    if (InitPropertiesBag.validate(initProps)) {
       return new WidgetWindowBridge(windowObject, initProps);
     }
 
@@ -41,10 +51,12 @@ export class WidgetFactories
   }
 
   /**
+   * Parse an object literal or a JSON encoded string into a {@link WidgetResponse} or a {@link WidgetRequest}
+   *
    * @static
    * @method
    *
-   * @param {*} raw
+   * @param {{}|string} raw
    * @return {WidgetMessage}
    */
   static parseMessageFromJS(raw)
@@ -59,6 +71,8 @@ export class WidgetFactories
   }
 
   /**
+   * Creates a new request
+   *
    * @static
    * @method
    *
@@ -75,12 +89,14 @@ export class WidgetFactories
   };
 
   /**
+   * Creates the response message for a request
+   *
    * @static
    * @method
    *
-   * @param {WidgetRequest} request
-   * @param {*} body
-   * @param {boolean} isError
+   * @param {WidgetRequest} request the initial request
+   * @param {*} body response body
+   * @param {boolean} isError true when the response is an error response
    * @return {WidgetResponse}
    */
   static nextResponse (request, body, isError)
@@ -101,3 +117,5 @@ export class WidgetFactories
     return new WidgetResponse({ id: id.toString(), widgetId, correlationId: correlationId.toString(), body, status });
   };
 }
+
+export default WidgetFactories

@@ -1,13 +1,12 @@
-import {Context} from '../Core/Context';
+import Context from '../Core/Context';
 
-import { TicketContext } from './TicketContext';
-import { PersonContext } from './PersonContext';
-import { OrganizationContext } from './OrganizationContext';
-
+import TicketContext from './TicketContext';
+import PersonContext from './PersonContext';
+import OrganizationContext from './OrganizationContext';
 
 /**
- * @readonly
- * @type {Array.<function>}
+ * @ignore
+ * @type {Array.<function(*):Context>}
  */
 const factories = [
   TicketContext.tryAndCreate,
@@ -15,8 +14,24 @@ const factories = [
   OrganizationContext.tryAndCreate
 ];
 
-export class ContextFactory
+/**
+ * A factory for application contexts
+ *
+ * @class
+ */
+class ContextFactory
 {
+  /**
+   * Returns a list of all the context type it can create:
+   *
+   *  - ticket ( see {@link TicketContext} )
+   *  - organization ( see {@link OrganizationContext} )
+   *  - person ( see {@link PersonContext} )
+   *
+   * @method
+   *
+   * @returns {Array.<string>}
+   */
   static get contextTypes()
   {
     return [
@@ -27,19 +42,21 @@ export class ContextFactory
   }
 
   /**
+   * Creates a specific type of application context. {@link ContextFactory.contextTypes} returns the list of contexts type names this factory can create
+   *
    * @method
    *
-   * @param {EventDispatcher} outgoingDispatcher
-   * @param {EventDispatcher} incomingDispatcher
-   * @param {InstanceProps} instanceProps
-   * @param {ContextProps} contextProps
+   * @param {AppEventEmitter} outgoingDispatcher the outgoing events dispatcher
+   * @param {AppEventEmitter} incomingDispatcher the incoming events dispatcher
+   * @param {InstanceProps} instanceProps the instance properties bag
+   * @param {ContextProps} contextProps the context properties bag
    * @return {Context}
    */
   static create(outgoingDispatcher, incomingDispatcher, instanceProps, contextProps)
   {
     const props = { outgoingDispatcher, incomingDispatcher, instanceProps, contextProps };
     for (const factory of factories) {
-      let context = factory(props);
+      const context = factory(props);
       if (context) { return context; }
     }
 
@@ -47,15 +64,32 @@ export class ContextFactory
   }
 
   /**
-   * @param {EventDispatcher} outgoingDispatcher
-   * @param {EventDispatcher} incomingDispatcher
-   * @param {InstanceProps} instanceProps
-   * @param {ContextProps} contextProps
+   * Creates a generic application context
+   *
+   * @param {AppEventEmitter} outgoingDispatcher the outgoing events dispatcher
+   * @param {AppEventEmitter} incomingDispatcher the incoming events dispatcher
+   * @param {InstanceProps} instanceProps the instance properties bag
+   * @param {ContextProps} contextProps the context properties bag
    * @return {Context}
    */
   static createDefaultContext(outgoingDispatcher, incomingDispatcher, instanceProps, contextProps)
   {
-    const props = { outgoingDispatcher, incomingDispatcher, ...contextProps.toJS(), type: contextProps.contextType };
+    const {
+      /**
+       * @ignore
+       * @type {string}
+       */
+      entityId,
+      /**
+       * @ignore
+       * @type {string}
+       */
+      locationId,
+      ...rest
+    } = contextProps.toJS();
+    const props = { outgoingDispatcher, incomingDispatcher, entityId, locationId, ...rest, type: contextProps.contextType };
     return new Context(props);
   }
 }
+
+export default ContextFactory;

@@ -1,15 +1,16 @@
-import App from '../../../main/javascript/Core/App';
-import { EventDispatcher } from '../../../main/javascript/Core/EventDispatcher'
-import { InstanceProps, ContextProps } from '../../../main/javascript/Core/AppProps';
-import { WidgetWindowBridge } from '../../../main/javascript/Widget/WidgetWindowBridge';
-import { InitProps } from "../../../main/javascript/Widget/InitProps";
+import AppClient from '../../../main/javascript/Core/AppClient';
+import AppEventEmitter from '../../../main/javascript/Core/AppEventEmitter'
+import ContextProps from '../../../main/javascript/Core/ContextProps';
+import InstanceProps from '../../../main/javascript/Core/InstanceProps';
+import WidgetWindowBridge from '../../../main/javascript/Widget/WidgetWindowBridge';
+import InitPropertiesBag from "../../../main/javascript/Widget/InitPropertiesBag";
 
 test('successfully create an application', done => {
 
   const params = {
-    outgoingDispatcher: new EventDispatcher(),
-    incomingDispatcher:  new EventDispatcher(),
-    internalDispatcher:  new EventDispatcher(),
+    outgoingDispatcher: new AppEventEmitter(),
+    incomingDispatcher:  new AppEventEmitter(),
+    internalDispatcher:  new AppEventEmitter(),
     instanceProps: new InstanceProps({
       appId: '1',
       appTitle: "title",
@@ -26,10 +27,10 @@ test('successfully create an application', done => {
     appWindow: new WidgetWindowBridge({
       addEventListener: () => ({}),
       document: { readyState : 'ready' }
-    }, new InitProps({dpXconfTag: ''}))
+    }, new InitPropertiesBag({dpXconfTag: ''}))
   };
 
-  const app = new App(params);
+  const app = new AppClient(params);
 
   expect(app).toBeTruthy();
   done();
@@ -66,18 +67,18 @@ test('retrieve properties', done => {
 
 
   const params = {
-    outgoingDispatcher: new EventDispatcher(),
-    incomingDispatcher:  new EventDispatcher(),
-    internalDispatcher:  new EventDispatcher(),
+    outgoingDispatcher: new AppEventEmitter(),
+    incomingDispatcher:  new AppEventEmitter(),
+    internalDispatcher:  new AppEventEmitter(),
     instanceProps,
     contextProps,
     appWindow: new WidgetWindowBridge({
       addEventListener: () => ({}),
       document: { readyState : 'ready' }
-    }, new InitProps({dpXconfTag: ''}))
+    }, new InitPropertiesBag({dpXconfTag: ''}))
   };
 
-  const app = new App(params);
+  const app = new AppClient(params);
 
   expect(app.getProperty('appId')).toEqual('1');
   expect(app.getProperty('contextType')).toEqual('ticket');
@@ -119,18 +120,18 @@ test('retrieve property', done => {
 
 
   const params = {
-    outgoingDispatcher: new EventDispatcher(),
-    incomingDispatcher:  new EventDispatcher(),
-    internalDispatcher:  new EventDispatcher(),
+    outgoingDispatcher: new AppEventEmitter(),
+    incomingDispatcher:  new AppEventEmitter(),
+    internalDispatcher:  new AppEventEmitter(),
     instanceProps,
     contextProps,
     appWindow: new WidgetWindowBridge({
       addEventListener: () => ({}),
       document: { readyState : 'ready' }
-    }, new InitProps({dpXconfTag: ''}))
+    }, new InitPropertiesBag({dpXconfTag: ''}))
   };
 
-  const app = new App(params);
+  const app = new AppClient(params);
 
   expect(app.properties).toEqual(Object.assign({}, instanceProps.toJS(), contextProps.toJS()));
   done();

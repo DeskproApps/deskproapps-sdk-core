@@ -1,13 +1,15 @@
-import * as Events from './Events';
-import * as Constants from './Constants';
+import * as Events from './events';
+import * as Constants from './constants';
 
 /**
+ * A facade which allows application code to interact with the UI Container
+ *
  * @class
  */
-export class UIFacade
+class UIFacade
 {
   /**
-   * @param {EventDispatcher} UIEventsDispatcher
+   * @param {AppEventEmitter} UIEventsDispatcher
    */
   constructor(UIEventsDispatcher) {
     this.props = {
@@ -28,6 +30,8 @@ export class UIFacade
   get menu() { return this.props.menu; }
 
   /**
+   * Shows the UI container's application menu
+   *
    * @method
    */
   showMenu = () => {
@@ -41,6 +45,8 @@ export class UIFacade
   };
 
   /**
+   * Hides the UI container's application menu
+   *
    * @method
    */
   hideMenu = () => {
@@ -56,12 +62,16 @@ export class UIFacade
   // BADGE API
 
   /**
+   * The visibility of the application badge
+   *
    * @readonly
    * @type {string}
    */
   get badge() { return this.props.badge; }
 
   /**
+   * Shows a number in the application badge
+   *
    * @method
    */
   showBadgeCount = () => {
@@ -75,6 +85,8 @@ export class UIFacade
   };
 
   /**
+   * Hides a number in the application badge
+   *
    * @method
    */
   hideBadgeCount = () => {
@@ -88,11 +100,14 @@ export class UIFacade
   };
 
   /**
+   * The number to display in in the application badge
+   *
    * @type {number}
    */
   get badgeCount() { return this.props.badgeCount; }
 
   /**
+   * @ignore
    * @param {number} newCount
    */
   set badgeCount(newCount) {
@@ -107,12 +122,16 @@ export class UIFacade
   // APP VISIBILITY API
 
   /**
+   * The application visibility property
+   *
    * @readonly
    * @type {string}
    */
   get visibility() { return this.props.visibility };
 
   /**
+   * Checks if the application is visible
+   *
    * @method
    *
    * @return {boolean}
@@ -120,6 +139,8 @@ export class UIFacade
   isVisible = () => { return this.props.visibility === Constants.VISIBILITY_VISIBLE; };
 
   /**
+   * Checks if the application is hidden
+   *
    * @method
    *
    * @return {boolean}
@@ -127,6 +148,8 @@ export class UIFacade
   isHidden = () => { return this.props.visibility === Constants.VISIBILITY_HIDDEN; };
 
   /**
+   * Shows the application
+   *
    * @method
    */
   show = () => {
@@ -144,6 +167,8 @@ export class UIFacade
   };
 
   /**
+   * Hides the application
+   *
    * @method
    */
   hide = () => {
@@ -163,12 +188,16 @@ export class UIFacade
   // APP DISPLAY / APP LAYOUT API
 
   /**
+   * The application display property
+   *
    * @readonly
    * @type {string}
    */
   get display() { return this.props.display };
 
   /**
+   * Checks if the application is expanded
+   *
    * @method
    *
    * @return {boolean}
@@ -176,6 +205,8 @@ export class UIFacade
   isExpanded = () => { return this.props.display ===  Constants.DISPLAY_EXPANDED; };
 
   /**
+   * Checks if the application is collapsed
+   *
    * @method
    *
    * @return {boolean}
@@ -183,6 +214,8 @@ export class UIFacade
   isCollapsed = () => { return this.props.display ===  Constants.DISPLAY_COLLAPSED; };
 
   /**
+   * Collapses the application
+   *
    * @method
    */
   collapse = () => {
@@ -200,6 +233,8 @@ export class UIFacade
   };
 
   /**
+   * Expands the application
+   *
    * @method
    */
   expand = () => {
@@ -219,12 +254,16 @@ export class UIFacade
   // UI STATE API
 
   /**
+   * The UI container state property
+   *
    * @readonly
    * @type {string}
    */
   get state() { return this.props.state; }
 
   /**
+   * Checks if the UI is in a loading state
+   *
    * @method
    *
    * @return {boolean}
@@ -232,6 +271,8 @@ export class UIFacade
   isLoading = () => { return this.props.state ===  Constants.STATE_LOADING; };
 
   /**
+   * Checks if the UI is in the ready state
+   *
    * @method
    *
    * @return {boolean}
@@ -239,6 +280,8 @@ export class UIFacade
   isReady = () => { return this.props.state ===  Constants.STATE_READY; };
 
   /**
+   * Shows a loading indicator
+   *
    * @method
    */
   showLoading = () => {
@@ -251,6 +294,8 @@ export class UIFacade
   };
 
   /**
+   * Hides the active loading indicator
+   *
    * @method
    */
   hideLoading = () => {
@@ -265,6 +310,8 @@ export class UIFacade
   // SETTINGS API
 
   /**
+   * Shows the settings API
+   *
    * @method
    */
   showSettings = () => {
@@ -277,3 +324,5 @@ export class UIFacade
     }
   };
 }
+
+export default UIFacade

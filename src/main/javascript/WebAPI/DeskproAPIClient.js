@@ -1,18 +1,14 @@
-import * as Events from './Events';
+import * as Events from './events';
 
 /**
- * @param {EventDispatcher} eventDispatcher
- * @return {DeskproAPIClient}
- */
-export const create = (eventDispatcher) => new DeskproAPIClient(eventDispatcher);
-
-/**
+ * An API client for the Deskpro API. Application code can use it to interact with the Deskpro instance hosting the app
+ *
  * @class
  */
-export class DeskproAPIClient
+class DeskproAPIClient
 {
   /**
-   * @param {EventDispatcher} eventDispatcher
+   * @param {AppEventEmitter} eventDispatcher the outgoing event dispatcher
    */
   constructor(eventDispatcher) {
     this.props = { eventDispatcher };
@@ -24,7 +20,7 @@ export class DeskproAPIClient
    * @param {string} url
    * @param {object} init
    *
-   * @return {Promise}
+   * @return {Promise<DeskproAPIResponse, Error>}
    */
   async fetch (url, init) {
     const request = { url, init };
@@ -32,21 +28,40 @@ export class DeskproAPIClient
   };
 
   /**
+   * An alias for fetchProxy
+   *
+   * @method
+   * @deprecated
+   * @internal
+   *
+   * @param {string} url the resource's relative url
+   * @param {object} init a fetch init object. See {@link https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch}
+   *
+   * @return {Promise<DeskproAPIResponse, Error>}
+   */
+  async fetchCORS(url, init) { return this.fetchProxy(url, init); };
+
+  /**
+   * Executes a fetch style request via the server-side proxy
+   * This is useful for making secure requests or to access non-CORS enabled third parties
+   *
    * @method
    *
-   * @param {string} url
-   * @param {object} init
+   * @param {string} url the resource's relative url
+   * @param {object} init a fetch init object. See {@link https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch}
    *
-   * @return {Promise}
+   * @return {Promise<DeskproAPIResponse, Error>}
    */
-  async fetchCORS(url, init){
+  async fetchProxy(url, init){
     const corsInit = { ...init, mode: 'cors'};
     return this.props.eventDispatcher.emitAsync(Events.EVENT_WEBAPI_REQUEST_FETCH, { url, init: corsInit })
   };
 
   /**
-   * @param {string} path
-   * @return {Promise}
+   * Executes a `GET` request
+   *
+   * @param {string} path the resource's relative url
+   * @return {Promise<DeskproAPIResponse, Error>}
    */
   async get(path) {
     const request = { method: 'get', path };
@@ -54,12 +69,14 @@ export class DeskproAPIClient
   }
 
   /**
+   * Executes a `POST` request
+   *
    * @method
    *
-   * @param {string} path
-   * @param {object} body
+   * @param {string} path the resource's relative url
+   * @param {object} body the request body
    *
-   * @return {Promise}
+   * @return {Promise<DeskproAPIResponse, Error>}
    */
   async post(path, body) {
     const request = { method: 'post', path, body };
@@ -67,12 +84,14 @@ export class DeskproAPIClient
   }
 
   /**
+   * Executes a `PUT` request
+   *
    * @method
    *
-   * @param {string} path
-   * @param {Object} body
+   * @param {string} path the resource's relative url
+   * @param {Object} body the request body
    *
-   * @return {Promise}
+   * @return {Promise<DeskproAPIResponse, Error>}
    */
   async put(path, body) {
     const request = { method: 'put', path, body };
@@ -80,10 +99,12 @@ export class DeskproAPIClient
   }
 
   /**
+   * Executes a `DELETE` request
+   *
    * @method
    *
-   * @param {String} path
-   * @return {Promise}
+   * @param {String} path the resource's relative url
+   * @return {Promise<DeskproAPIResponse, Error>}
    */
   async del(path)
   {
@@ -92,12 +113,26 @@ export class DeskproAPIClient
   }
 
   /**
+   * Executes a `DELETE` request
+   *
    * @method
    *
-   * @param {string} path
+   * @param {string} path the resource's relative url
    *
    * @return {Promise}
    */
   ['delete'] = (path) => this.props.eventDispatcher.emitAsync(Events.EVENT_WEBAPI_REQUEST_DESKPRO, { method: 'delete', path });
 
 }
+
+export default DeskproAPIClient
+
+/**
+ * Represents the result of applying a DOM Query Pattern with a `exists` type
+ *
+ * @typedef {Object} DeskproAPIResponse
+ * @property {'complete'|'error'|'timeout'|'abort'|'parseerror'} status the status of the xhr request
+ * @property {Object} body the json decoded body of the response
+ * @property {Object} headers a map of <header name, value> the response headers
+ * @property {number} statusCode the http code of the response
+ */

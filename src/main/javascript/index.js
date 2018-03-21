@@ -1,18 +1,20 @@
-/**
- * @method
- */
-export createApp from './Core/createApp';
 export {
+
   /**
-   * @method
+   * @function
+   */
+  createApp,
+
+  /**
+   * @function
    */
   createAppFromProps
 } from './Core/createApp';
 
 /**
- * @type {App}
+ * @type {AppClient}
  */
-export App from './Core/App';
+export App from './Core/AppClient';
 
 import * as AppEvents from './Core/AppEvents';
 export {
@@ -24,18 +26,18 @@ export {
 
 export {
   /**
-   * @type {module:UI/Events}
+   * @type {module:UI/events}
    */
   UIEvents,
   /**
-   * @type {module:UI/Constants}
+   * @type {module:UI/constants}
    */
   UIConstants
 } from './UI';
 
 export {
   /**
-   * @type {module:Storage/Events}
+   * @type {module:Storage/events}
    */
   StorageEvents
 } from './Storage';
@@ -49,15 +51,13 @@ export {
 }
 export { TicketEvents } from './Context';
 
-import * as DeskproWindowEvents from './DeskproWindow/Events';
 export {
   /**
-   * @type {module:DeskproWindow/Events}
+   * @type {module:DeskproWindow/events}
    */
   DeskproWindowEvents
-};
+} from './DeskproWindow';
 
-import { OauthToken, SecurityEvents } from './Security';
 export {
   /**
    * @type {OauthToken}
@@ -65,7 +65,7 @@ export {
   OauthToken,
 
   /**
-   * @type {module:Security/Events}
+   * @type {module:Security/events}
    */
   SecurityEvents
-};
+} from './Security';

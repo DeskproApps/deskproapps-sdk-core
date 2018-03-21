@@ -1,15 +1,18 @@
-import { WidgetMessage  } from './WidgetMessage'
+import WidgetMessage from './WidgetMessage'
 
 /**
+ * Representation of a request message
+ *
  * @class
  * @extends {WidgetMessage}
  */
-export class WidgetRequest extends WidgetMessage
+class WidgetRequest extends WidgetMessage
 {
   /**
+   * Parse an object literal or a JSON encoded string into a {@link WidgetResponse}
    * @method
    *
-   * @param {*} raw
+   * @param {{}|string} raw
    * @return {WidgetRequest}
    */
   static parse(raw)
@@ -20,13 +23,15 @@ export class WidgetRequest extends WidgetMessage
   };
 
   /**
-   * @param {String} id
-   * @param {String} widgetId
-   * @param {String} correlationId
-   * @param {*} body
+   * @param {String} id the message id
+   * @param {String} widgetId the widget it
+   * @param {String} correlationId the conversation id
+   * @param {*} body the message body
    */
   constructor({ id, widgetId, correlationId, body })
   {
     super ({ id, widgetId, correlationId, body });
   }
 }
+
+export default WidgetRequest

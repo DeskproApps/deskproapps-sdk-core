@@ -1,6 +1,6 @@
-import { StorageApiFacade } from '../../../main/javascript/Storage/StorageApiFacade';
-import { FetchStorageAdapter } from '../../../main/javascript/Storage/FetchStorageAdapter';
-import { EventDispatcher } from '../../../main/javascript/Core/EventDispatcher'
+import StorageApiFacade from '../../../main/javascript/Storage/StorageApiFacade';
+import FetchStorageAdapter from '../../../main/javascript/Storage/FetchStorageAdapter';
+import AppEventEmitter from '../../../main/javascript/Core/AppEventEmitter'
 import { WebAPIEvents } from '../../../main/javascript/WebAPI';
 
 
@@ -28,8 +28,8 @@ const localStorageMock = {
 
 describe('FetchStorageAdapter', () => {
 
-  const outgoingDispatcher = new EventDispatcher();
-  const internalDispatcher = new EventDispatcher();
+  const outgoingDispatcher = new AppEventEmitter();
+  const internalDispatcher = new AppEventEmitter();
   const storageAdapter     = new FetchStorageAdapter();
 
   test('handleSetBatchStorage sends the expected batch request representation', () => {
@@ -94,7 +94,7 @@ describe('FetchStorageAdapter', () => {
       ["key2", "value-2"]
     ];
 
-    const outgoingDispatcher = new EventDispatcher();
+    const outgoingDispatcher = new AppEventEmitter();
     outgoingDispatcher.addListener(
       WebAPIEvents.EVENT_WEBAPI_REQUEST_FETCH,
       (resolve, reject, data) => {
