@@ -38,10 +38,9 @@
     "post-robot": "^7.0.8"
   },
   "devDependencies": {
-    "docdash": "^0.4.0"
+    "@deskpro/apps-dpat": "^0.10.0"
   },
   "optionalDependencies": {
-    "@deskpro/apps-dpat": "^0.9.1",
     "docdash": "^0.4.0",
     "jsdoc": "^3.5.4"
   }
