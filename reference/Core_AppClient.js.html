@@ -73,12 +73,12 @@ class AppClient
       internalDispatcher,
       instanceProps,
       contextProps,
+      context,
       restApi: createDeskproApiClient(outgoingDispatcher),
       storageApi: createStorageAPIClient(outgoingDispatcher, internalDispatcher, instanceProps, contextProps),
       deskproWindow: createDeskproWindowFacade(outgoingDispatcher),
-      context,
-      ui: createUI(internalDispatcher),
-      oauth: createOauthAPIClient(outgoingDispatcher, internalDispatcher, instanceProps, contextProps)
+      oauth: createOauthAPIClient(outgoingDispatcher, internalDispatcher, instanceProps, contextProps),
+      ui: createUI(outgoingDispatcher, internalDispatcher)
     };
 
     this._state = {
