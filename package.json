@@ -1,10 +1,9 @@
 {
   "name": "@deskpro/apps-sdk-core",
-  "version": "1.0.0-beta.26",
+  "version": "1.0.0-beta.27",
   "description": "core component of deskpro apps sdk",
   "main": "lib/main/javascript/index.js",
   "scripts": {
-    "release": "npm_bump",
     "make-clean": "rm -rf dist/*;  rm -rf lib/*",
     "make-lib": "BABEL='./bin/babel-dpat.sh'; ${BABEL} src/main/javascript -d lib/main/javascript",
     "make-dist": "WEBPACK='./bin/webpack-dpat.sh'; DPA_PACKAGE=${DPA_PACKAGE} ${WEBPACK} --config src/webpack/webpack.config-dist.js",

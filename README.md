@@ -5,6 +5,7 @@ Core javascript SDK for building Deskpro Apps
 ## Contents
 - [Installation](#installation)
 - [Building](#building)
+- [Releasing](#releasing)
 - [Running tests](#running-tests)
 - [Online documentation](https://deskpro.github.io/apps-sdk-core/)
 
@@ -38,6 +39,11 @@ To compile the sdk run:
 To package the sdk run:
     
     npm run make-clean && npm run make-lib && npm run make-dist
+
+## Releasing
+
+In the master branch, after the changes are merged, bump the version using `npm version --no-git-tag-version <VERSION>`,  add the release message for `<VERSION>` at the top in `CHANGELOG.md` and commit. 
+Then add a version tag using `git tag v<VERSION> -m 'Tag <VERSION>'` and push both changes and the new tag. Travis-CI will take care of publishing the package on npmjs.    
 
 ## Running tests
 
