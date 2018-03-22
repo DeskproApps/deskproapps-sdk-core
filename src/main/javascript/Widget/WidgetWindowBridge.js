@@ -179,8 +179,7 @@ class WidgetWindowBridge {
 
     const payload = { eventName, ...request.toJS() };
     const event = `urn:deskpro:apps.widget.event?widgetId=${widgetId}`;
-
-
+    
     const emit = () => {
       postRobot.send(postRobot.parent, event, payload);
     };

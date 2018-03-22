@@ -1,4 +1,5 @@
 import * as Events from './events';
+import * as AppEvents from '../Core/AppEvents';
 import * as Constants from './constants';
 
 /**
@@ -9,10 +10,12 @@ import * as Constants from './constants';
 class UIFacade
 {
   /**
+   * @param {AppEventEmitter} outgoingDispatcher
    * @param {AppEventEmitter} UIEventsDispatcher
    */
-  constructor(UIEventsDispatcher) {
+  constructor(outgoingDispatcher, UIEventsDispatcher) {
     this.props = {
+      outgoingDispatcher: outgoingDispatcher,
       eventDispatcher: UIEventsDispatcher,
       display: Constants.DISPLAY_EXPANDED, // expanded, collapsed
       visibility: Constants.VISIBILITY_VISIBLE, // visible, hidden
@@ -76,11 +79,12 @@ class UIFacade
    */
   showBadgeCount = () => {
     const newVisibility = Constants.VISIBILITY_VISIBLE;
-    const { eventDispatcher, badge: oldVisibility } = this.props;
+    const { eventDispatcher, outgoingDispatcher, badge: oldVisibility } = this.props;
 
     if (oldVisibility !== newVisibility) {
       this.props.badge = newVisibility;
       eventDispatcher.emit(Events.EVENT_BADGE_VISIBILITYCHANGED, newVisibility, oldVisibility);
+      outgoingDispatcher.emitAsync(AppEvents.EVENT_BADGE, { visibility: newVisibility, count: this.badgeCount });
     }
   };
 
@@ -91,11 +95,12 @@ class UIFacade
    */
   hideBadgeCount = () => {
     const newVisibility = Constants.VISIBILITY_HIDDEN;
-    const { eventDispatcher, badge: oldVisibility } = this.props;
+    const { eventDispatcher, outgoingDispatcher, badge: oldVisibility } = this.props;
 
     if (oldVisibility !== newVisibility) {
       this.props.badge = newVisibility;
       eventDispatcher.emit(Events.EVENT_BADGE_VISIBILITYCHANGED, newVisibility, oldVisibility);
+      outgoingDispatcher.emitAsync(AppEvents.EVENT_BADGE, { visibility: newVisibility, count: this.badgeCount });
     }
   };
 
@@ -111,11 +116,12 @@ class UIFacade
    * @param {number} newCount
    */
   set badgeCount(newCount) {
-    const { eventDispatcher, badgeCount: oldCount } = this.props;
+    const { eventDispatcher, outgoingDispatcher, badge: visibility, badgeCount: oldCount } = this.props;
     this.props.badgeCount = newCount;
 
     if (oldCount !== newCount) {
       eventDispatcher.emit(Events.EVENT_BADGE_COUNTCHANGED, newCount, oldCount);
+      outgoingDispatcher.emitAsync(AppEvents.EVENT_BADGE, { visibility, count: newCount });
     }
   }
 

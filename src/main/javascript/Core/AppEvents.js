@@ -31,16 +31,24 @@ export const EVENT_TITLE_CHANGED = 'app.title_changed';
  */
 export const EVENT_SUBSCRIBE = 'app.subscribe_to_event';
 
+/**
+ * @type {string}
+ */
+export const EVENT_BADGE = 'app.badge';
+
 const events = {
   EVENT_MOUNT,
 
   EVENT_REFRESH,
   EVENT_UNLOAD,
-
+    
   EVENT_TITLE_CHANGED,
-
+  
+  EVENT_BADGE: { channelType: CHANNEL_OUTGOING, invocationType: INVOCATION_FIREANDFORGET },
+  EVENT_RESET_SIZE: { channelType: CHANNEL_OUTGOING, invocationType: INVOCATION_REQUESTRESPONSE },
   EVENT_SUBSCRIBE: { channelType: CHANNEL_OUTGOING, invocationType: INVOCATION_REQUESTRESPONSE },
 };
+
 /**
  * @enum
  * @readonly
@@ -73,4 +81,5 @@ import { handleOutgoingEvent } from './EventHandler';
  */
 export const registerEventHandlers = (windowBridge, app) => {
   handleOutgoingEvent(windowBridge, app, EVENT_SUBSCRIBE, events.EVENT_SUBSCRIBE);
+  handleOutgoingEvent(windowBridge, app, EVENT_BADGE, events.EVENT_BADGE);
 };
