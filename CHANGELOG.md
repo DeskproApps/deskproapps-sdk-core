@@ -1,4 +1,4 @@
-## 1.0.0-beta.27 - 2018-03-22
+## v1.0.0-beta.27 - 2018-03-22
 
 * [MAINTENANCE] improved jsdoc coverage 
 * [MAINTENANCE] improved docs publishing workflow 
@@ -142,7 +142,7 @@
 * [FEATURE] allow apps to response to requests sent from the main DeskPro window
 * [MAINTENANCE] enable travis ci integration
 
-## vv1.0.0-alpha.4 - 2017-06-02
+## v1.0.0-alpha.4 - 2017-06-02
 
 * [FIX] prevent resize events from entering an endless resize loop
 * [MAINTENANCE] minor refactoring
