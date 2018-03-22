@@ -50,6 +50,7 @@
 <h2>Contents</h2><ul>
 <li><a href="#installation">Installation</a></li>
 <li><a href="#building">Building</a></li>
+<li><a href="#releasing">Releasing</a></li>
 <li><a href="#running-tests">Running tests</a></li>
 <li><a href="https://deskpro.github.io/apps-sdk-core/">Online documentation</a></li>
 </ul>
@@ -62,7 +63,9 @@ best to install it globally:</p>
 <pre class="prettyprint source"><code>npm install -g @deskpro/apps-dpat </code></pre><p>If you have a previous version of dpat installed, it is <strong>important</strong> that you update to the latest version     </p>
 <p>To compile the sdk run:</p>
 <pre class="prettyprint source"><code>npm run make-clean && npm run make-lib      </code></pre><p>To package the sdk run:</p>
-<pre class="prettyprint source"><code>npm run make-clean && npm run make-lib && npm run make-dist</code></pre><h2>Running tests</h2><p>You must have <a href="https://github.com/deskpro/apps-dpat">Deskpro Apps Tool</a> installed to run the tests. After you install it, run </p>
+<pre class="prettyprint source"><code>npm run make-clean && npm run make-lib && npm run make-dist</code></pre><h2>Releasing</h2><p>In the master branch, after the changes are merged, bump the version using <code>npm version --no-git-tag-version &lt;VERSION&gt;</code>,  add the release message for <code>&lt;VERSION&gt;</code> at the top in <code>CHANGELOG.md</code> and commit. 
+Then add a version tag using <code>git tag v&lt;VERSION&gt; -m 'Tag &lt;VERSION&gt;'</code> and push both changes and the new tag. Travis-CI will take care of publishing the package on npmjs.    </p>
+<h2>Running tests</h2><p>You must have <a href="https://github.com/deskpro/apps-dpat">Deskpro Apps Tool</a> installed to run the tests. After you install it, run </p>
 <pre class="prettyprint source"><code>npm run test </code></pre></article>
     </section>
 
