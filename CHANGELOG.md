@@ -1,3 +1,7 @@
+## v1.0.0-beta.28 - 2018-03-23
+
+* [ADDED] notifies Deskpro when the application badge's state changes 
+
 ## v1.0.0-beta.27 - 2018-03-22
 
 * [MAINTENANCE] improved jsdoc coverage 
