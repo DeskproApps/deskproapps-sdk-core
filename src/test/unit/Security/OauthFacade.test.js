@@ -92,4 +92,27 @@ describe('OauthFacade', () => {
       .then(() => done());
   });
 
+  test('register: can register a connection', done => {
+    const internalDispatcher = new AppEventEmitter();
+    const outgoingDispatcher = new AppEventEmitter();
+
+    const setStorage = (storageName, connectionJS) => {
+      expect(connectionJS.providerName).toBe('jira');
+      expect(connectionJS.customProp).toBe('custom prop');
+      expect(storageName).toBe('oauth:jira');
+      return Promise.resolve(connectionJS)
+    };
+
+    const facade  = new OauthFacade(outgoingDispatcher, setStorage);
+    facade.register('jira', {
+      urlAuthorize: "http://deskpro-dev/oauth/authorize",
+      urlAccessToken: "http://deskpro-dev/oauth/access" ,
+      urlResourceOwnerDetails: "http://deskpro-dev/api/v2/me",
+      urlRedirect: "http://deskpro-dev/apps/5" ,
+      clientId: 'an id',
+      clientSecret: 'a secret',
+      customProp: 'custom prop'
+    }).then(() => done());
+  });
+
 });
