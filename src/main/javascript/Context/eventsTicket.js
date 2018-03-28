@@ -1,4 +1,6 @@
 /**
+ * This module exports events available when the application context's Deskpro Object is a Ticket
+ *
  * @module Context/eventsTicket
  */
 
@@ -23,8 +25,11 @@ export const EVENT_TICKET_UPDATE_SUCCESS = 'context.ticket.update-success';
  * @type {{EVENT_TICKET_REPLY: {channelType: string, invocationType: string}, EVENT_TICKET_REPLY_SUCCESS: {channelType: string, invocationType: string}, EVENT_TICKET_UPDATE_SUCCESS: {channelType: string, invocationType: string}}}
  */
 const events = {
+
   EVENT_TICKET_REPLY : { channelType: CHANNEL_INCOMING, invocationType: INVOCATION_REQUESTRESPONSE },
+
   EVENT_TICKET_REPLY_SUCCESS: { channelType: CHANNEL_INCOMING, invocationType: INVOCATION_FIREANDFORGET },
+
   EVENT_TICKET_UPDATE_SUCCESS: { channelType: CHANNEL_INCOMING, invocationType: INVOCATION_FIREANDFORGET }
 };
 

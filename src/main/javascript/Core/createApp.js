@@ -12,7 +12,8 @@ import { handleInvokeEvents, handleAppEvents } from './EventHandler';
 import { registerEventHandlers as registerStorageEventHandlers } from '../Storage';
 import { registerEventHandlers as registerSecurityEventHandlers } from '../Security';
 import { registerEventHandlers as registerAppEventHandlers } from './AppEvents';
-import { registerEventHandlers as registerContextEventHandlers } from './ContextEvents';
+import { registerEventHandlers as registerContextEventHandlers } from '../Context';
+import { registerEventHandlers as registerContextUserEventHandlers } from './ContextUserEvents';
 import { registerEventHandlers as registerWebAPIEventHandlers } from '../WebAPI';
 import { registerEventHandlers as registerDeskproWindowEventHandlers } from '../DeskproWindow';
 
@@ -36,6 +37,7 @@ const registerAppEventListeners = (windowBridge, app) =>
     registerSecurityEventHandlers,
     registerStorageEventHandlers,
     registerAppEventHandlers,
+    registerContextUserEventHandlers,
     registerContextEventHandlers,
     registerWebAPIEventHandlers,
     registerDeskproWindowEventHandlers,

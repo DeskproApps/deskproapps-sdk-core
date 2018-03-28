@@ -1,36 +1,29 @@
-import Context from '../Core/Context';
-import * as ContextEvents from '../Core/ContextEvents';
+import ContextHostUI from '../Core/ContextHostUI';
+import * as UITabEvents from './eventsTab';
 
 /**
  * The data stored by the Deskpro UITab
- * @typedef {Object} UITabContext~TabData
+ * @typedef {Object} ContextHostUITab~TabData
  */
 
 /**
- * This abstract class provides common implementations used by specific contexts which run inside a tab in the Deskpro UI
+ * The interface to the context supplied by the Deskpro UI Tab component hosting the app
  *
  * @class
- * @abstract
- * @extends {Context}
+ * @extends {ContextHostUI}
  */
-class UITabContext extends Context
+class ContextHostUITab extends ContextHostUI
 {
   /**
    * @param {AppEventEmitter} outgoingDispatcher
-   * @param {AppEventEmitter} incomingDispatcher
-   * @param {String} type the context type
-   * @param {String} entityId the id of the Deskpro Entity referenced by this UITab
    * @param {String} locationId the id of the specific location within the UITab where the app is mounted
    * @param {String} tabId the id of this tab
    * @param {String} tabUrl the Deskpro URL of this tab
    * @param {...*} rest internal parameters
    */
-  constructor({ outgoingDispatcher, incomingDispatcher, type, entityId, locationId, tabId, tabUrl, ...rest }) {
+  constructor({ outgoingDispatcher, locationId, tabId, tabUrl, ...rest }) {
     super({
       outgoingDispatcher,
-      incomingDispatcher,
-      type,
-      entityId,
       locationId,
       tabId,
       tabUrl,
@@ -45,7 +38,7 @@ class UITabContext extends Context
   get tabId() { return this.props.tabId.toString(); }
 
   /**
-   * the Deskpro URL of this tab
+   * the Deskpro URL of this tab, useful if you want to link directly to this tab
    *
    * @public
    * @return {String}
@@ -62,7 +55,7 @@ class UITabContext extends Context
    */
   async isTabActive()
   {
-    return this.props.outgoingDispatcher.emitAsync(ContextEvents.EVENT_TAB_STATUS, this.props.tabId)
+    return this.props.outgoingDispatcher.emitAsync(UITabEvents.EVENT_TAB_STATUS, this.props.tabId)
       .then(status => status.active)
       ;
   };
@@ -77,7 +70,7 @@ class UITabContext extends Context
    */
   async activateTab()
   {
-    return this.props.outgoingDispatcher.emitAsync(ContextEvents.EVENT_TAB_ACTIVATE, this.props.tabId);
+    return this.props.outgoingDispatcher.emitAsync(UITabEvents.EVENT_TAB_ACTIVATE, this.props.tabId);
   }
 
   /**
@@ -89,7 +82,7 @@ class UITabContext extends Context
    * @return {Promise.<null, Error>}
    */
   async closeTab() {
-    return this.props.outgoingDispatcher.emitAsync(ContextEvents.EVENT_TAB_CLOSE, this.props.tabId);
+    return this.props.outgoingDispatcher.emitAsync(UITabEvents.EVENT_TAB_CLOSE, this.props.tabId);
   }
 
   /**
@@ -98,9 +91,9 @@ class UITabContext extends Context
    * @public
    * @method
    * @async
-   * @return {Promise.<UITabContext~TabData, Error>}
+   * @return {Promise.<ContextHostUITab~TabData, Error>}
    */
-  async getTabData() { return this.props.outgoingDispatcher.emitAsync(ContextEvents.EVENT_TAB_DATA, this.props.tabId); }
+  async getTabData() { return this.props.outgoingDispatcher.emitAsync(UITabEvents.EVENT_TAB_DATA, this.props.tabId); }
 }
 
-export default UITabContext;
+export default ContextHostUITab;

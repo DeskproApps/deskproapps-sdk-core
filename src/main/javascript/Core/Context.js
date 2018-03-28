@@ -1,7 +1,7 @@
-import * as ContextEvents from './ContextEvents';
+import * as ContextUserEvents from './ContextUserEvents';
 
 /**
- * Representation of an application's runtime context. This class is meant to be extended to create concrete context implementations
+ * Representation of an application's runtime context
  *
  * @class
  */
@@ -9,50 +9,36 @@ class Context
 {
   /**
    * @param {AppEventEmitter} outgoingDispatcher the outgoing events dispatcher
-   * @param {AppEventEmitter} incomingDispatcher the incoming events dispatcher
-   * @param {String} type the context type
-   * @param {String} entityId the id of the Deskpro Entity referenced by this context
-   * @param {String} locationId the id of the specific location within the UITab where the app is mounted
+   * @param {ContextHostUI} hostUI the interface for context supplied by the Deskpro ui component hosting the app
+   * @param {ContextObject} object the interface for the context supplied by the Deskpro Object
    * @param {...*} rest
    * @constructor
    */
-  constructor({ outgoingDispatcher, incomingDispatcher, type, entityId, locationId, ...rest }) {
-    this.props = { outgoingDispatcher, incomingDispatcher, type, entityId, locationId, ...rest }
+  constructor({ outgoingDispatcher, hostUI, object, ...rest }) {
+    this.props = { outgoingDispatcher, hostUI, object, ...rest }
   }
 
   /**
-   * A client for the `CustomFields` API of this context
+   * The interface for the Deskpro UI component hosting the app
    *
-   * @public
-   * @return {CustomFieldsClient}
+   * @type {ContextHostUI}
    */
-  get customFields() { throw new Error('The current context does not support custom fields'); }
+  get hostUI() { return this.props.hostUI; }
 
   /**
-   * The type of this context
+   * The interface for the Deskpro Object exposed by this context
    *
-   * @public
-   * @return {String}
+   * @type {ContextObject}
    */
-  get type() { return this.props.type.toString(); }
+  get object() { return this.props.object; }
 
   /**
-   * The id of the Deskpro Entity which belongs to this context.
+   * Alias for `Context.object.customFields`. Allows accessing the context object's custom fields.
+   * This property is null when the object does not support custom fields
    *
-   * For example if the `type` is `ticket`, then this is the id of `Ticket` Entity
-   *
-   * @public
-   * @return {String}
+   * @type {CustomFieldsClient|null}
    */
-  get entityId() { return this.props.entityId.toString(); }
-
-  /**
-   * The id of the location within the helpdesk UI where this application is shown
-   *
-   * @public
-   * @return {String}
-   */
-  get locationId() { return this.props.locationId.toString(); }
+  get customFields() { return this.object.customFields; }
 
   /**
    * Checks if a property exists in this context
@@ -89,7 +75,7 @@ class Context
    * @return {Promise.<Context~Me, Error>}
    */
   async getMe() {
-    return this.props.outgoingDispatcher.emitAsync(ContextEvents.EVENT_ME_GET);
+    return this.props.outgoingDispatcher.emitAsync(ContextUserEvents.EVENT_ME_GET);
   }
 
   /**
