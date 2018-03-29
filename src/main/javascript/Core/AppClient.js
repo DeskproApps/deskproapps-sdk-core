@@ -50,37 +50,16 @@ class AppClient
   }
 
   // EVENT EMITTER API
+  // TODO this should not be made public since it is only intended for integrations with UI sdks like apps-react-sdk
 
   /**
    * Returns an instance of the internal event dispatcher
    *
+   * @ignore
    * @public
    * @return {AppEventEmitter}
    */
   get eventDispatcher() { return this.props.internalDispatcher; }
-
-  /**
-   * Get notified when the app receives an incoming event, such as one sent from the helpdesk window.
-   * An example of such an event is the `context.ticket.reply`event which is sent when the agent replies to a ticket
-   *
-   * @param {string} eventName
-   * @param {function}  handler
-   */
-  subscribe(eventName, handler)
-  {
-    const { outgoingDispatcher, registerEventHandlers } = this.props;
-
-    // will
-    outgoingDispatcher.emitAsync(AppEvents.EVENT_SUBSCRIBE, { events: [eventName] })
-      .then(events => {
-        for (const event of events) {
-          const eventProps = {channelType: Event.CHANNEL_INCOMING, invocationType: event.invocationType};
-          registerEventHandlers(this, event.name, eventProps);
-          this.props.incomingDispatcher.on(event.name, handler)
-        }
-      })
-    ;
-  }
 
   /**
    * Registers an event listener. For the moment, you can only listen to internal events via this method
@@ -119,6 +98,31 @@ class AppClient
     // TODO need to check if eventName is an internal one, for now just assume everything is
     this.eventDispatcher.once(eventName, listener);
   };
+
+  // EVENT SUBSCRIBER API
+
+  /**
+   * Get notified when the app receives an incoming event, such as one sent from the helpdesk window.
+   * An example of such an event is the `context.ticket.reply`event which is sent when the agent replies to a ticket
+   *
+   * @param {string} eventName
+   * @param {function}  handler
+   */
+  subscribe(eventName, handler)
+  {
+    const { outgoingDispatcher, registerEventHandlers } = this.props;
+
+    // will
+    outgoingDispatcher.emitAsync(AppEvents.EVENT_SUBSCRIBE, { events: [eventName] })
+      .then(events => {
+        for (const event of events) {
+          const eventProps = {channelType: Event.CHANNEL_INCOMING, invocationType: event.invocationType};
+          registerEventHandlers(this, event.name, eventProps);
+          this.props.incomingDispatcher.on(event.name, handler)
+        }
+      })
+    ;
+  }
 
   /**
    * Triggers the listeners of an outgoing or internal event

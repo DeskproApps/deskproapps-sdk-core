@@ -8,7 +8,7 @@ import InstanceProps from '../../../main/javascript/Core/InstanceProps';
 test('can create a default context', done => {
 
   const contextType = 'rogue-context';
-  expect(ContextFactory.contextTypes.indexOf(contextType)).toBe(-1);
+  expect(ContextFactory.contextObjectTypes.indexOf(contextType)).toBe(-1);
 
   const outgoingDispatcher = new AppEventEmitter();
   const incomingDispatcher = new AppEventEmitter();

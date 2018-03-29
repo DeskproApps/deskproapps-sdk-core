@@ -42,14 +42,14 @@ export {
   StorageEvents
 } from './Storage';
 
-import * as ContextEvents from './Core/ContextEvents';
+import * as ContextUserEvents from './Core/ContextUserEvents';
 export {
   /**
-   * @type {module:Core/ContextEvents}
+   * @type {module:Core/ContextUserEvents}
    */
-  ContextEvents
+  ContextUserEvents
 }
-export { TicketEvents } from './Context';
+export { TicketEvents, TabEvents } from './Context';
 
 export {
   /**

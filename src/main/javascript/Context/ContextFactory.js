@@ -1,18 +1,43 @@
 import Context from '../Core/Context';
-
-import TicketContext from './TicketContext';
-import PersonContext from './PersonContext';
-import OrganizationContext from './OrganizationContext';
+import { CustomFieldsClient } from '../CustomFields';
+import ContextObject from '../Core/ContextObject';
+import ContextHostUITab from './ContextHostUITab';
 
 /**
  * @ignore
- * @type {Array.<function(*):Context>}
+ *
+ * @param {AppEventEmitter} outgoingDispatcher the outgoing events dispatcher
+ * @param {AppEventEmitter} incomingDispatcher the incoming events dispatcher
+ * @param {InstanceProps} instanceProps the instance properties bag
+ * @param {ContextProps} contextProps the context properties bag
+ *
+ * @return {CustomFieldsClient|null}
  */
-const factories = [
-  TicketContext.tryAndCreate,
-  PersonContext.tryAndCreate,
-  OrganizationContext.tryAndCreate
-];
+function createCustomFieldClient({outgoingDispatcher, incomingDispatcher, instanceProps, contextProps})
+{
+  let endpoint = null;
+  switch (contextProps.contextType) {
+    case 'person':
+      endpoint = `people/${contextProps.entityId}`;
+      break;
+    case 'organization':
+      endpoint = `organizations/${contextProps.entityId}`;
+      break;
+    case 'ticket':
+      endpoint = `tickets/${contextProps.entityId}`;
+      break;
+  }
+
+  if (endpoint) {
+    return new CustomFieldsClient({
+      outgoingDispatcher,
+      instanceId: instanceProps.instanceId,
+      endpoint
+    });
+  }
+
+  return null;
+}
 
 /**
  * A factory for application contexts
@@ -22,27 +47,22 @@ const factories = [
 class ContextFactory
 {
   /**
-   * Returns a list of all the context type it can create:
-   *
-   *  - ticket ( see {@link TicketContext} )
-   *  - organization ( see {@link OrganizationContext} )
-   *  - person ( see {@link PersonContext} )
+   * Returns a list of all the Deskpro Object context type names it can create
    *
    * @method
-   *
    * @returns {Array.<string>}
    */
-  static get contextTypes()
+  static get contextObjectTypes()
   {
     return [
-      TicketContext.TYPE,
-      PersonContext.TYPE,
-      OrganizationContext.TYPE
+      'ticket',
+      'person',
+      'organization'
     ];
   }
 
   /**
-   * Creates a specific type of application context. {@link ContextFactory.contextTypes} returns the list of contexts type names this factory can create
+   * Creates the application context
    *
    * @method
    *
@@ -54,40 +74,16 @@ class ContextFactory
    */
   static create(outgoingDispatcher, incomingDispatcher, instanceProps, contextProps)
   {
-    const props = { outgoingDispatcher, incomingDispatcher, instanceProps, contextProps };
-    for (const factory of factories) {
-      const context = factory(props);
-      if (context) { return context; }
-    }
+    const customFields = createCustomFieldClient({ outgoingDispatcher, incomingDispatcher, instanceProps, contextProps });
 
-    return null;
-  }
+    const object = new ContextObject({
+      type: contextProps.contextType,
+      entityId: contextProps.entityId,
+      customFields
+    });
+    const hostUI = new ContextHostUITab({ outgoingDispatcher, ...contextProps.toJS()});
 
-  /**
-   * Creates a generic application context
-   *
-   * @param {AppEventEmitter} outgoingDispatcher the outgoing events dispatcher
-   * @param {AppEventEmitter} incomingDispatcher the incoming events dispatcher
-   * @param {InstanceProps} instanceProps the instance properties bag
-   * @param {ContextProps} contextProps the context properties bag
-   * @return {Context}
-   */
-  static createDefaultContext(outgoingDispatcher, incomingDispatcher, instanceProps, contextProps)
-  {
-    const {
-      /**
-       * @ignore
-       * @type {string}
-       */
-      entityId,
-      /**
-       * @ignore
-       * @type {string}
-       */
-      locationId,
-      ...rest
-    } = contextProps.toJS();
-    const props = { outgoingDispatcher, incomingDispatcher, entityId, locationId, ...rest, type: contextProps.contextType };
+    const props = { outgoingDispatcher, hostUI, object, ...contextProps.toJS(), ...instanceProps.toJS() };
     return new Context(props);
   }
 }

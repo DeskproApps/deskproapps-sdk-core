@@ -1,3 +1,9 @@
+## v1.0.0-beta.29 - 2018-03-29
+
+* [CHANGED] `customFields` client no longer accessed via `dpapp.context.customFields`, instead `dpapp.context.object.customFields`
+* [CHANGED] host UI Tab methods no longer available directly via `dpapp.context`, instead via `dpapp.context.hostUI` object
+* Deprecated method `OauthFacade.access` in favour of `OauthFacade.requestAccess`
+
 ## v1.0.0-beta.28 - 2018-03-23
 
 * [ADDED] notifies Deskpro when the application badge's state changes 
