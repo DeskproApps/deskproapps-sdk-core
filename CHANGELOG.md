@@ -1,6 +1,8 @@
+
+
 ## [Unreleased][] 
 
-## [1.0.0][] - 2018-04-27
+## [1.0.1][] - 2018-04-27
 
 ### Added
 
@@ -342,5 +344,6 @@
 * Initial public release
 
 
-[Unreleased]: https://github.com/deskpro/apps-sdk-core/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/deskpro/apps-sdk-core/tree/v1.0.0
+
+[Unreleased]: https://github.com/deskpro/apps-sdk-core/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/deskpro/apps-sdk-core/tree/v1.0.1
