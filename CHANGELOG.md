@@ -1,5 +1,7 @@
 ## [Unreleased][] 
 
+## [1.0.0][] - 2018-04-27
+
 ### Added
 
  * `OauthFacade.refreshAccess` method allows refreshing an access token whenever the oauth refresh token flow is supported by the provider 
@@ -338,3 +340,7 @@
 ## [v0.1.0][] - 2017-04-27
 
 * Initial public release
+
+
+[Unreleased]: https://github.com/deskpro/apps-sdk-core/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/deskpro/apps-sdk-core/tree/v1.0.0
