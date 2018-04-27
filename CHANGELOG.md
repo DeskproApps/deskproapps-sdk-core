@@ -1,194 +1,340 @@
-## v1.0.0-beta.29 - 2018-03-29
+## [Unreleased][] 
 
-* [CHANGED] `customFields` client no longer accessed via `dpapp.context.customFields`, instead `dpapp.context.object.customFields`
-* [CHANGED] host UI Tab methods no longer available directly via `dpapp.context`, instead via `dpapp.context.hostUI` object
+### Added
+
+ * `OauthFacade.refreshAccess` method allows refreshing an access token whenever the oauth refresh token flow is supported by the provider 
+
+## [v1.0.0-beta.29][] - 2018-03-29
+
+### Changed
+
+* `customFields` client no longer accessed via `dpapp.context.customFields`, instead `dpapp.context.object.customFields`
+* host UI Tab methods no longer available directly via `dpapp.context`, instead via `dpapp.context.hostUI` object
 * Deprecated method `OauthFacade.access` in favour of `OauthFacade.requestAccess`
 
-## v1.0.0-beta.28 - 2018-03-23
+## [v1.0.0-beta.28][] - 2018-03-23
 
-* [ADDED] notifies Deskpro when the application badge's state changes 
+### Added
+* notifies Deskpro when the application badge's state changes 
 
-## v1.0.0-beta.27 - 2018-03-22
+## [v1.0.0-beta.27][] - 2018-03-22
 
-* [MAINTENANCE] improved jsdoc coverage 
-* [MAINTENANCE] improved docs publishing workflow 
+### Fixed
 
-## v1.0.0-beta.26 - 2017-11-23
+* improved jsdoc coverage 
+* improved docs publishing workflow 
 
-* [FEATURE] add a subscribe method that allows registering handlers for events coming from the helpdesk ui
+## [v1.0.0-beta.26][] - 2017-11-23
 
-## v1.0.0-beta.26 - 2017-11-23
+### Added
 
-* [FEATURE] add a subscribe method that allows registering handlers for events coming from the helpdesk ui
+* subscribe method that allows registering handlers for events coming from the helpdesk ui
 
-## v1.0.0-beta.25 - 2017-11-14
+## [v1.0.0-beta.26][] - 2017-11-23
 
-* [FIX] `FetchStorageAdapter` sends wrong request body when used in batch mode
+### Added
 
-## v1.0.0-beta.24 - 2017-11-13
+* add a subscribe method that allows registering handlers for events coming from the helpdesk ui
 
-* [FIX] `app.storage.setAppStorage` fails when used in batch mode
+## [v1.0.0-beta.25][] - 2017-11-14
 
-## v1.0.0-beta.23 - 2017-10-27
+### Fixed
 
-* [FEATURE] allow specifying protocol related requirements when requesting the oauth settings for a provider 
+* `FetchStorageAdapter` sends wrong request body when used in batch mode
 
-## v1.0.0-beta.22 - 2017-10-24
+## [v1.0.0-beta.24][] - 2017-11-13
 
-* [CHANGE] rename @deskproapps references to @deskpro
+### Fixed
 
-## v1.0.0-beta.21 - 2017-10-05
+* `app.storage.setAppStorage` fails when used in batch mode
 
-* [FIX] use instance id when reading from and writing to custom fields
-* [FEATURE] reduce log verbosity when app is running in production mode  
+## [v1.0.0-beta.23][] - 2017-10-27
 
-## v1.0.0-beta.20 - 2017-10-03
+### Added
 
-* [FIX] failure to use storage batch operations due to incorrect handling of api request format
-* [FEATURE] allow specifying fetch storage adapter in dev mode
+* allow specifying protocol related requirements when requesting the oauth settings for a provider 
 
-## v1.0.0-beta.19 - 2017-10-03
+## [v1.0.0-beta.22][] - 2017-10-24
 
-* [FEATURE] allow the application to communicate with the helpdesk using custom events
+### Changed
 
-## v1.0.0-beta.18 - 2017-09-22
+* rename @deskproapps references to @deskpro
 
-* [FEATURE] allow application to be instantiated with generic contexts
+## [v1.0.0-beta.21][] - 2017-10-05
 
-## v1.0.0-beta.17 - 2017-09-20
+### Added
 
-* [FIXES] npm-shrinkwrap.json references optional dependencies
+* [FEATURE] reduce log verbosity when app is running in production mode
 
-## v1.0.0-beta.16 - 2017-09-18
-* [FEATURE] adds change/fetch events to the storage module
-* [FEATURE] update and fetch custom fields for tickets, organizations and persons
+### Fixed
 
-## v1.0.0-beta.15 - 2017-09-07
-* [CHANGE] Deprecate State API in favour of Storage API
+* use instance id when reading from and writing to custom fields
+  
 
-## v1.0.0-beta.14 - 2017-08-15
-* [CHANGE] Instantiate WindowBridge only when createApp is called
+## [v1.0.0-beta.20][] - 2017-10-03
 
-## v1.0.0-beta.13 - 2017-08-15
-* [FEATURE] Relay mouse events to app container
-* [FEATURE] Group base functions under `Widget` namespace 
-* [CHANGE] Use post-robot instead of xcomponent
+### Added
 
-## v1.0.0-beta.12 - 2017-08-09
-* [MAINTENANCE] use async keyword for methods which return a Promise
+* allow specifying fetch storage adapter in dev mode
 
-## v1.0.0-beta.11 - 2017-08-07
-* [MAINTENANCE] update dependencies
+### Fixed
 
-## v1.0.0-beta.10 - 2017-08-07
-* [FEATURE] add security api
+* failure to use storage batch operations due to incorrect handling of api request format
 
-## v1.0.0-beta.9 - 2017-08-02
-* [FIX] use correct webpack build options
+## [v1.0.0-beta.19][] - 2017-10-03
 
-## v1.0.0-beta.8 - 2017-08-02
-* [FIX] wrong path to jest in npm run test command
+### Added
 
-## v1.0.0-beta.7 - 2017-08-02
-* [FIX] add build scripts in correct location
+* allow the application to communicate with the helpdesk using custom events
 
-## v1.0.0-beta.6 - 2017-08-02
-* [MAINTENANCE] update travis configuration to use dpat for running the test
+## [v1.0.0-beta.18][] - 2017-09-22
 
-## v1.0.0-beta.5 - 2017-08-01
-* [MAINTENANCE] add travis build configuration
+### Added
 
-## v1.0.0-beta.4 - 2017-08-01
-* [MAINTENANCE] install and use the local dpat as the build tool
+* allow application to be instantiated with generic contexts
 
-## v1.0.0-beta.3 - 2017-08-01
-* [FEATURE] add oauth api
-* [MAINTENANCE] remove deprecated state events
-* [MAINTENANCE] automatic npm deploys via travis
+## [v1.0.0-beta.17][] - 2017-09-20
 
-## v1.0.0-beta.2 - 2017-07-20
-* [FIX] use application id instead of instance id when fetching application state
+### Fixed
 
-## v1.0.0-beta.1 - 2017-07-20
+* npm-shrinkwrap.json references optional dependencies
 
-* [CHANGE] use new application state API
-* [ADDITION] context properties include application environment related properties 
+## [v1.0.0-beta.16][] - 2017-09-18
 
-## v1.0.0-alpha.12 - 2017-07-12
+###Added
+
+* adds change/fetch events to the storage module
+* update and fetch custom fields for tickets, organizations and persons
+
+## [v1.0.0-beta.15][] - 2017-09-07
+
+### Changed
+
+* Deprecate State API in favour of Storage API
+
+## [v1.0.0-beta.14][] - 2017-08-15
+
+### Changed
+
+* Instantiate WindowBridge only when createApp is called
+
+## [v1.0.0-beta.13][] - 2017-08-15
+
+### Added
+
+* Relay mouse events to app container
+* Group base functions under `Widget` namespace
+
+### Changed
  
-* [FEATURE] add Properties API to allow retrieving of properties passed at runtime
-* [FIX] Move all user interface methods onto the `app.ui` object 
+* Use post-robot instead of xcomponent
 
-## v1.0.0-alpha.11 - 2017-07-11
-* [MAINTENANCE] update links after transferring the repository to the `Deskpro` organization
+## [v1.0.0-beta.12][] - 2017-08-09
 
-## v1.0.0-alpha.10 - 2017-07-05
+### Changed
 
-* [FIX] correlation id not used when responding to incoming requests causing messages to be dropped
+* use async keyword for methods which return a Promise
 
-## v1.0.0-alpha.9 - 2017-06-23
+## [v1.0.0-beta.11][] - 2017-08-07
 
-* [FEATURE] add tabUrl property to `app.context` object
-* [FEATURE] allow experimental properties to be passed from the Deskpro window
+### Changed
 
-## v1.0.0-alpha.8 - 2017-06-21
+* update dependencies
 
-* [FEATURE] read initialization params first from the location hash then fallback to the location query string
-* [FEATURE] add Fetch API support for deskpro api request
+## [v1.0.0-beta.10][] - 2017-08-07
 
-## v1.0.0-alpha.7 - 2017-06-14
+### Added
 
-* [FIX] event matching fails if any event props pattern is not specified
-* [FEATURE] expose UI API methods to allow changing, hiding and showing a badge count 
+* add security api
 
-## v1.0.0-alpha.6 - 2017-06-13
+## [v1.0.0-beta.9][] - 2017-08-02
 
-* [FEATURE] allow interaction with the DeskPro Window via Deskpro Window API
+### Fixed
 
-## v1.0.0-alpha.5 - 2017-06-13
+* use correct webpack build options
 
-* [FEATURE] allow deskpro window to send requests to listening widgets
-* [FEATURE] add possibility to send notifications for display in the main DeskPro window
-* [FEATURE] allow apps to response to requests sent from the main DeskPro window
-* [MAINTENANCE] enable travis ci integration
+## [v1.0.0-beta.8][] - 2017-08-02
 
-## v1.0.0-alpha.4 - 2017-06-02
+### Fixed
 
-* [FIX] prevent resize events from entering an endless resize loop
-* [MAINTENANCE] minor refactoring
+* wrong path to jest in npm run test command
 
-## v1.0.0-alpha.3 - 2017-06-01
+## [v1.0.0-beta.7][] - 2017-08-02
 
-* [FEATURE] add Context API method to retrieve current user and tab data
-* [MAINTENANCE] remove deprecated PostMessage API
+### Fixed
 
+* add build scripts in correct location
 
-## v1.0.0-alpha.2 - 2017-05-26
+## [v1.0.0-beta.6][] - 2017-08-02
 
-* [FEATURE] improve auto-resizing
+### Changed
 
-## v1.0.0-alpha.1 - 2017-05-24
+* update travis configuration to use dpat for running the test
 
-* [FEATURE] expose application settings via `settings` property on the application object 
+## [v1.0.0-beta.5][] - 2017-08-01
 
-## v1.0.0-alpha - 2017-05-22
+### Changed
 
-* [FEATURE] use eventemitter for async communications 
-* [FEATURE] Deskpro REST Api access  
-* [CHANGE] improve API for the app class 
-* [CHANGE] introduce new way of creating apps, by replacing the `connect` function with more robust `createApp` 
-* [CHANGE] introduce new Context API to allow interaction with the parent deskpro window 
-* [CHANGE] introduce new State API 
-* [CHANGE] stop requiring dpat as a dev dependency, instead relying on the globally installed version
+* add travis build configuration
 
-## v0.2.1 - 2017-05-02
+## [v1.0.0-beta.4][] - 2017-08-01
 
-* [FIX] remove hardcoded child window url
+### Changed
 
-## v0.2.0 - 2017-04-28 
+* install and use the local dpat as the build tool
 
-* [FEATURE] Retrieve the authenticated DeskPro user via the widget api 
+## [v1.0.0-beta.3][] - 2017-08-01
 
-## v0.1.0 - 2017-04-27
+### Added
+
+* add oauth api
+
+### Changed
+
+* remove deprecated state events
+* automatic npm deploys via travis
+
+## [v1.0.0-beta.2][] - 2017-07-20
+
+### Fixed
+
+* use application id instead of instance id when fetching application state
+
+## [v1.0.0-beta.1][] - 2017-07-20
+
+### Added
+
+* context properties include application environment related properties
+
+### Changed
+
+* use new application state API
+ 
+
+## [v1.0.0-alpha.12][] - 2017-07-12
+ 
+### Added
+ 
+* add Properties API to allow retrieving of properties passed at runtime
+
+### Fixed
+
+* Move all user interface methods onto the `app.ui` object 
+
+## [v1.0.0-alpha.11][] - 2017-07-11
+
+### Changed
+
+* update links after transferring the repository to the `Deskpro` organization
+
+## [v1.0.0-alpha.10][] - 2017-07-05
+
+### Fixed
+
+* correlation id not used when responding to incoming requests causing messages to be dropped
+
+## [v1.0.0-alpha.9][] - 2017-06-23
+
+### Added
+
+* add tabUrl property to `app.context` object
+* allow experimental properties to be passed from the Deskpro window
+
+## [v1.0.0-alpha.8][] - 2017-06-21
+
+### Added
+
+* read initialization params first from the location hash then fallback to the location query string
+* add Fetch API support for deskpro api request
+
+## [v1.0.0-alpha.7][] - 2017-06-14
+
+### Added
+
+* expose UI API methods to allow changing, hiding and showing a badge count
+    
+### Fixed
+
+* event matching fails if any event props pattern is not specified
+ 
+
+## [v1.0.0-alpha.6][] - 2017-06-13
+
+### Added
+
+* allow interaction with the DeskPro Window via Deskpro Window API
+
+## [v1.0.0-alpha.5][] - 2017-06-13
+
+### Added
+
+* allow deskpro window to send requests to listening widgets
+* add possibility to send notifications for display in the main DeskPro window
+* allow apps to response to requests sent from the main DeskPro window
+
+### Changed
+
+* Enable travis ci integration
+
+## [v1.0.0-alpha.4][] - 2017-06-02
+
+### Fixed
+
+* prevent resize events from entering an endless resize loop
+
+### Changed
+
+* minor refactoring
+
+## [v1.0.0-alpha.3][] - 2017-06-01
+
+### Added
+
+* add Context API method to retrieve current user and tab data
+
+### Changed
+
+* remove deprecated PostMessage API
+
+## [v1.0.0-alpha.2][] - 2017-05-26
+
+### Added
+
+* improve auto-resizing
+
+## [v1.0.0-alpha.1][] - 2017-05-24
+
+### Added
+
+* expose application settings via `settings` property on the application object 
+
+## [v1.0.0-alpha][] - 2017-05-22
+
+### Added
+
+* use eventemitter for async communications 
+* Deskpro REST Api access  
+
+### Changed
+
+* improve API for the app class 
+* introduce new way of creating apps, by replacing the `connect` function with more robust `createApp` 
+* introduce new Context API to allow interaction with the parent deskpro window 
+* introduce new State API 
+* stop requiring dpat as a dev dependency, instead relying on the globally installed version
+
+## [v0.2.1][] - 2017-05-02
+
+### Fixed
+
+* remove hardcoded child window url
+
+## [v0.2.0][] - 2017-04-28 
+
+### Added
+
+* Retrieve the authenticated DeskPro user via the widget api 
+
+## [v0.1.0][] - 2017-04-27
 
 * Initial public release
