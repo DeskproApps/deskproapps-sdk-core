@@ -34,6 +34,7 @@ export {
 export function registerEventHandlers(windowBridge, app) {
   handleOutgoingEvent(windowBridge, app, SecurityEvents.EVENT_SECURITY_AUTHENTICATE_OAUTH, SecurityEvents.props.EVENT_SECURITY_AUTHENTICATE_OAUTH);
   handleOutgoingEvent(windowBridge, app, SecurityEvents.EVENT_SECURITY_SETTINGS_OAUTH, SecurityEvents.props.EVENT_SECURITY_SETTINGS_OAUTH);
+  handleOutgoingEvent(windowBridge, app, SecurityEvents.EVENT_SECURITY_OAUTH_REFRESH, SecurityEvents.props.EVENT_SECURITY_OAUTH_REFRESH);
 }
 
 /**

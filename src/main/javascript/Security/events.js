@@ -10,15 +10,18 @@ export const EVENT_SECURITY_AUTHENTICATE_OAUTH = 'security.authenticate.oauth';
 
 export const EVENT_SECURITY_SETTINGS_OAUTH = 'security.settings.oauth';
 
+export const EVENT_SECURITY_OAUTH_REFRESH = 'security.oauth.refresh';
+
 const events = {
   EVENT_SECURITY_AUTHENTICATE_OAUTH: { channelType: CHANNEL_OUTGOING, invocationType: INVOCATION_REQUESTRESPONSE },
+  EVENT_SECURITY_OAUTH_REFRESH: { channelType: CHANNEL_OUTGOING, invocationType: INVOCATION_REQUESTRESPONSE },
   EVENT_SECURITY_SETTINGS_OAUTH: { channelType: CHANNEL_OUTGOING, invocationType: INVOCATION_REQUESTRESPONSE }
 };
 
 /**
  * @readonly
  * @enum
- * @type {{EVENT_SECURITY_AUTHENTICATE_OAUTH: {channelType, invocationType}, EVENT_SECURITY_SETTINGS_OAUTH: {channelType, invocationType}}}
+ * @type {{EVENT_SECURITY_AUTHENTICATE_OAUTH: {channelType: string, invocationType: string}, EVENT_SECURITY_OAUTH_REFRESH: {channelType: string, invocationType: string}, EVENT_SECURITY_SETTINGS_OAUTH: {channelType: string, invocationType: string}}}
  */
 export const props = events;
 

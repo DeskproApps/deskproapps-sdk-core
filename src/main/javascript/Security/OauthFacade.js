@@ -80,11 +80,13 @@ class OauthFacade
 
   /**
    * Requests an access token. If `protocolVersion` is not specified in `options` then it defaults to `2.0`
+   * if `options` has an object property  named `query`, it will be used as additional query parameters appended to the
+   * authorization url
    *
    * @method
    *
    * @param {string} provider the provider id
-   * @param {{protocolVersion:String}} [options] a map of properties describing the oauth client. Only `protocolVersion` is supported for the moment
+   * @param {{protocolVersion:String, query:object}} [options] a map of options controlling the access process.
    * @return {Promise<OauthToken, Error>}
    */
   async requestAccess(provider, options)
@@ -103,6 +105,34 @@ class OauthFacade
       .then(oauthToken => oauthToken.toJS())
     ;
   };
+
+  /**
+   * Refresh an access token. If `protocolVersion` is not specified in `options` then it defaults to `2.0`
+   * if `options` has an object property  named `query`, it will be used as additional query parameters appended to the
+   * token url
+   *
+   * Note: the provider must explicitly support the refresh token flow
+   *
+   * @param {string} provider the provider id
+   * @param {{protocolVersion:String, query:object}} [options] a map of options controlling the refresh process .
+   * @returns {Promise<OauthToken, Error>}
+   */
+  async refreshAccess(provider, options)
+  {
+    let eventOptions = null;
+    if (typeof options === 'object') {
+      eventOptions = { ...options, provider };
+    } else {
+      eventOptions = { provider, protocolVersion: defaultProtocolVersion };
+    }
+
+    const { eventDispatcher } = this.props;
+    return eventDispatcher
+      .emitAsync(Events.EVENT_SECURITY_OAUTH_REFRESH, eventOptions)
+      .then(OauthToken.fromOauthProxyResponse)
+      .then(oauthToken => oauthToken.toJS())
+      ;
+  }
 }
 
 export default OauthFacade

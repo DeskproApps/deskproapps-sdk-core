@@ -1,6 +1,6 @@
 {
   "name": "@deskpro/apps-sdk-core",
-  "version": "1.0.0-beta.29",
+  "version": "1.0.0",
   "description": "core component of deskpro apps sdk",
   "main": "lib/main/javascript/index.js",
   "scripts": {
@@ -8,7 +8,8 @@
     "make-lib": "BABEL='./bin/babel-dpat.sh'; ${BABEL} src/main/javascript -d lib/main/javascript",
     "make-dist": "WEBPACK='./bin/webpack-dpat.sh'; DPA_PACKAGE=${DPA_PACKAGE} ${WEBPACK} --config src/webpack/webpack.config-dist.js",
     "make-docs": "DOCS='./target/docs/reference'; rm -rf ${DOCS}/* && jsdoc --configure ./.jsdoc --destination ${DOCS} --verbose",
-    "test": "JEST='./bin/jest-dpat.sh'; ${JEST} src/test"
+    "test": "JEST='./bin/jest-dpat.sh'; ${JEST} src/test",
+    "version": "version-changelog CHANGELOG.md && changelog-verify CHANGELOG.md && git add CHANGELOG.md"
   },
   "repository": {
     "type": "git",
@@ -40,7 +41,9 @@
     "@deskpro/apps-dpat": "^0.10.0"
   },
   "optionalDependencies": {
+    "changelog-verify": "1.1.0",
     "docdash": "^0.4.0",
-    "jsdoc": "^3.5.4"
+    "jsdoc": "^3.5.4",
+    "version-changelog": "3.1.0"
   }
 }
