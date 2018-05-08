@@ -2,6 +2,10 @@
 
 ## [Unreleased][] 
 
+### Fixed
+
+ * in a production environment the verbosity of post-robot logs is now `error` instead of `info`
+
 ## [1.0.1][] - 2018-04-27
 
 ### Added
