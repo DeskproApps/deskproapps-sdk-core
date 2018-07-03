@@ -112,11 +112,9 @@ class WidgetWindowBridge {
       .then(o => createApp({ ...o, widgetWindow: this}))
       .then(app => {
 
-        postRobot.CONFIG.LOG_LEVEL = 'error';
-
         // reduce verbosity of post-robot logging
         if (app.environment === 'production') {
-          postRobot.CONFIG.LOG_LEVEL = 'info';
+          postRobot.CONFIG.LOG_LEVEL = 'error';
         }
 
         const handler = mouseEventHandler.bind(null, this);

@@ -2,6 +2,12 @@
 
 ## [Unreleased][] 
 
+## [1.0.2][] - 2018-05-08
+
+### Fixed
+
+ * in a production environment the verbosity of post-robot logs is now `error` instead of `info`
+
 ## [1.0.1][] - 2018-04-27
 
 ### Added
@@ -345,5 +351,6 @@
 
 
 
-[Unreleased]: https://github.com/deskpro/apps-sdk-core/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/deskpro/apps-sdk-core/compare/v1.0.2...HEAD
+[1.0.2]: https://github.com/deskpro/apps-sdk-core/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/deskpro/apps-sdk-core/tree/v1.0.1
