@@ -7,6 +7,7 @@
 import ContextFactory from './ContextFactory';
 import * as TicketEvents from './eventsTicket';
 import * as TabEvents from './eventsTab';
+import * as ObjectEvents from './eventsObject';
 import { handleOutgoingEvent } from '../Core/EventHandler';
 
 export { ContextFactory, TicketEvents, TabEvents };
@@ -37,4 +38,5 @@ export function registerEventHandlers(windowBridge, app) {
   handleOutgoingEvent(windowBridge, app, TabEvents.EVENT_TAB_DATA, TabEvents.props.EVENT_TAB_DATA);
   handleOutgoingEvent(windowBridge, app, TabEvents.EVENT_TAB_ACTIVATE, TabEvents.props.EVENT_TAB_ACTIVATE);
   handleOutgoingEvent(windowBridge, app, TabEvents.EVENT_TAB_CLOSE, TabEvents.props.EVENT_TAB_CLOSE);
+  handleOutgoingEvent(windowBridge, app, ObjectEvents.EVENT_CONTEXT_PROPERTY_GET, ObjectEvents.props.EVENT_CONTEXT_PROPERTY_GET);
 }

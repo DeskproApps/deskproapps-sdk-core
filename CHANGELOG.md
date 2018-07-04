@@ -2,6 +2,15 @@
 
 ## [Unreleased][] 
 
+### Added
+
+ * properties of a context object can be retrieved via `ContextObject.get` using property paths
+ 
+### Changed
+
+ * support multiple context objects by replacing `Context.object` property with `Context.get(objectType:String)` method  
+ * deprecate method `ContextHostUITab.getTabData` 
+
 ## [1.0.2][] - 2018-07-03
 
 ### Fixed

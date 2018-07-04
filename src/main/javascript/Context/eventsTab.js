@@ -5,7 +5,6 @@
  */
 
 import { CHANNEL_INTERNAL, CHANNEL_INCOMING, CHANNEL_OUTGOING, INVOCATION_FIREANDFORGET, INVOCATION_REQUESTRESPONSE } from '../Core/Event'
-import { handleOutgoingEvent } from '../Core/EventHandler';
 
 /**
  * @readonly

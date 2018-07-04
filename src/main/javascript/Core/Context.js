@@ -1,4 +1,5 @@
 import * as ContextUserEvents from './ContextUserEvents';
+import * as UITabEvents from "../Context/eventsTab";
 
 /**
  * Representation of an application's runtime context
@@ -26,19 +27,40 @@ class Context
   get hostUI() { return this.props.hostUI; }
 
   /**
-   * The interface for the Deskpro Object exposed by this context
+   * Check if an object of this type is available via `Context.get` in this context
    *
-   * @type {ContextObject}
+   * @param {String} objectType
+   * @return {boolean}
    */
-  get object() { return this.props.object; }
+  available(objectType)
+  {
+    return objectType === this.props.object.type
+  }
 
   /**
-   * Alias for `Context.object.customFields`. Allows accessing the context object's custom fields.
-   * This property is null when the object does not support custom fields
+   * Returns one of the Deskpro Objects exposed by this context
    *
-   * @type {CustomFieldsClient|null}
+   * @param {String} objectType
+   * @return {ContextObject}
    */
-  get customFields() { return this.object.customFields; }
+  get(objectType) {
+    if (! this.available(objectType)) {
+      throw new Error(`Object of type ${type} is not available`);
+    }
+
+    return this.props.object;
+  }
+
+  /**
+   * Returns the data loaded by the Deskpro UI tab
+   *
+   * @private
+   *
+   * @method
+   * @async
+   * @return {Promise.<{}, Error>}
+   */
+  async _getTabData() { return this.props.outgoingDispatcher.emitAsync(UITabEvents.EVENT_TAB_DATA, this.props.tabId); }
 
   /**
    * Checks if a property exists in this context

@@ -22,12 +22,14 @@ test('can create a ticket context', done => {
     type: contextType,
     entityId: '1',
     locationId: 'install',
-    manifest: { field: 'value' }
+    manifest: { field: 'value' },
+    tabId: 1,
+    tabUrl: 'http://localhost'
   });
 
   const context = ContextFactory.create(outgoingDispatcher, incomingDispatcher, instanceProps, contextProps);
   expect(context instanceof Context).toBe(true);
-  expect(context.object.customFields instanceof CustomFieldsClient).toBe(true);
+  expect(context.get(contextType).customFields instanceof CustomFieldsClient).toBe(true);
 
   done();
 });
@@ -49,11 +51,13 @@ test('can create a default context', done => {
     type: contextType,
     entityId: '1',
     locationId: 'install',
-    manifest: { field: 'value' }
+    manifest: { field: 'value' },
+    tabId: 1,
+    tabUrl: 'http://localhost'
   });
 
   const context = ContextFactory.create(outgoingDispatcher, incomingDispatcher, instanceProps, contextProps);
   expect(context instanceof Context).toBe(true);
-  expect(context.object.customFields).toBeNull();
+  expect(context.get(contextType).customFields).toBeNull();
   done();
 });
