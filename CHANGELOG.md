@@ -5,6 +5,7 @@
 ### Added
 
  * properties of a context object can be retrieved via `ContextObject.get` using property paths
+ * handlers for events received from the Deskpro window must always return a promise
  
 ### Changed
 

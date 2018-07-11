@@ -106,11 +106,30 @@ class AppClient
    * An example of such an event is the `context.ticket.reply`event which is sent when the agent replies to a ticket
    *
    * @param {string} eventName
-   * @param {function}  handler
+   * @param {function(Object):Promise}  handler
    */
   subscribe(eventName, handler)
   {
     const { outgoingDispatcher, registerEventHandlers } = this.props;
+
+    function sendHandlerResponse(sendResponse, data) {
+      let handlerResult;
+
+      try {
+        handlerResult = handler(data);
+      } catch (e) {
+        sendResponse(null, { canceled: false,  message: e});
+        return;
+      }
+
+      handlerResult
+        .catch(message => {
+          sendResponse(null, { canceled: true,  message});
+          return Promise.reject(message);
+        })
+        .then(message => sendResponse(null, { canceled: false,  message}))
+      ;
+    }
 
     // will
     outgoingDispatcher.emitAsync(AppEvents.EVENT_SUBSCRIBE, { events: [eventName] })
@@ -118,7 +137,7 @@ class AppClient
         for (const event of events) {
           const eventProps = {channelType: Event.CHANNEL_INCOMING, invocationType: event.invocationType};
           registerEventHandlers(this, event.name, eventProps);
-          this.props.incomingDispatcher.on(event.name, handler)
+          this.props.incomingDispatcher.on(event.name, sendHandlerResponse)
         }
       })
     ;
