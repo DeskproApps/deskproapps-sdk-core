@@ -122,7 +122,9 @@ class AppClient
         return;
       }
 
-      handlerResult
+      const handlerPromise = handlerResult instanceof Promise ? handlerResult : Promise.resolve(handlerResult);
+
+      handlerPromise
         .catch(message => {
           sendResponse(null, { canceled: true,  message});
           return Promise.reject(message);
@@ -131,7 +133,6 @@ class AppClient
       ;
     }
 
-    // will
     outgoingDispatcher.emitAsync(AppEvents.EVENT_SUBSCRIBE, { events: [eventName] })
       .then(events => {
         for (const event of events) {
