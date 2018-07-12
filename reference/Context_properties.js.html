@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Core/EventMap.js - Documentation</title>
+    <title>Context/properties.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -27,7 +27,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Core/EventMap.js</h1>
+    <h1 class="page-title">Context/properties.js</h1>
     
 
     
@@ -37,62 +37,26 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * This class provides a way of retrieving and indexing events
- *
- * @class
+            <pre class="prettyprint source linenums"><code>import * as ObjectEvents from "./eventsObject";
+
+/**
+ * @param {AppEventEmitter}  outgoingDispatcher
+ * @param {ContextProps} contextProps
+ * @return {Function}
  */
-class EventMap
+export function propertyProviderTab(outgoingDispatcher, contextProps)
 {
-  constructor ({ map, names, props }) {
-    this.props = { map, names, props };
+  const { tabId } = contextProps;
+
+  if (! tabId) {
+    throw new Error('context is missing the tab id')
   }
 
-  /**
-   * @method
-   * @public
-   *
-   * @param {String} name
-   * @return boolean
-   */
-  isEventName = (name) => this.props.names.indexOf(name) !== -1;
-
-  /**
-   * @public
-   *
-   * @type {Array.&lt;String>}
-   */
-  get eventNames() { return [].concat(this.props.names); }
-
-  /**
-   * Returns the event key given an event name
-   *
-   * @method
-   * @public
-   *
-   * @param {String} eventName
-   * @return {string}
-   */
-  getEventKey = (eventName) => this.props.map.hasOwnProperty(eventName) ? this.props.map[eventName] : null;
-
-  /**
-   * Returns the event properties
-   *
-   * @method
-   * @public
-   *
-   * @param eventName
-   * @return {object|null}
-   */
-  getEventProps = eventName => {
-    const eventKey = this.getEventKey(eventName);
-    if (eventKey &amp;&amp; this.props.props.hasOwnProperty(eventKey)) {
-      return this.props.props[eventKey];
-    }
+  return function(props) {
+    const eventProps = { ...props, tabId };
+    return outgoingDispatcher.emitAsync(ObjectEvents.EVENT_CONTEXT_PROPERTY_GET, eventProps);
   }
-}
-
-export default EventMap</code></pre>
+}</code></pre>
         </article>
     </section>
 

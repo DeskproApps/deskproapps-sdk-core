@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Core/EventMap.js - Documentation</title>
+    <title>Context/eventsObject.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -27,7 +27,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Core/EventMap.js</h1>
+    <h1 class="page-title">Context/eventsObject.js</h1>
     
 
     
@@ -38,61 +38,47 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * This class provides a way of retrieving and indexing events
+ * This module exports events available when the application is hosted by a UI Tab component
  *
- * @class
+ * @module Context/eventsTicket
  */
-class EventMap
-{
-  constructor ({ map, names, props }) {
-    this.props = { map, names, props };
-  }
 
-  /**
-   * @method
-   * @public
-   *
-   * @param {String} name
-   * @return boolean
-   */
-  isEventName = (name) => this.props.names.indexOf(name) !== -1;
+import { CHANNEL_INTERNAL, CHANNEL_INCOMING, CHANNEL_OUTGOING, INVOCATION_FIREANDFORGET, INVOCATION_REQUESTRESPONSE } from '../Core/Event'
 
-  /**
-   * @public
-   *
-   * @type {Array.&lt;String>}
-   */
-  get eventNames() { return [].concat(this.props.names); }
+/**
+ * Fetch a property of a context object
+ *
+ * @readonly
+ * @type {string}
+ */
+export const EVENT_CONTEXT_PROPERTY_GET = 'context.property.get';
 
-  /**
-   * Returns the event key given an event name
-   *
-   * @method
-   * @public
-   *
-   * @param {String} eventName
-   * @return {string}
-   */
-  getEventKey = (eventName) => this.props.map.hasOwnProperty(eventName) ? this.props.map[eventName] : null;
 
-  /**
-   * Returns the event properties
-   *
-   * @method
-   * @public
-   *
-   * @param eventName
-   * @return {object|null}
-   */
-  getEventProps = eventName => {
-    const eventKey = this.getEventKey(eventName);
-    if (eventKey &amp;&amp; this.props.props.hasOwnProperty(eventKey)) {
-      return this.props.props[eventKey];
-    }
-  }
-}
+const events = {
+  EVENT_CONTEXT_PROPERTY_GET: { channelType: CHANNEL_OUTGOING, invocationType: INVOCATION_REQUESTRESPONSE }
+};
 
-export default EventMap</code></pre>
+/**
+ * @enum
+ * @readonly
+ * @type {{EVENT_CONTEXT_PROPERTY_GET: {channelType: string, invocationType: string}}}
+ */
+export const props = events;
+
+/**
+ * @readonly
+ * @type {Array&lt;string>}
+ */
+export const eventNames = Object.keys(events).map(key => events[key]);
+
+/**
+ * @method
+ *
+ * @param {string} name
+ * @return {boolean}
+ */
+export const isEventName = name => eventNames.indexOf(name) !== -1;
+</code></pre>
         </article>
     </section>
 
