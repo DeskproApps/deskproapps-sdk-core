@@ -2,6 +2,8 @@
 
 ## [Unreleased][] 
 
+## [2.0.0][] - 2018-07-12
+
 ### Added
 
  * properties of a context object can be retrieved via `ContextObject.get` using property paths
@@ -361,6 +363,7 @@
 
 
 
-[Unreleased]: https://github.com/deskpro/apps-sdk-core/compare/v1.0.2...HEAD
+[Unreleased]: https://github.com/deskpro/apps-sdk-core/compare/v2.0.0...HEAD
+[2.0.0]: https://github.com/deskpro/apps-sdk-core/compare/v1.0.2...v2.0.0
 [1.0.2]: https://github.com/deskpro/apps-sdk-core/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/deskpro/apps-sdk-core/tree/v1.0.1
