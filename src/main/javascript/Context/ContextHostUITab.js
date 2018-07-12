@@ -2,11 +2,6 @@ import ContextHostUI from '../Core/ContextHostUI';
 import * as UITabEvents from './eventsTab';
 
 /**
- * The data stored by the Deskpro UITab
- * @typedef {Object} ContextHostUITab~TabData
- */
-
-/**
  * The interface to the context supplied by the Deskpro UI Tab component hosting the app
  *
  * @class
@@ -84,16 +79,6 @@ class ContextHostUITab extends ContextHostUI
   async closeTab() {
     return this.props.outgoingDispatcher.emitAsync(UITabEvents.EVENT_TAB_CLOSE, this.props.tabId);
   }
-
-  /**
-   * Returns the data loaded by this tab
-   *
-   * @public
-   * @method
-   * @async
-   * @return {Promise.<ContextHostUITab~TabData, Error>}
-   */
-  async getTabData() { return this.props.outgoingDispatcher.emitAsync(UITabEvents.EVENT_TAB_DATA, this.props.tabId); }
 }
 
 export default ContextHostUITab;

@@ -8,7 +8,9 @@ test('getProperty returns undefined for unknown property', done => {
     incomingDispatcher: new AppEventEmitter(),
     type: 'not-important',
     entityId: '1',
-    locationId: 'not-important'
+    locationId: 'not-important',
+    tabId: 1,
+    tabUrl: 'http://localhost'
   });
   expect(context.getProperty('not-existing-property')).toBeUndefined();
 
@@ -22,9 +24,28 @@ test('hasProperty returns false for unknown property', done => {
     incomingDispatcher: new AppEventEmitter(),
     type: 'not-important',
     entityId: '1',
-    locationId: 'not-important'
+    locationId: 'not-important',
+    tabId: 1,
+    tabUrl: 'http://localhost'
   });
   expect(context.hasProperty('not-existing-property')).toBe(false);
 
   done();
 });
+
+test('get throws error when called with unknown object type', () => {
+
+  const context = new Context({
+    outgoingDispatcher: new AppEventEmitter(),
+    incomingDispatcher: new AppEventEmitter(),
+    type: 'ticket',
+    entityId: '1',
+    locationId: 'not-important',
+    tabId: 1,
+    tabUrl: 'http://localhost'
+  });
+  expect(() => context.get('not-a-ticket')).toThrow();
+
+});
+
+

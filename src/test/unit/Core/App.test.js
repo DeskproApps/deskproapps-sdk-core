@@ -82,7 +82,7 @@ test('retrieve properties', done => {
 
   expect(app.getProperty('appId')).toEqual('1');
   expect(app.getProperty('contextType')).toEqual('ticket');
-  expect(app.getProperty('contextType')).toEqual(app.context.object.type);
+  expect(app.getProperty('contextType')).toEqual(app.context.get('ticket').type);
   expect(app.getProperty('tabUrl')).toEqual('https://127.0.0.1');
   expect(app.getProperty('instanceExperimentalTwo')).toEqual(experimental.instanceExperimentalTwo);
 

@@ -22,7 +22,9 @@ test('can create a default context', done => {
     type: contextType,
     entityId: '1',
     locationId: 'install',
-    manifest: { field: 'value' }
+    manifest: { field: 'value' },
+    tabId: 1,
+    tabUrl: 'http://localhost'
   });
 
   const context = createContext(outgoingDispatcher, incomingDispatcher, instanceProps, contextProps);

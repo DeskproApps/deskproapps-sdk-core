@@ -2,6 +2,8 @@ import Context from '../Core/Context';
 import { CustomFieldsClient } from '../CustomFields';
 import ContextObject from '../Core/ContextObject';
 import ContextHostUITab from './ContextHostUITab';
+import * as ObjectEvents from './eventsObject';
+import { propertyProviderTab } from './properties'
 
 /**
  * @ignore
@@ -77,6 +79,7 @@ class ContextFactory
     const customFields = createCustomFieldClient({ outgoingDispatcher, incomingDispatcher, instanceProps, contextProps });
 
     const object = new ContextObject({
+      propertyProvider: propertyProviderTab(outgoingDispatcher, contextProps),
       type: contextProps.contextType,
       entityId: contextProps.entityId,
       customFields
