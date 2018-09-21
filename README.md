@@ -1,4 +1,6 @@
-# deskproapps-sdk-core &middot; [![Build Status](https://travis-ci.org/deskpro/apps-sdk-core.svg?branch=master)](https://travis-ci.org/deskpro/apps-sdk-core)
+# DEPRECATED -  deskproapps-sdk-core &middot; [![Build Status](https://travis-ci.org/deskpro/apps-sdk-core.svg?branch=master)](https://travis-ci.org/deskpro/apps-sdk-core)
+
+This repository is now part of [apps-libs](https://github.com/deskpro/apps-libs)
 
 Core javascript SDK for building Deskpro Apps
 
